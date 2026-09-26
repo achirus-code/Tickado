@@ -174,5 +174,7 @@ extension L10n {
             "Πλατίνα",
         "Palladium":
             "Παλλάδιο",
+        "Legal notice & privacy":
+            "Νομικές πληροφορίες & απόρρητο",
     ]
 }

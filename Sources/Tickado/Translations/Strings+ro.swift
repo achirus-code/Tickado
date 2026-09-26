@@ -174,5 +174,7 @@ extension L10n {
             "Platină",
         "Palladium":
             "Paladiu",
+        "Legal notice & privacy":
+            "Informații legale și confidențialitate",
     ]
 }

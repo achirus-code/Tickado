@@ -174,5 +174,7 @@ extension L10n {
             "プラチナ",
         "Palladium":
             "パラジウム",
+        "Legal notice & privacy":
+            "運営者情報とプライバシー",
     ]
 }
