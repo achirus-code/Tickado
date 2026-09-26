@@ -350,6 +350,10 @@ final class StatusController: NSObject, NSMenuDelegate {
         credits.append(NSAttributedString(string: "Yahoo Finance", attributes: [
             .font: font, .link: URL(string: "https://finance.yahoo.com")!,
         ]))
+        credits.append(NSAttributedString(string: "\n", attributes: [.font: font]))
+        credits.append(NSAttributedString(string: L("Legal notice & privacy"), attributes: [
+            .font: font, .link: URL(string: "https://achirus-code.github.io/Tickado/impressum.html")!,
+        ]))
         let paragraph = NSMutableParagraphStyle()
         paragraph.alignment = .center
         credits.addAttribute(.paragraphStyle, value: paragraph, range: NSRange(location: 0, length: credits.length))

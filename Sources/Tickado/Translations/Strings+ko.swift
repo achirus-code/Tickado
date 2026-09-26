@@ -174,5 +174,7 @@ extension L10n {
             "백금",
         "Palladium":
             "팔라듐",
+        "Legal notice & privacy":
+            "법적 고지 및 개인정보 보호",
     ]
 }

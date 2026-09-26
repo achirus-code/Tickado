@@ -174,5 +174,7 @@ extension L10n {
             "Platine",
         "Palladium":
             "Palladium",
+        "Legal notice & privacy":
+            "Mentions légales et confidentialité",
     ]
 }

@@ -174,5 +174,7 @@ extension L10n {
             "Bạch kim",
         "Palladium":
             "Palađi",
+        "Legal notice & privacy":
+            "Thông tin pháp lý & quyền riêng tư",
     ]
 }

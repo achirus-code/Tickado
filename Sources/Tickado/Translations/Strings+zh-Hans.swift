@@ -174,5 +174,7 @@ extension L10n {
             "铂金",
         "Palladium":
             "钯金",
+        "Legal notice & privacy":
+            "法律声明与隐私",
     ]
 }

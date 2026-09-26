@@ -12,7 +12,7 @@
     <key>CFBundleVersion</key><string>1</string>
     <key>LSMinimumSystemVersion</key><string>14.0</string>
     <key>LSApplicationCategoryType</key><string>public.app-category.finance</string>
-    <key>NSHumanReadableCopyright</key><string>© 2026 achirus</string>
+    <key>NSHumanReadableCopyright</key><string>© 2026 Tillmann David</string>
     <!-- Nur Menüleisten-Ticker, kein Dock-Icon -->
     <key>LSUIElement</key><true/>
 </dict>
