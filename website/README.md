@@ -1,7 +1,8 @@
 # Tickado – Präsentationsseite / Landing page
 
-Statische Landingpage, die Tickado vorstellt. Eine einzelne Datei ohne externe Abhängigkeiten.
-Static landing page presenting Tickado. A single file with no external dependencies.
+Statische Landingpage, die Tickado vorstellt. Eine einzelne Datei ohne externe Abhängigkeiten,
+dazu nur das Favicon (`favicon-32.png`, `apple-touch-icon.png`, aus `Resources/AppIcon.icns` ohne den macOS-Rand).
+Static landing page presenting Tickado. A single file with no external dependencies, plus the favicon images.
 
 ## Ansehen / Preview
 `website/index.html` im Browser öffnen, oder lokal servieren / open in a browser, or serve locally:
