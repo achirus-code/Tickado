@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tickado – Datenschutz</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  :root{--green:#74C73D;--bg:#0C0F15;--card:#141924;--card-brd:#232b3a;--tx:#E7ECF3;--tx-dim:#9AA6B8}
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){--green:#5CA82B;--bg:#F4F6FA;--card:#FFFFFF;--card-brd:#E2E7EF;--tx:#151A24;--tx-dim:#5A6578}
+  }
+  :root[data-theme="light"]{--green:#5CA82B;--bg:#F4F6FA;--card:#FFFFFF;--card-brd:#E2E7EF;--tx:#151A24;--tx-dim:#5A6578}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--tx);line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:var(--green)}
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px}
+  nav{border-bottom:1px solid var(--card-brd)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--tx);text-decoration:none}
+  .brand img{width:30px;height:30px}
+  .lang{background:transparent;border:1px solid var(--card-brd);color:var(--tx-dim);height:34px;border-radius:9px;
+    padding:0 10px;font-weight:600;font-size:.85rem;cursor:pointer}
+  .lang .on{color:var(--green)}
+  main{padding:48px 0 64px}
+  h1{font-size:2rem;letter-spacing:-.02em;margin-bottom:24px}
+  h2{font-size:1.15rem;margin:28px 0 8px}
+  p,li{color:var(--tx-dim)}
+  p+p{margin-top:10px}
+  .card{background:var(--card);border:1px solid var(--card-brd);border-radius:14px;padding:20px 22px;color:var(--tx)}
+  .card p{color:var(--tx)}
+  footer{border-top:1px solid var(--card-brd);padding:28px 0;font-size:.9rem}
+  footer .wrap{display:flex;gap:20px;flex-wrap:wrap}
+  footer a{color:var(--tx-dim);text-decoration:none}
+  footer a:hover{color:var(--tx)}
+  /* Nur die gewählte Sprache zeigen */
+  html[lang="de"] [data-l="en"], html[lang="en"] [data-l="de"]{display:none}
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="./"><img src="favicon-32.png" alt=""> Tickado</a>
+    <button class="lang" id="langBtn" aria-label="Language"><span data-lang-de>DE</span> / <span data-lang-en>EN</span></button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section data-l="de" lang="de">
+    <h1>Datenschutzerklärung</h1>
+
+    <h2>Verantwortlicher</h2>
+    <div class="card">
+      <p>Tillmann David<br>Neuenheimer Landstraße 74<br>69120 Heidelberg<br>Deutschland</p>
+      <p>E-Mail: <a href="mailto:Tickado@achirus.de">Tickado@achirus.de</a></p>
+    </div>
+
+    <h2>Kurz gesagt</h2>
+    <p>Diese Website und die App Tickado verwenden keine Cookies, kein Tracking, keine Analyse-Werkzeuge und keine Werbung.
+      Ich betreibe keinen eigenen Server und erhalte keine Daten über dich.</p>
+
+    <h2>Hosting der Website (GitHub Pages)</h2>
+    <p>Die Website wird über GitHub Pages bereitgestellt, einen Dienst der GitHub, Inc., 88 Colin P. Kelly Jr. Street,
+      San Francisco, CA 94107, USA. Beim Aufruf verarbeitet GitHub technisch notwendige Daten wie deine IP-Adresse,
+      Datum und Uhrzeit, die aufgerufene Seite und Angaben zum Browser, um die Seite auszuliefern und vor Missbrauch zu
+      schützen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO; mein berechtigtes Interesse liegt in einer sicheren und
+      zuverlässigen Bereitstellung der Website. Dabei können Daten in die USA übermittelt werden. Die Übermittlung stützt
+      sich auf den Angemessenheitsbeschluss der EU-Kommission zum EU-US Data Privacy Framework (Art. 45 DSGVO).
+      Details: <a href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung von GitHub</a>.</p>
+
+    <h2>Speicherung im Browser</h2>
+    <p>Wählst du auf der Website eine Sprache oder Hell/Dunkel, speichert dein Browser diese Wahl lokal (localStorage),
+      damit sie beim nächsten Besuch erhalten bleibt. Diese Angaben verlassen deinen Browser nicht und können dort
+      jederzeit gelöscht werden. Rechtsgrundlage ist § 25 Abs. 2 Nr. 2 TDDDG, da die Speicherung für die von dir
+      gewünschte Funktion unbedingt erforderlich ist.</p>
+
+    <h2>Download über GitHub</h2>
+    <p>Der Download-Link führt zu GitHub (github.com). Dort gilt die Datenschutzerklärung von GitHub.</p>
+
+    <h2>Die App Tickado</h2>
+    <p>Die App erhebt keine personenbezogenen Daten für mich und sendet mir nichts. Um Kurse zu laden, verbindet sie sich
+      direkt von deinem Mac aus mit diesen Diensten:</p>
+    <ul style="margin:8px 0 0 20px">
+      <li>CoinGecko (api.coingecko.com) für Kryptowährungen, <a href="https://www.coingecko.com/en/privacy">Datenschutz von CoinGecko</a></li>
+      <li>Yahoo Finance (query1.finance.yahoo.com) für Aktien, ETFs, Edelmetalle und Wechselkurse, <a href="https://legal.yahoo.com/de/de/yahoo/privacy/index.html">Datenschutz von Yahoo</a></li>
+    </ul>
+    <p style="margin-top:10px">Diese Dienste erhalten dabei deine IP-Adresse und die abgefragten Werte. Einstellungen,
+      deine Auswahl und ein zwischengespeicherter Coin-Katalog liegen nur lokal auf deinem Mac. Einen optionalen
+      CoinGecko-API-Key speichert die App im Schlüsselbund von macOS; er wird nur an CoinGecko übertragen.</p>
+
+    <h2>Kontakt per E-Mail</h2>
+    <p>Schreibst du mir eine E-Mail, verarbeite ich deine Angaben nur, um deine Anfrage zu beantworten
+      (Art. 6 Abs. 1 lit. f DSGVO), und lösche sie, wenn sie dafür nicht mehr nötig sind.</p>
+
+    <h2>Deine Rechte</h2>
+    <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und
+      Widerspruch (Art. 15 bis 21 DSGVO). Außerdem kannst du dich bei einer Datenschutz-Aufsichtsbehörde beschweren,
+      zum Beispiel beim Landesbeauftragten für den Datenschutz und die Informationsfreiheit Baden-Württemberg.</p>
+
+    <p style="margin-top:28px">Stand: September 2026 · <a href="impressum.html">Impressum</a></p>
+  </section>
+
+  <section data-l="en" lang="en">
+    <h1>Privacy policy</h1>
+
+    <h2>Controller</h2>
+    <div class="card">
+      <p>Tillmann David<br>Neuenheimer Landstraße 74<br>69120 Heidelberg<br>Germany</p>
+      <p>Email: <a href="mailto:Tickado@achirus.de">Tickado@achirus.de</a></p>
+    </div>
+
+    <h2>In short</h2>
+    <p>This website and the Tickado app use no cookies, no tracking, no analytics and no advertising.
+      I do not run a server of my own and receive no data about you.</p>
+
+    <h2>Website hosting (GitHub Pages)</h2>
+    <p>This website is served by GitHub Pages, a service of GitHub, Inc., 88 Colin P. Kelly Jr. Street,
+      San Francisco, CA 94107, USA. When you visit it, GitHub processes technically necessary data such as your IP
+      address, date and time, the requested page and browser information to deliver the site and protect it against
+      abuse. The legal basis is Art. 6 (1) (f) GDPR; my legitimate interest is a secure and reliable website. Data may
+      be transferred to the USA based on the EU Commission's adequacy decision for the EU-US Data Privacy Framework
+      (Art. 45 GDPR). Details: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub Privacy Statement</a>.</p>
+
+    <h2>Storage in your browser</h2>
+    <p>If you choose a language or light/dark mode on the website, your browser stores this choice locally
+      (localStorage) so it is kept for your next visit. This never leaves your browser and you can delete it there at
+      any time. The legal basis is Section 25 (2) no. 2 TDDDG, as the storage is strictly necessary for the feature you
+      requested.</p>
+
+    <h2>Download via GitHub</h2>
+    <p>The download link leads to GitHub (github.com), where GitHub's privacy statement applies.</p>
+
+    <h2>The Tickado app</h2>
+    <p>The app does not collect personal data for me and sends me nothing. To load prices, it connects directly from
+      your Mac to these services:</p>
+    <ul style="margin:8px 0 0 20px">
+      <li>CoinGecko (api.coingecko.com) for cryptocurrencies, <a href="https://www.coingecko.com/en/privacy">CoinGecko privacy policy</a></li>
+      <li>Yahoo Finance (query1.finance.yahoo.com) for stocks, ETFs, precious metals and exchange rates, <a href="https://legal.yahoo.com/us/en/yahoo/privacy/index.html">Yahoo privacy policy</a></li>
+    </ul>
+    <p style="margin-top:10px">These services receive your IP address and the values requested. Settings, your selection
+      and a cached coin catalog stay on your Mac. An optional CoinGecko API key is stored in the macOS keychain and only
+      sent to CoinGecko.</p>
+
+    <h2>Contact by email</h2>
+    <p>If you email me, I only use your details to answer your request (Art. 6 (1) (f) GDPR) and delete them once they
+      are no longer needed for that.</p>
+
+    <h2>Your rights</h2>
+    <p>You have the right to access, rectification, erasure, restriction of processing, data portability and objection
+      (Art. 15 to 21 GDPR). You can also lodge a complaint with a data protection supervisory authority, for example the
+      State Commissioner for Data Protection and Freedom of Information of Baden-Württemberg.</p>
+
+    <p style="margin-top:28px">Last updated: September 2026 · <a href="impressum.html">Legal notice</a> ·
+      The German version is authoritative.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="./">Tickado</a>
+    <a href="impressum.html"><span data-l="de">Impressum</span><span data-l="en">Legal notice</span></a>
+    <a href="datenschutz.html"><span data-l="de">Datenschutz</span><span data-l="en">Privacy</span></a>
+  </div>
+</footer>
+
+<script>
+// Sprache und Theme wie auf der Startseite (gemeinsame Einträge im localStorage).
+(function(){
+  var root=document.documentElement, lang;
+  try{lang=localStorage.getItem("ct-lang");}catch(e){}
+  if(!lang) lang=(navigator.language||"de").toLowerCase().startsWith("en")?"en":"de";
+  try{var theme=localStorage.getItem("ct-theme"); if(theme) root.setAttribute("data-theme",theme);}catch(e){}
+  function apply(l){
+    root.lang=l;
+    document.querySelector("[data-lang-de]").classList.toggle("on",l==="de");
+    document.querySelector("[data-lang-en]").classList.toggle("on",l==="en");
+    document.title="Tickado – "+(l==="de"?"Datenschutz":"Privacy policy");
+    try{localStorage.setItem("ct-lang",l);}catch(e){}
+  }
+  apply(lang);
+  document.getElementById("langBtn").addEventListener("click",function(){ apply(root.lang==="de"?"en":"de"); });
+})();
+</script>
+</body>
+</html>

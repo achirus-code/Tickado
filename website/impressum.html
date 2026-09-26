@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tickado – Impressum</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  :root{--green:#74C73D;--bg:#0C0F15;--card:#141924;--card-brd:#232b3a;--tx:#E7ECF3;--tx-dim:#9AA6B8}
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){--green:#5CA82B;--bg:#F4F6FA;--card:#FFFFFF;--card-brd:#E2E7EF;--tx:#151A24;--tx-dim:#5A6578}
+  }
+  :root[data-theme="light"]{--green:#5CA82B;--bg:#F4F6FA;--card:#FFFFFF;--card-brd:#E2E7EF;--tx:#151A24;--tx-dim:#5A6578}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--tx);line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:var(--green)}
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px}
+  nav{border-bottom:1px solid var(--card-brd)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--tx);text-decoration:none}
+  .brand img{width:30px;height:30px}
+  .lang{background:transparent;border:1px solid var(--card-brd);color:var(--tx-dim);height:34px;border-radius:9px;
+    padding:0 10px;font-weight:600;font-size:.85rem;cursor:pointer}
+  .lang .on{color:var(--green)}
+  main{padding:48px 0 64px}
+  h1{font-size:2rem;letter-spacing:-.02em;margin-bottom:24px}
+  h2{font-size:1.15rem;margin:28px 0 8px}
+  p,li{color:var(--tx-dim)}
+  p+p{margin-top:10px}
+  .card{background:var(--card);border:1px solid var(--card-brd);border-radius:14px;padding:20px 22px;color:var(--tx)}
+  .card p{color:var(--tx)}
+  footer{border-top:1px solid var(--card-brd);padding:28px 0;font-size:.9rem}
+  footer .wrap{display:flex;gap:20px;flex-wrap:wrap}
+  footer a{color:var(--tx-dim);text-decoration:none}
+  footer a:hover{color:var(--tx)}
+  /* Nur die gewählte Sprache zeigen */
+  html[lang="de"] [data-l="en"], html[lang="en"] [data-l="de"]{display:none}
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="./"><img src="favicon-32.png" alt=""> Tickado</a>
+    <button class="lang" id="langBtn" aria-label="Language"><span data-lang-de>DE</span> / <span data-lang-en>EN</span></button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section data-l="de" lang="de">
+    <h1>Impressum</h1>
+    <p>Angaben gemäß § 18 Abs. 1 Medienstaatsvertrag (MStV)</p>
+    <div class="card" style="margin-top:16px">
+      <p>Tillmann David<br>Neuenheimer Landstraße 74<br>69120 Heidelberg<br>Deutschland</p>
+      <p>E-Mail: <a href="mailto:Tickado@achirus.de">Tickado@achirus.de</a></p>
+    </div>
+
+    <h2>Hinweis</h2>
+    <p>Tickado ist ein privates, kostenloses Open-Source-Projekt ohne kommerzielle Absicht.
+      Der Quellcode steht unter der MIT-Lizenz auf <a href="https://github.com/achirus-code/Tickado">GitHub</a>.</p>
+
+    <h2>Kurse</h2>
+    <p>Die angezeigten Kurse stammen von CoinGecko und Yahoo Finance. Sie dienen nur der Information, können verzögert
+      oder fehlerhaft sein und sind keine Anlageberatung.</p>
+
+    <h2>Links auf andere Websites</h2>
+    <p>Für die Inhalte verlinkter Websites sind ausschließlich deren Betreiber verantwortlich.</p>
+
+    <p style="margin-top:28px"><a href="datenschutz.html">Datenschutzerklärung</a></p>
+  </section>
+
+  <section data-l="en" lang="en">
+    <h1>Legal notice</h1>
+    <p>Information pursuant to Section 18 (1) of the German Interstate Media Treaty (MStV)</p>
+    <div class="card" style="margin-top:16px">
+      <p>Tillmann David<br>Neuenheimer Landstraße 74<br>69120 Heidelberg<br>Germany</p>
+      <p>Email: <a href="mailto:Tickado@achirus.de">Tickado@achirus.de</a></p>
+    </div>
+
+    <h2>Note</h2>
+    <p>Tickado is a private, free, open-source project with no commercial purpose.
+      The source code is available under the MIT License on <a href="https://github.com/achirus-code/Tickado">GitHub</a>.</p>
+
+    <h2>Prices</h2>
+    <p>Prices come from CoinGecko and Yahoo Finance. They are for information only, may be delayed or inaccurate
+      and are not investment advice.</p>
+
+    <h2>Links to other websites</h2>
+    <p>The operators of linked websites are solely responsible for their content.</p>
+
+    <p style="margin-top:28px"><a href="datenschutz.html">Privacy policy</a></p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="./">Tickado</a>
+    <a href="impressum.html"><span data-l="de">Impressum</span><span data-l="en">Legal notice</span></a>
+    <a href="datenschutz.html"><span data-l="de">Datenschutz</span><span data-l="en">Privacy</span></a>
+  </div>
+</footer>
+
+<script>
+// Sprache und Theme wie auf der Startseite (gemeinsame Einträge im localStorage).
+(function(){
+  var root=document.documentElement, lang;
+  try{lang=localStorage.getItem("ct-lang");}catch(e){}
+  if(!lang) lang=(navigator.language||"de").toLowerCase().startsWith("en")?"en":"de";
+  try{var theme=localStorage.getItem("ct-theme"); if(theme) root.setAttribute("data-theme",theme);}catch(e){}
+  function apply(l){
+    root.lang=l;
+    document.querySelector("[data-lang-de]").classList.toggle("on",l==="de");
+    document.querySelector("[data-lang-en]").classList.toggle("on",l==="en");
+    document.title="Tickado – "+(l==="de"?"Impressum":"Legal notice");
+    try{localStorage.setItem("ct-lang",l);}catch(e){}
+  }
+  apply(lang);
+  document.getElementById("langBtn").addEventListener("click",function(){ apply(root.lang==="de"?"en":"de"); });
+})();
+</script>
+</body>
+</html>
