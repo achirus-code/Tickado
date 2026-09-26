@@ -95,6 +95,10 @@ The project is a Swift Package (Swift 5.10, AppKit). The main parts:
 Releases are built by GitHub Actions: pushing a tag like `v1.1.0` builds a universal `Tickado.app` and publishes it
 as a release.
 
+## License
+
+Tickado is open source under the [MIT License](LICENSE).
+
 ---
 
 <a id="deutsch"></a>
@@ -111,3 +115,5 @@ noch nicht von Apple notarisiert ist. Danach unter **Settings…** die gewünsch
 
 Voraussetzung: macOS 14 oder neuer, Apple Silicon oder Intel. Die Oberfläche gibt es in 25 Sprachen, auch auf
 Deutsch. Mehr auf der [Website](https://achirus-code.github.io/Tickado/).
+
+Tickado ist Open Source unter der [MIT-Lizenz](LICENSE).

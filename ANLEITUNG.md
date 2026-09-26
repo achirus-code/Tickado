@@ -56,7 +56,7 @@ Das Fenster hat eine feste Größe, merkt sich seine Position und lässt sich mi
 ## 2. Lokal bauen und installieren (auf dem Mac)
 
 ```bash
-cd ~/Kunden/Privat/Tickado
+cd Tickado            # Projektordner (geklontes Repository)
 ./build.sh            # baut Tickado.app im Projektordner
 ./build.sh install    # baut, installiert nach /Applications und startet neu
 ```
@@ -70,13 +70,13 @@ Voraussetzung: Xcode Command Line Tools (`swift`). Ein volles Xcode ist nicht n�
 Claude in der Cloud (claude.ai/code) arbeitet direkt auf deinem GitHub-Repository. Dafür muss das Projekt einmalig auf GitHub liegen.
 
 ### Schritt 1 + 2 – Repository und erster Push ✅ erledigt
-Das Projekt liegt privat auf GitHub: **https://github.com/achirus-code/Tickado** (Branch `main`).
+Das Projekt liegt öffentlich auf GitHub: **https://github.com/achirus-code/Tickado** (Branch `main`, Website auf Branch `website`).
 Auf diesem Mac ist die GitHub-CLI `gh` installiert und als `achirus-code` angemeldet, `git push`/`git pull` funktionieren ohne weitere Anmeldung.
 
 Eigene lokale Änderungen hochladen:
 
 ```bash
-cd ~/Kunden/Privat/Tickado
+cd Tickado
 git add -A
 git commit -m "Kurze Beschreibung der Änderung"
 git push
@@ -94,7 +94,7 @@ git push
 Die Cloud-Umgebung ist **Linux**. Dort kann Claude den Code bearbeiten, eine macOS-App (AppKit) aber **weder bauen noch starten**. Getestet wird deshalb immer lokal:
 
 ```bash
-cd ~/Kunden/Privat/Tickado
+cd Tickado
 git fetch
 git switch <branch-von-claude>   # oder nach dem Mergen des Pull Requests: git switch main
 git pull
