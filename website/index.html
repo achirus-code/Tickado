@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tickado – Prices in your menu bar</title>
+<meta name="description" content="Tickado is a lean macOS menu bar app that shows live prices for crypto, stocks, ETFs and precious metals.">
+<style>
+  :root{
+    --green:#74C73D; --red:#C04828; --gold:#E39B20;
+    --bg:#0C0F15; --bg2:#161B26; --tile:#2B3345;
+    --card:#141924; --card-brd:#232b3a;
+    --tx:#E7ECF3; --tx-dim:#9AA6B8;
+    --blue:#2f7bf6;
+    --radius:16px; --maxw:1080px;
+    /* Menü folgt dem Seiten-Theme (dunkel als Standard) */
+    --menu-bg:#2b2b2dee; --menu-fg:#e9e9ea; --menu-sep:#ffffff1a; --menu-hi:#3f7bff;
+    --mup:#7bc94f; --mdn:#d1503a;
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --bg:#F4F6FA; --bg2:#EAEEF5; --tile:#1B2130;
+      --card:#FFFFFF; --card-brd:#E2E7EF;
+      --tx:#151A24; --tx-dim:#5A6578;
+      --green:#5CA82B; --red:#A63B1E;
+      --menu-bg:#ececee; --menu-fg:#1c1c1e; --menu-sep:#00000015; --menu-hi:#3d7dff;
+      --mup:#3a9c33; --mdn:#c0432a;
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#F4F6FA; --bg2:#EAEEF5; --tile:#1B2130;
+    --card:#FFFFFF; --card-brd:#E2E7EF;
+    --tx:#151A24; --tx-dim:#5A6578;
+    --green:#5CA82B; --red:#A63B1E;
+    --menu-bg:#ececee; --menu-fg:#1c1c1e; --menu-sep:#00000015; --menu-hi:#3d7dff;
+    --mup:#3a9c33; --mdn:#c0432a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--tx);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+  [hidden]{display:none!important}
+
+  /* Nav */
+  nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
+    background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--card-brd)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:-.01em;text-decoration:none}
+  .brand svg{width:34px;height:34px;border-radius:9px}
+  .navlinks{display:flex;gap:26px;font-size:.94rem}
+  .navlinks a{color:var(--tx-dim);text-decoration:none;transition:color .15s}
+  .navlinks a:hover{color:var(--tx)}
+  .navtools{display:flex;gap:10px;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:11px;
+    font-weight:600;text-decoration:none;font-size:.95rem;transition:transform .12s,filter .15s;border:none;cursor:pointer}
+  .btn-primary{background:linear-gradient(180deg,#82d84d,var(--green));color:#0b1207;box-shadow:0 6px 20px -6px var(--green)}
+  .btn-primary:hover{transform:translateY(-1px);filter:brightness(1.05)}
+  .btn-ghost{border:1px solid var(--card-brd);color:var(--tx);background:transparent}
+  .btn-ghost:hover{border-color:var(--tx-dim)}
+  .icobtn{background:transparent;border:1px solid var(--card-brd);color:var(--tx-dim);height:38px;
+    border-radius:10px;cursor:pointer;display:grid;place-items:center;padding:0 10px;font-weight:600;font-size:.85rem}
+  .icobtn:hover{color:var(--tx)}
+  /* Sprach-Button: Kinder nebeneinander, kein Umbruch */
+  .lang{display:inline-flex;flex-flow:row nowrap;align-items:center;gap:6px;white-space:nowrap;line-height:1}
+  .lang .sep{opacity:.4}
+  .lang .on{color:var(--green)}
+  @media(max-width:820px){.navlinks{display:none}}
+
+  /* Hero */
+  header.hero{position:relative;overflow:hidden;padding:90px 0 70px}
+  .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:56px;align-items:center}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:44px;text-align:center}}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;font-weight:600;color:var(--green);
+    background:color-mix(in srgb,var(--green) 14%,transparent);padding:6px 13px;border-radius:999px;margin-bottom:22px}
+  h1{font-size:clamp(2.3rem,5vw,3.6rem);line-height:1.05;letter-spacing:-.03em;font-weight:800}
+  h1 .accent{background:linear-gradient(120deg,var(--green),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{font-size:1.18rem;color:var(--tx-dim);margin:22px 0 32px;max-width:36ch}
+  @media(max-width:900px){.lead{margin-inline:auto}}
+  .cta{display:flex;gap:14px;flex-wrap:wrap}
+  @media(max-width:900px){.cta{justify-content:center}}
+  .req{font-size:.86rem;color:var(--tx-dim);margin-top:18px}
+  .glow{position:absolute;border-radius:50%;filter:blur(90px);opacity:.28;z-index:-1}
+  .glow.g1{width:420px;height:420px;background:var(--green);top:-120px;right:-60px}
+  .glow.g2{width:360px;height:360px;background:var(--gold);bottom:-160px;left:-80px;opacity:.18}
+
+  /* Stage / menu bar mock */
+  .stage{background:linear-gradient(160deg,var(--tile),var(--bg2) 55%,var(--bg));border:1px solid var(--card-brd);
+    border-radius:20px;padding:16px;box-shadow:0 30px 60px -30px #000a}
+  .menubar{background:#00000038;border:1px solid #ffffff14;border-radius:11px;height:34px;display:flex;
+    align-items:center;justify-content:flex-end;padding:0 12px;gap:14px;font-size:12px;color:#dfe4ec}
+  .menubar .mb-left{margin-right:auto;font-weight:600}
+  .menubar .sysic{width:24px;height:24px;stroke:#dfe4ec;fill:none;stroke-width:1.7;opacity:.95}
+  .menubar .batt .sysic{width:31px;height:19px}   /* Batterie in Originalproportion */
+  .menubar .batt{display:inline-flex;align-items:center;gap:6px;font-size:13px}
+  /* Tickado-Statusfeld: nur die Werte, kein Icon; hervorgehoben, weil das Menü offen ist */
+  .mb-pill{background:#ffffff26;border-radius:8px;padding:3px 10px;display:flex;align-items:center}
+  /* Kompakter Ticker wie TickerRenderer.stackedImage: SF 9 pt, Zeile 11 pt, je Spalte zwei Werte.
+     Bezeichner 3 pt vor dem Kurs, Kurs rechtsbündig, 2 pt dahinter ein gezeichnetes Dreieck 6×5, Spalten 9 pt Abstand. */
+  .mb-ticker{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+    font-variant-numeric:tabular-nums;font-weight:400;font-size:9px;line-height:11px;
+    display:flex;flex-direction:row;gap:9px;align-items:center}
+  .mb-ticker .tk-col{display:grid;grid-template-columns:auto auto auto;align-content:center}
+  .mb-ticker .tk-row{display:contents}
+  .mb-ticker .tk-row .s{color:#fff;padding-right:3px}   /* Bezeichner weiß (labelColor), nur Kurs/Pfeil eingefärbt */
+  .mb-ticker .tk-row .v{text-align:right;padding-right:2px}
+  .mb-ticker .tk-row .a{width:6px;height:5px;align-self:center;font-size:0;background:currentColor;
+    clip-path:polygon(50% 0,100% 100%,0 100%)}
+  .mb-ticker .tk-row.down .a{clip-path:polygon(0 0,100% 0,50% 100%)}
+  .mb-ticker span{white-space:nowrap}
+  /* Farben der App (Display P3), in der Menüleiste immer die dunkle Variante */
+  .mb-ticker .up{color:#74C73D;color:color(display-p3 .455 .780 .239)}
+  .mb-ticker .down{color:#C04828;color:color(display-p3 .753 .282 .157)}
+  .mb-ticker.cbo .up{color:#0A84FF;color:color(display-p3 .249 .560 .969)}      /* systemBlue */
+  .mb-ticker.cbo .down{color:#FF9F0A;color:color(display-p3 .942 .594 .282)}    /* systemOrange */
+  #setPreview{transition:opacity .3s ease}
+  .optline{transition:background .2s ease;border-radius:6px;padding:2px 4px;margin-left:-4px}
+  .optline.flash{background:var(--menu-hi)}
+  .optline.flash span{color:#fff}
+  .optline.off{opacity:.4}   /* ausgegraut, solange "nur Änderung" aktiv ist */
+
+  /* Dropdown-Menü — folgt dem Seiten-Theme (dunkel/hell wie im echten macOS) */
+  .osmenu{margin:14px auto 0;max-width:440px;background:var(--menu-bg);border:1px solid #ffffff14;border-radius:12px;
+    padding:6px 0;box-shadow:0 24px 48px -20px #000c;font-family:Menlo,ui-monospace,monospace;font-size:13px;
+    color:var(--menu-fg);backdrop-filter:blur(20px)}
+  .osmenu .mi{padding:6px 18px;color:var(--menu-fg)}
+  /* Statisches Mockup: kein Hover-Effekt */
+  .osmenu .msep{height:1px;background:var(--menu-sep);margin:6px 12px}
+  .osmenu .coin{display:grid;grid-template-columns:1.5ch 4.4ch 1fr auto 5.5ch;gap:8px;align-items:baseline;padding:5px 18px}
+  .osmenu .coin .ck,.osmenu .coin b{color:var(--menu-fg)}   /* Häkchen + Symbol in Label-Farbe */
+  .osmenu .coin .pr{text-align:right}
+  .osmenu .coin .ch{text-align:right}
+  .osmenu .coin.up .nm,.osmenu .coin.up .pr,.osmenu .coin.up .ch{color:var(--mup)}
+  .osmenu .coin.down .nm,.osmenu .coin.down .pr,.osmenu .coin.down .ch{color:var(--mdn)}
+
+  /* --- Animierte Demo: Cursor, Menü öffnen/schließen, Auswahl --- */
+  .stage{position:relative}
+  .demo-cursor{position:absolute;left:0;top:0;z-index:20;pointer-events:none;opacity:0;
+    transform:translate(20px,20px);transition:transform .7s cubic-bezier(.5,.05,.2,1),opacity .3s ease;
+    filter:drop-shadow(0 2px 3px #0007)}
+  .demo-click{position:absolute;left:0;top:0;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;
+    border:2px solid var(--green);z-index:19;pointer-events:none;opacity:0;transform:scale(.3)}
+  .demo-click.pulse{animation:demopulse .5s ease-out}
+  @keyframes demopulse{0%{opacity:.9;transform:scale(.3)}100%{opacity:0;transform:scale(1.6)}}
+  .stage.anim .osmenu{opacity:0;transform:translateY(-10px) scale(.985);transform-origin:top center;
+    transition:opacity .35s ease,transform .35s ease}
+  .stage.anim .osmenu.open{opacity:1;transform:none}
+  .osmenu .coin .ck{transition:transform .2s ease}
+  .osmenu .coin.picking{background:var(--menu-hi);border-radius:5px}
+  .osmenu .coin.picking .ck,.osmenu .coin.picking b,.osmenu .coin.picking .nm,
+  .osmenu .coin.picking .pr,.osmenu .coin.picking .ch{color:#fff}
+  .osmenu .ck.pop{animation:ckpop .3s ease}
+  @keyframes ckpop{0%{transform:scale(0)}60%{transform:scale(1.4)}100%{transform:scale(1)}}
+  .mb-ticker .tk-new{opacity:0;transform:translateX(6px);transition:opacity .4s ease,transform .4s ease}
+  .mb-ticker .tk-new.show{opacity:1;transform:none}
+
+  /* Sections */
+  section{padding:74px 0}
+  .sec-head{text-align:center;max-width:660px;margin:0 auto 48px}
+  .sec-head h2{font-size:clamp(1.7rem,3.5vw,2.5rem);letter-spacing:-.02em;font-weight:800}
+  .sec-head p{color:var(--tx-dim);margin-top:12px;font-size:1.08rem}
+  .kicker{color:var(--green);font-weight:700;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase}
+
+  /* Feature cards */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:860px){.cards{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--card-brd);border-radius:var(--radius);padding:26px;transition:transform .15s,border-color .15s}
+  .card:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--green) 40%,var(--card-brd))}
+  .card .ic{width:44px;height:44px;border-radius:11px;display:grid;place-items:center;margin-bottom:16px;background:color-mix(in srgb,var(--green) 15%,transparent)}
+  .card .ic svg{width:24px;height:24px;stroke:var(--green);fill:none}
+  .card h3{font-size:1.14rem;margin-bottom:8px;letter-spacing:-.01em}
+  .card p{color:var(--tx-dim);font-size:.97rem}
+
+  /* Split showcase */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  @media(max-width:900px){.split{grid-template-columns:1fr;gap:34px}}
+  .split h3{font-size:1.6rem;letter-spacing:-.02em;margin-bottom:14px}
+  .split p{color:var(--tx-dim);margin-bottom:16px}
+  .checklist{list-style:none;display:flex;flex-direction:column;gap:11px}
+  .checklist li{display:flex;gap:11px;align-items:flex-start;color:var(--tx-dim)}
+  .checklist li svg{flex:none;width:20px;height:20px;stroke:var(--green);fill:none;margin-top:2px}
+  .checklist b{color:var(--tx);font-weight:600}
+
+  /* Settings window mock (dark, matches screenshot) */
+  .win{position:relative;background:#20242c;border:1px solid #00000040;border-radius:12px;overflow:hidden;
+    box-shadow:0 34px 70px -28px #000c;color:#e7ecf3}
+  .win-bar{display:flex;align-items:center;gap:8px;padding:11px 14px;background:#2b2f38;border-bottom:1px solid #00000030}
+  .win-bar .dot{width:12px;height:12px;border-radius:50%}
+  .win-bar .r{background:#ff5f57}.win-bar .y{background:#febc2e}.win-bar .g{background:#28c840}
+  .win-bar .t{margin-left:8px;font-size:.82rem;font-weight:600;color:#cfd6e2}
+  .win-body{padding:13px 14px}
+  .prev{background:#0e1117;border:1px solid #ffffff14;border-radius:10px;overflow:hidden;margin-bottom:6px}
+  .prev .pbar{display:flex;align-items:center;gap:9px;justify-content:flex-end;padding:7px 12px;
+    border-bottom:1px solid #ffffff10;font-size:11px;color:#c9d1de;font-family:ui-monospace,Menlo,monospace}
+  .prev .pbar .pt{margin-left:auto}
+  .prev .pbar .batt{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#c9d1de;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif}
+  .prev .pbar .sysic{width:22px;height:22px;stroke:#c9d1de;fill:none;stroke-width:1.7;opacity:.95}
+  .prev .pbar .batt .sysic{width:28px;height:17px}   /* Batterie in Originalproportion */
+  /* Intro wie TickerRenderer.tickerTitle: SF regular 12,3 pt mit Ziffern fester Breite,
+     1 Leerzeichen nach dem Zeichen, 3 zwischen den Werten, Grün 0,5 pt kleiner, 0,5 pt tiefer */
+  .prev .pbar .pt.big{display:block;white-space:pre;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+    font-size:12.3px;font-weight:400;font-variant-numeric:tabular-nums;line-height:1;transform:translateY(.5px)}
+  .prev .pbar .pt.big .s{color:#fff}   /* Coin-Zeichen weiß (labelColor), Zahl eingefärbt */
+  .prev .pbar .pt.big .up{font-size:11.8px}
+  .prev .prows{padding:6px 12px;font-family:Menlo,ui-monospace,monospace;font-size:10.5px}
+  .prev .prow{display:grid;grid-template-columns:1.5ch 4ch 1fr auto 5ch;gap:8px;color:#7dc94f;padding:1.5px 0}
+  .prev .prow .ck,.prev .prow b{color:#cfd6e2}   /* Häkchen + Symbol in Label-Farbe */
+  .prev .prow .pr{text-align:right}.prev .prow .ch{text-align:right}
+  .prevnote{font-size:.76rem;color:var(--tx-dim);margin:4px 2px 12px}
+  .seg{display:flex;gap:2px;background:#00000030;border:1px solid #ffffff12;border-radius:9px;padding:3px;width:max-content;margin:0 auto 14px}
+  .seg button{border:none;background:transparent;color:#c9d1de;padding:5px 14px;border-radius:7px;font-size:.8rem;font-weight:600;cursor:pointer}
+  .seg button.active{background:var(--blue);color:#fff}
+  .frow{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:start;margin-bottom:11px}
+  .frow>.lab{color:var(--tx-dim);font-size:.82rem;text-align:right;padding-top:3px}
+  .listbox{border:1px solid #ffffff1a;border-radius:8px;overflow:hidden}
+  .listbox .lr{display:flex;align-items:center;gap:10px;padding:4.5px 10px;font-size:.82rem;border-bottom:1px solid #ffffff0d}
+  .listbox .lr:last-child{border-bottom:none}
+  .listbox .lr .nm{color:var(--tx-dim)}
+  .listbox .lr b{min-width:3.4ch}
+  .chk{width:16px;height:16px;border-radius:5px;flex:none;display:grid;place-items:center;border:1px solid #ffffff2e}
+  .chk.on{background:var(--blue);border-color:var(--blue)}
+  .chk svg{width:11px;height:11px;stroke:#fff;stroke-width:3;fill:none}
+  .selectish{display:flex;align-items:center;justify-content:space-between;background:#00000030;border:1px solid #ffffff1a;
+    border-radius:7px;padding:6px 10px;font-size:.84rem;color:#e7ecf3;margin-top:8px}
+  .selectish .muted{color:var(--tx-dim)}
+  .optline{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:.84rem}
+  .win .frow.tight{margin-bottom:8px}
+
+  /* Ticker modes */
+  .modes{display:flex;flex-direction:column;gap:14px}
+  .mode{background:var(--card);border:1px solid var(--card-brd);border-radius:14px;padding:16px 18px}
+  .mode .mlbl{font-size:.8rem;color:var(--tx-dim);margin-bottom:9px;display:flex;justify-content:space-between}
+  .mode .mlbl .tag{color:var(--green);font-weight:600}
+  .mode .demo{display:flex;align-items:center;gap:14px;font-family:ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:15px}
+  .up{color:var(--green)}.down{color:var(--red)}
+  .compact{display:flex;gap:20px;font-size:12px;line-height:1.35}
+  .compact .col{display:flex;flex-direction:column}
+
+  /* Sources */
+  .srcgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:720px){.srcgrid{grid-template-columns:1fr}}
+  .src{background:var(--card);border:1px solid var(--card-brd);border-radius:var(--radius);padding:26px}
+  .src h4{font-size:1.15rem;margin-bottom:6px}
+  .src .tag{font-size:.78rem;color:var(--green);font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+  .src p{color:var(--tx-dim);font-size:.96rem;margin-top:8px}
+  .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .pill{font-size:.8rem;padding:5px 11px;border-radius:999px;background:#ffffff0d;border:1px solid var(--card-brd);color:var(--tx-dim)}
+
+  /* Download */
+  .dl{background:linear-gradient(150deg,var(--tile),var(--bg2));border:1px solid var(--card-brd);border-radius:24px;
+    padding:52px 40px;text-align:center;position:relative;overflow:hidden}
+  .dl h2{font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.02em;margin-bottom:12px}
+  .dl p{color:var(--tx-dim);max-width:46ch;margin:0 auto 26px}
+  .dlmeta{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:22px;font-size:.86rem;color:var(--tx-dim)}
+  .dlmeta span{display:inline-flex;align-items:center;gap:7px}
+  .dlmeta svg{width:16px;height:16px;stroke:var(--green);fill:none}
+  .note{font-size:.85rem;color:var(--tx-dim);margin-top:20px;max-width:52ch;margin-inline:auto;
+    background:#ffffff0a;border:1px solid var(--card-brd);border-radius:12px;padding:12px 16px}
+
+  /* Footer */
+  footer{border-top:1px solid var(--card-brd);padding:40px 0;color:var(--tx-dim);font-size:.9rem}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  footer a{color:var(--tx-dim);text-decoration:none}
+  footer a:hover{color:var(--tx)}
+</style>
+</head>
+<body>
+
+<!-- App-Icon (Kachel + Kerzen + Goldmünze, wie Scripts/make-icon.swift) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="appicon" viewBox="0 0 100 100">
+    <defs>
+      <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2B3345"/><stop offset=".55" stop-color="#161B26"/><stop offset="1" stop-color="#0C0F15"/></linearGradient>
+      <linearGradient id="coinG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE38F"/><stop offset="1" stop-color="#D48A16"/></linearGradient>
+      <linearGradient id="coinFace" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBD066"/><stop offset="1" stop-color="#E39B20"/></linearGradient>
+    </defs>
+    <rect x="6" y="6" width="88" height="88" rx="20" fill="url(#tile)"/>
+    <g stroke="#ffffff" stroke-opacity=".05" stroke-width=".6"><line x1="6" y1="40" x2="94" y2="40"/><line x1="6" y1="55" x2="94" y2="55"/><line x1="6" y1="70" x2="94" y2="70"/></g>
+    <g stroke-linecap="round">
+      <line x1="20" y1="62" x2="20" y2="78" stroke="#74C73D" stroke-width="1.1"/><rect x="17" y="66" width="6" height="9" rx="1.4" fill="#74C73D"/>
+      <line x1="34" y1="58" x2="34" y2="76" stroke="#C04828" stroke-width="1.1"/><rect x="31" y="63" width="6" height="9" rx="1.4" fill="#C04828"/>
+      <line x1="48" y1="52" x2="48" y2="70" stroke="#74C73D" stroke-width="1.1"/><rect x="45" y="55" width="6" height="11" rx="1.4" fill="#74C73D"/>
+      <line x1="62" y1="44" x2="62" y2="62" stroke="#74C73D" stroke-width="1.1"/><rect x="59" y="47" width="6" height="12" rx="1.4" fill="#74C73D"/>
+      <line x1="76" y1="34" x2="76" y2="52" stroke="#74C73D" stroke-width="1.1"/><rect x="73" y="37" width="6" height="13" rx="1.4" fill="#74C73D"/>
+    </g>
+    <circle cx="33" cy="33" r="15" fill="url(#coinG)"/>
+    <circle cx="33" cy="33" r="11.5" fill="url(#coinFace)" stroke="#B0700C" stroke-opacity=".6" stroke-width=".7"/>
+    <path d="M26 37 L31 31 L35 35 L41 27" fill="none" stroke="#7A4A05" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M42 24 L34 25 L40 31 Z" fill="#7A4A05"/>
+  </symbol>
+</svg>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top"><svg><use href="#appicon"/></svg> Tickado</a>
+    <div class="navlinks">
+      <a href="#features" data-i18n="nav.features"></a>
+      <a href="#settings" data-i18n="nav.settings"></a>
+      <a href="#sources" data-i18n="nav.sources"></a>
+      <a href="#download" data-i18n="nav.download"></a>
+    </div>
+    <div class="navtools">
+      <button class="icobtn lang" id="langBtn" aria-label="Language"><span data-lang-de>DE</span><span class="sep">/</span><span data-lang-en>EN</span></button>
+      <button class="icobtn" id="themeBtn" aria-label="Theme">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <a class="btn btn-primary" href="#download" data-i18n="nav.cta"></a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="glow g1"></div><div class="glow g2"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow" data-i18n="hero.eyebrow"></span>
+      <h1 data-i18n="hero.title"></h1>
+      <p class="lead" data-i18n="hero.lead"></p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#download">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+          <span data-i18n="hero.cta.download"></span>
+        </a>
+        <a class="btn btn-ghost" href="#features" data-i18n="hero.cta.more"></a>
+      </div>
+      <p class="req" data-i18n="hero.req"></p>
+    </div>
+
+    <div class="stage">
+      <div class="menubar">
+        <span class="mb-left">Finder</span>
+        <!-- Tickado: nur die Werte, kein Icon davor -->
+        <span class="mb-pill"><span class="mb-ticker" id="demoTicker"><span class="tk-col"><span class="tk-row down"><span class="s">₿</span><span class="v">83.509</span><span class="a">▼</span></span><span class="tk-row up"><span class="s">Ξ</span><span class="v">2.674</span><span class="a">▲</span></span></span></span></span>
+        <span class="batt">86% <svg class="sysic" viewBox="0 0 26 16"><rect x="1" y="3" width="20" height="10" rx="2.5"/><rect x="3" y="5" width="14" height="6" rx="1" fill="#dfe4ec" stroke="none"/><path d="M23 6v4"/></svg></span>
+        <svg class="sysic" viewBox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8 15.5a5 5 0 018 0"/><circle cx="12" cy="19" r="1.2" fill="#dfe4ec" stroke="none"/></svg>
+        <svg class="sysic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <svg class="sysic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="9" cy="9" r="2.2" fill="#dfe4ec" stroke="none"/><line x1="14" y1="9" x2="18" y2="9"/><line x1="6" y1="15" x2="10" y2="15"/><circle cx="15" cy="15" r="2.2" fill="#dfe4ec" stroke="none"/></svg>
+      </div>
+      <div class="osmenu" id="demoMenu">
+        <div class="mi">Settings…</div>
+        <div class="msep"></div>
+        <div class="coin down"><span class="ck">✓</span><b>BTC</b><span class="nm">Bitcoin</span><span class="pr">83.827 $</span><span class="ch">−0.1%</span></div>
+        <div class="coin up"><span class="ck">✓</span><b>ETH</b><span class="nm">Ethereum</span><span class="pr">2.692 $</span><span class="ch">+1.2%</span></div>
+        <div class="coin up" id="demoXrpRow"><span class="ck" id="demoXrpCk"></span><b>XRP</b><span class="nm">XRP</span><span class="pr">1,58 $</span><span class="ch">+5.8%</span></div>
+        <div class="coin up"><span class="ck"></span><b>SOL</b><span class="nm">Solana</span><span class="pr">119 $</span><span class="ch">+4.0%</span></div>
+        <div class="coin up"><span class="ck"></span><b>LINK</b><span class="nm">Chainlink</span><span class="pr">14,0 $</span><span class="ch">+12.4%</span></div>
+        <div class="coin up"><span class="ck"></span><b>SUI</b><span class="nm">Sui</span><span class="pr">1,12 $</span><span class="ch">+13.9%</span></div>
+        <div class="coin up"><span class="ck"></span><b>KAS</b><span class="nm">Kaspa</span><span class="pr">0,0418 $</span><span class="ch">+7.0%</span></div>
+        <div class="msep"></div>
+        <div class="coin up" id="demoEtfRow"><span class="ck" id="demoEtfCk"></span><b>EUNL</b><span class="nm">MSCI World ETF</span><span class="pr">98,74 €</span><span class="ch">+0.4%</span></div>
+        <div class="coin up" id="demoGoldRow"><span class="ck" id="demoGoldCk"></span><b>XAU</b><span class="nm">Gold/oz</span><span class="pr">4.314 $</span><span class="ch">+0.4%</span></div>
+        <div class="msep"></div>
+        <div class="mi">About…</div>
+        <div class="msep"></div>
+        <div class="mi">Quit</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker" data-i18n="features.kicker"></span>
+      <h2 data-i18n="features.title"></h2>
+      <p data-i18n="features.sub"></p>
+    </div>
+    <div class="cards">
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div><h3 data-i18n="f1.t"></h3><p data-i18n="f1.d"></p></div>
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3 data-i18n="f2.t"></h3><p data-i18n="f2.d"></p></div>
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div><h3 data-i18n="f3.t"></h3><p data-i18n="f3.d"></p></div>
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg></div><h3 data-i18n="f4.t"></h3><p data-i18n="f4.d"></p></div>
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div><h3 data-i18n="f5.t"></h3><p data-i18n="f5.d"></p></div>
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.7 5.7 21l2.3-7.2L2 9.4h7.6z"/></svg></div><h3 data-i18n="f6.t"></h3><p data-i18n="f6.d"></p></div>
+    </div>
+  </div>
+</section>
+
+<section id="settings" style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="split">
+      <div class="txt">
+        <span class="kicker" data-i18n="set.kicker"></span>
+        <h3 data-i18n="set.title"></h3>
+        <p data-i18n="set.sub"></p>
+        <ul class="checklist">
+          <li><svg viewBox="0 0 24 24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="set.l1"></span></li>
+          <li><svg viewBox="0 0 24 24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="set.l2"></span></li>
+          <li><svg viewBox="0 0 24 24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="set.l3"></span></li>
+          <li><svg viewBox="0 0 24 24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="set.l4"></span></li>
+        </ul>
+      </div>
+
+      <div class="win">
+        <div class="win-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="t">Tickado Settings</span></div>
+        <div class="win-body">
+          <div class="prev">
+            <div class="pbar"><span class="pt mb-ticker" id="setPreview"><span class="tk-col"><span class="tk-row down"><span class="s">BTC</span><span class="v">83.947</span><span class="a">▼</span></span><span class="tk-row up"><span class="s">ETH</span><span class="v">2.692</span><span class="a">▲</span></span></span><span class="tk-col"><span class="tk-row up"><span class="s">XAU</span><span class="v">4.314</span><span class="a">▲</span></span><span class="tk-row up"><span class="s">IMID.L</span><span class="v">13,30</span><span class="a">▲</span></span></span></span><span class="batt">86% <svg class="sysic" viewBox="0 0 26 16"><rect x="1" y="3" width="20" height="10" rx="2.5"/><rect x="3" y="5" width="14" height="6" rx="1" fill="#c9d1de" stroke="none"/><path d="M23 6v4"/></svg></span><svg class="sysic" viewBox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8 15.5a5 5 0 018 0"/><circle cx="12" cy="19" r="1.2" fill="#c9d1de" stroke="none"/></svg><svg class="sysic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><svg class="sysic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="9" cy="9" r="2.2" fill="#c9d1de" stroke="none"/><line x1="14" y1="9" x2="18" y2="9"/><line x1="6" y1="15" x2="10" y2="15"/><circle cx="15" cy="15" r="2.2" fill="#c9d1de" stroke="none"/></svg></div>
+            <div class="prows">
+              <div class="prow"><span class="ck">✓</span><b>BTC</b><span>Bitcoin</span><span class="pr">83.970 $</span><span class="ch">+0.0%</span></div>
+              <div class="prow"><span class="ck">✓</span><b>ETH</b><span>Ethereum</span><span class="pr">2.696 $</span><span class="ch">+1.2%</span></div>
+              <div class="prow"><span class="ck"></span><b>XRP</b><span>XRP</span><span class="pr">1,59 $</span><span class="ch">+5.9%</span></div>
+              <div class="prow"><span class="ck"></span><b>SOL</b><span>Solana</span><span class="pr">119 $</span><span class="ch">+4.1%</span></div>
+              <div class="prow"><span class="ck"></span><b>LINK</b><span>Chainlink</span><span class="pr">14,0 $</span><span class="ch">+12.3%</span></div>
+            </div>
+          </div>
+          <div class="prevnote" data-i18n="set.more"></div>
+
+          <div class="seg"><button class="active">Display</button><button>Assets</button><button>General</button></div>
+
+          <div class="frow">
+            <div class="lab" data-i18n="set.menubar"></div>
+            <div>
+              <div class="listbox">
+                <div class="lr"><span class="chk on"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><b>BTC</b><span class="nm">Bitcoin</span></div>
+                <div class="lr"><span class="chk on"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><b>ETH</b><span class="nm">Ethereum</span></div>
+                <div class="lr"><span class="chk"></span><b>XRP</b><span class="nm">XRP</span></div>
+                <div class="lr"><span class="chk"></span><b>SOL</b><span class="nm">Solana</span></div>
+                <div class="lr"><span class="chk"></span><b>LINK</b><span class="nm">Chainlink</span></div>
+                <div class="lr"><span class="chk"></span><b>SUI</b><span class="nm">Sui</span></div>
+              </div>
+              <div class="selectish"><span id="setMode">Compact: two rows with ▲▼</span><span class="muted">⌄</span></div>
+              <div class="optline"><span class="chk" id="setCkSigns"></span><span>Show coin signs instead of symbols (₿, Ξ, Au)</span></div>
+              <div class="optline"><span class="chk" id="setCkCur"></span><span>Show currency sign</span></div>
+              <div class="optline"><span class="chk" id="setCk24"></span><span>Show 24h change</span></div>
+              <div class="optline"><span class="chk" id="setCkOnly"></span><span>Only 24h change, no price</span></div>
+              <div class="optline"><span class="chk" id="setCkAbbr"></span><span>Abbreviate large prices (84.2K, 2.6K)</span></div>
+            </div>
+          </div>
+          <div class="frow tight"><div class="lab">Colors</div><div class="selectish" style="margin-top:0"><span id="setColors">Green Up / Red Down&nbsp; <span class="up">▲</span> <span class="down">▼</span></span><span class="muted">⌄</span></div></div>
+          <div class="frow tight"><div class="lab">Precision</div><div class="selectish" style="margin-top:0"><span>3 digits&nbsp; <span class="muted">84.213 · 1,53 · 0,0398</span></span><span class="muted">⌄</span></div></div>
+          <div class="frow tight"><div class="lab">Menu</div><div class="optline" style="margin-top:0"><span class="chk on"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span>Show 24h price change</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ticker">
+  <div class="wrap">
+    <div class="split">
+      <div class="modes">
+        <div class="mode">
+          <div class="mlbl"><span>Show All Checked Coins</span><span class="tag" data-i18n="tk.default"></span></div>
+          <div class="demo mono"><span><span style="color:var(--tx-dim)">₿</span> <span class="up">84.023</span></span><span><span style="color:var(--tx-dim)">Ξ</span> <span class="up">2.699</span></span><span><span style="color:var(--tx-dim)">Au</span> <span class="down">4.315</span></span></div>
+        </div>
+        <div class="mode">
+          <div class="mlbl"><span>Rotate Checked Coins</span><span class="tag" data-i18n="tk.rotate"></span></div>
+          <div class="demo mono"><span><span style="color:var(--tx-dim)">Ξ</span> <span class="up">2.699</span></span><span style="color:var(--tx-dim);font-size:12px" data-i18n="tk.rot.note"></span></div>
+        </div>
+        <div class="mode">
+          <div class="mlbl"><span>Compact: two rows with ▲▼</span><span class="tag">▲▼</span></div>
+          <div class="compact mono">
+            <div class="col"><span><span style="color:var(--tx-dim)">₿</span> <span class="up">84,0K ▲</span></span><span><span style="color:var(--tx-dim)">Ξ</span> <span class="up">2,6K ▲</span></span></div>
+            <div class="col"><span><span style="color:var(--tx-dim)">XRP</span> <span class="up">1,59 ▲</span></span><span><span style="color:var(--tx-dim)">SOL</span> <span class="up">120 ▲</span></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="txt">
+        <span class="kicker" data-i18n="tk.kicker"></span>
+        <h3 data-i18n="tk.title"></h3>
+        <p data-i18n="tk.sub"></p>
+        <ul class="checklist">
+          <li><svg viewBox="0 0 24 24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="tk.l1"></span></li>
+          <li><svg viewBox="0 0 24 24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="tk.l2"></span></li>
+          <li><svg viewBox="0 0 24 24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="tk.l3"></span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sources" style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker" data-i18n="src.kicker"></span>
+      <h2 data-i18n="src.title"></h2>
+      <p data-i18n="src.sub"></p>
+    </div>
+    <div class="srcgrid">
+      <div class="src">
+        <span class="tag" data-i18n="src.a.tag"></span>
+        <h4>CoinGecko</h4>
+        <p data-i18n="src.a.d"></p>
+        <div class="pill-row"><span class="pill" data-i18n="src.a.p1"></span><span class="pill" data-i18n="src.a.p2"></span><span class="pill" data-i18n="src.a.p3"></span></div>
+      </div>
+      <div class="src">
+        <span class="tag" data-i18n="src.b.tag"></span>
+        <h4>Yahoo Finance</h4>
+        <p data-i18n="src.b.d"></p>
+        <div class="pill-row"><span class="pill" data-i18n="src.b.p1"></span><span class="pill" data-i18n="src.b.p2"></span><span class="pill" data-i18n="src.b.p3"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="download">
+  <div class="wrap">
+    <div class="dl">
+      <div class="glow g1" style="opacity:.14"></div>
+      <svg style="width:72px;height:72px;border-radius:18px;margin-bottom:18px"><use href="#appicon"/></svg>
+      <h2 data-i18n="dl.title"></h2>
+      <p data-i18n="dl.sub"></p>
+      <a class="btn btn-primary" style="font-size:1.05rem;padding:14px 28px" href="https://github.com/achirus-code/Tickado/releases/latest">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+        <span data-i18n="dl.btn"></span>
+      </a>
+      <div class="dlmeta">
+        <span><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="dl.m1"></span></span>
+        <span><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="dl.m2"></span></span>
+        <span><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="dl.m3"></span></span>
+      </div>
+      <p class="note" data-i18n="dl.note"></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand" style="font-size:.95rem"><svg style="width:26px;height:26px;border-radius:7px"><use href="#appicon"/></svg> Tickado</div>
+    <div style="display:flex;gap:22px;flex-wrap:wrap">
+      <a href="#features" data-i18n="nav.features"></a>
+      <a href="#download" data-i18n="nav.download"></a>
+      <a href="https://github.com/achirus-code/Tickado">GitHub</a>
+    </div>
+    <div data-i18n="footer.tag"></div>
+  </div>
+</footer>
+
+<script>
+const I18N = {
+  de:{
+    "nav.features":"Funktionen","nav.settings":"Einstellungen","nav.sources":"Datenquellen","nav.download":"Download","nav.cta":"Download",
+    "hero.eyebrow":"● Für macOS 14+",
+    "hero.title":'Deine Kurse leben in der <span class="accent">Menüleiste</span>.',
+    "hero.lead":"Tickado zeigt Krypto, Aktien, ETFs und Edelmetalle live – dezent, farbcodiert und immer im Blick. Keine App im Dock, kein Tab im Browser.",
+    "hero.cta.download":"Herunterladen","hero.cta.more":"Funktionen ansehen",
+    "hero.req":"Native macOS-App · Kein Konto nötig · Kostenlos.",
+    "features.kicker":"Was drin steckt","features.title":"Ein Ticker für alles, was steigt und fällt","features.sub":"Eine Auswahl, vier Anlageklassen, live in der Menüleiste – genau so viel Information, wie du willst.",
+    "f1.t":"Vier Anlageklassen","f1.d":"Kryptowährungen, Aktien, ETFs und Edelmetalle – frei kombinierbar in einer Ansicht.",
+    "f2.t":"Live & farbcodiert","f2.d":"Grün steigt, Rot fällt. Automatischer Refresh im wählbaren Intervall von 30 s bis 30 min.",
+    "f3.t":"Drei Ticker-Modi","f3.d":"Alle Werte nebeneinander, rotierend im 5-Sekunden-Takt oder kompakt zweizeilig mit ▲▼-Pfeilen.",
+    "f4.t":"Deine Basiswährung","f4.d":"USD, EUR, CHF, GBP und viele mehr – sogar BTC, ETH und Satoshis als Bezugsgröße.",
+    "f5.t":"Alles durchsuchbar","f5.d":"Top-500-Coins, DAX- & US-Aktien, ETFs per Name, Ticker oder ISIN und die vier großen Edelmetalle.",
+    "f6.t":"Flexibel & barrierefrei","f6.d":"Farbthemen inkl. Blau/Orange für Farbenblinde, einstellbare Nachkommastellen und Edelmetall-Einheiten.",
+    "set.kicker":"Einstellungen","set.title":"Alles fein einstellbar","set.sub":"Das Settings-Fenster zeigt eine Live-Vorschau deiner Menüleiste. Wähle deine Werte, den Ticker-Modus und die Anzeigeoptionen – die Vorschau aktualisiert sich sofort.",
+    "set.l1":"<b>Menu bar:</b> per Häkchen festlegen, welche Werte in der Leiste erscheinen.",
+    "set.l2":"<b>Coin-Zeichen</b> (₿, Ξ, Au), Währungszeichen, 24h-Änderung – auf Wunsch auch nur die Änderung ohne Kurs – und Kürzen großer Preise.",
+    "set.l3":"<b>Farben</b> (u. a. Blau/Orange für Farbenblinde) und <b>Precision</b> (2–6 signifikante Stellen).",
+    "set.l4":"Tabs <b>Display · Assets · General</b> gliedern Anzeige, Auswahl und allgemeine Optionen.",
+    "set.more":"3 weitere Werte im Menü.","set.menubar":"Menu bar:",
+    "tk.kicker":"Ticker-Modi","tk.title":"So wenig oder so viel Platz, wie du magst","tk.sub":"Tickado passt sich deiner Menüleiste an. Wähle einen der drei Modi und ergänze Optionen wie Symbole, Währungszeichen oder die 24h-Änderung.",
+    "tk.l1":"<b>Signifikante Stellen</b> statt starrer Kommastellen: 84.150 · 1,53 · 0,0398.",
+    "tk.l2":"<b>Kürzen ab 1.000</b> – abgeschnitten statt gerundet: 4.315 → 4,3K.",
+    "tk.l3":"<b>Offline erkannt</b>: veraltete Kurse werden grau, nach dem Aufwachen wird neu geladen.",
+    "tk.default":"Standard","tk.rotate":"alle 5 s","tk.rot.note":"↻ wechselt automatisch",
+    "src.kicker":"Datenquellen","src.title":"Zuverlässige Kurse, ganz ohne Konto","src.sub":"Tickado funktioniert sofort nach dem Download. Ein optionaler API-Key macht Krypto noch stabiler.",
+    "src.a.tag":"Krypto","src.a.d":"Nutzbar ohne Key. Wer will, hinterlegt einen Demo- oder Pro-Key sicher im Schlüsselbund – für höhere Rate-Limits. Der Top-500-Katalog wird lokal für einen Tag gecacht.",
+    "src.a.p1":"Top 500 nach Market Cap","src.a.p2":"Volltextsuche","src.a.p3":"Key optional",
+    "src.b.tag":"Aktien · ETFs · Metalle","src.b.d":"Aktien, Indizes, ETFs, Wechselkurse und COMEX-Future-Kurse für Edelmetalle – kein Key nötig. Pence-Notierungen und Feinunzen werden automatisch umgerechnet.",
+    "src.b.p1":"DAX & US-Aktien","src.b.p2":"ETF-Suche per ISIN","src.b.p3":"Gold · Silber · Platin · Palladium",
+    "dl.title":"Tickado herunterladen","dl.sub":"Lade die fertige App herunter, zieh sie in den Programme-Ordner und wähle deine Werte. Fertig.",
+    "dl.btn":"Für macOS herunterladen","dl.m1":"macOS 14+","dl.m2":"Apple Silicon & Intel","dl.m3":"Kostenlos",
+    "dl.note":"Hinweis: Beim ersten Start Rechtsklick auf die App → „Öffnen“, da sie nicht über den App Store signiert ist.",
+    "footer.tag":"Eine macOS-Menüleisten-App · Kurse von CoinGecko & Yahoo Finance."
+  },
+  en:{
+    "nav.features":"Features","nav.settings":"Settings","nav.sources":"Data sources","nav.download":"Download","nav.cta":"Download",
+    "hero.eyebrow":"● For macOS 14+",
+    "hero.title":'Your prices live in the <span class="accent">menu bar</span>.',
+    "hero.lead":"Tickado shows crypto, stocks, ETFs and precious metals live – subtle, color-coded and always in view. No dock app, no browser tab.",
+    "hero.cta.download":"Download","hero.cta.more":"See features",
+    "hero.req":"Native macOS app · No account needed · Free.",
+    "features.kicker":"What's inside","features.title":"One ticker for everything that moves","features.sub":"One selection, four asset classes, live in the menu bar – exactly as much information as you want.",
+    "f1.t":"Four asset classes","f1.d":"Cryptocurrencies, stocks, ETFs and precious metals – freely combined in one view.",
+    "f2.t":"Live & color-coded","f2.d":"Green up, red down. Automatic refresh on an interval you choose, from 30 s to 30 min.",
+    "f3.t":"Three ticker modes","f3.d":"All values side by side, rotating every 5 seconds, or compact two rows with ▲▼ arrows.",
+    "f4.t":"Your base currency","f4.d":"USD, EUR, CHF, GBP and many more – even BTC, ETH and satoshis as the reference.",
+    "f5.t":"Everything searchable","f5.d":"Top-500 coins, DAX & US stocks, ETFs by name, ticker or ISIN, and the four major precious metals.",
+    "f6.t":"Flexible & accessible","f6.d":"Color themes incl. blue/orange for color blindness, adjustable precision and precious-metal units.",
+    "set.kicker":"Settings","set.title":"Tune every detail","set.sub":"The Settings window shows a live preview of your menu bar. Pick your values, the ticker mode and the display options – the preview updates instantly.",
+    "set.l1":"<b>Menu bar:</b> tick which values appear in the bar.",
+    "set.l2":"<b>Coin signs</b> (₿, Ξ, Au), currency sign, 24h change – or only the change without the price – and abbreviating large prices.",
+    "set.l3":"<b>Colors</b> (incl. blue/orange for color blindness) and <b>Precision</b> (2–6 significant digits).",
+    "set.l4":"Tabs <b>Display · Assets · General</b> organize display, selection and general options.",
+    "set.more":"3 more values in the menu.","set.menubar":"Menu bar:",
+    "tk.kicker":"Ticker modes","tk.title":"As little or as much room as you like","tk.sub":"Tickado adapts to your menu bar. Pick one of three modes and add options like symbols, the currency sign or the 24h change.",
+    "tk.l1":"<b>Significant digits</b> instead of fixed decimals: 84,150 · 1.53 · 0.0398.",
+    "tk.l2":"<b>Abbreviate from 1,000</b> – truncated, not rounded: 4,315 → 4.3K.",
+    "tk.l3":"<b>Offline aware</b>: stale prices go gray and reload after the Mac wakes.",
+    "tk.default":"default","tk.rotate":"every 5 s","tk.rot.note":"↻ switches automatically",
+    "src.kicker":"Data sources","src.title":"Reliable prices, no account needed","src.sub":"Tickado works right after download. An optional API key makes crypto even more stable.",
+    "src.a.tag":"Crypto","src.a.d":"Usable without a key. If you like, store a demo or pro key securely in the keychain for higher rate limits. The top-500 catalog is cached locally for a day.",
+    "src.a.p1":"Top 500 by market cap","src.a.p2":"Full-text search","src.a.p3":"Key optional",
+    "src.b.tag":"Stocks · ETFs · Metals","src.b.d":"Stocks, indices, ETFs, exchange rates and COMEX futures for precious metals – no key needed. Pence quotes and troy ounces are converted automatically.",
+    "src.b.p1":"DAX & US stocks","src.b.p2":"ETF search by ISIN","src.b.p3":"Gold · Silver · Platinum · Palladium",
+    "dl.title":"Download Tickado","dl.sub":"Download the ready-made app, drag it into your Applications folder and pick your values. Done.",
+    "dl.btn":"Download for macOS","dl.m1":"macOS 14+","dl.m2":"Apple Silicon & Intel","dl.m3":"Free",
+    "dl.note":"Note: on first launch, right-click the app → “Open”, since it isn't signed through the App Store.",
+    "footer.tag":"A macOS menu bar app · Prices from CoinGecko & Yahoo Finance."
+  }
+};
+
+function applyLang(lang){
+  const dict=I18N[lang]||I18N.de;
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const k=el.getAttribute("data-i18n"); if(dict[k]!=null) el.innerHTML=dict[k];
+  });
+  document.querySelectorAll("[data-lang-de]").forEach(e=>e.classList.toggle("on",lang==="de"));
+  document.querySelectorAll("[data-lang-en]").forEach(e=>e.classList.toggle("on",lang==="en"));
+  document.title = lang==="de" ? "Tickado – Kurse in deiner Menüleiste" : "Tickado – Prices in your menu bar";
+  try{localStorage.setItem("ct-lang",lang);}catch(e){}
+}
+(function(){
+  let lang;
+  try{lang=localStorage.getItem("ct-lang");}catch(e){}
+  if(!lang) lang=(navigator.language||"de").toLowerCase().startsWith("en")?"en":"de";
+  applyLang(lang);
+  document.getElementById("langBtn").addEventListener("click",()=>{
+    applyLang(document.documentElement.lang==="de"?"en":"de");
+  });
+  // Theme
+  const root=document.documentElement, tb=document.getElementById("themeBtn");
+  try{const s=localStorage.getItem("ct-theme"); if(s) root.setAttribute("data-theme",s);}catch(e){}
+  tb.addEventListener("click",()=>{
+    const cur=root.getAttribute("data-theme");
+    const isDark=cur?cur==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
+    const next=isDark?"light":"dark";
+    root.setAttribute("data-theme",next);
+    try{localStorage.setItem("ct-theme",next);}catch(e){}
+  });
+})();
+
+// Hero-Demo: Cursor bewegt sich, klickt den Ticker, wählt XRP im Menü,
+// XRP erscheint danach in der Menüleiste. Läuft in Schleife.
+(function(){
+  var stage=document.querySelector('.stage');
+  var menu=document.getElementById('demoMenu');
+  var pill=document.querySelector('.mb-pill');
+  var ticker=document.getElementById('demoTicker');
+  var etfRow=document.getElementById('demoEtfRow');
+  var etfCk=document.getElementById('demoEtfCk');
+  var goldRow=document.getElementById('demoGoldRow');
+  var goldCk=document.getElementById('demoGoldCk');
+  if(!stage||!menu||!pill||!ticker||!etfRow||!etfCk||!goldRow||!goldCk) return;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return; // statisch lassen
+
+  stage.classList.add('anim');
+  var cursor=document.createElement('div');
+  cursor.className='demo-cursor';
+  cursor.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 2l6 16 2.3-6.3L18.7 9.4z" fill="#fff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></svg>';
+  var ring=document.createElement('div'); ring.className='demo-click';
+  stage.appendChild(cursor); stage.appendChild(ring);
+
+  var wait=function(ms){return new Promise(function(r){setTimeout(r,ms);});};
+  function centerOf(el){
+    var s=stage.getBoundingClientRect(), r=el.getBoundingClientRect();
+    return {x:r.left-s.left+r.width/2, y:r.top-s.top+r.height/2};
+  }
+  function moveTo(el,dx,dy){
+    var c=centerOf(el), x=c.x+(dx||0), y=c.y+(dy||0);
+    cursor.style.opacity='1';
+    cursor.style.transform='translate('+x+'px,'+y+'px)';
+    return {x:x,y:y};
+  }
+  function clickAt(p){
+    ring.style.left=p.x+'px'; ring.style.top=p.y+'px';
+    ring.classList.remove('pulse'); void ring.offsetWidth; ring.classList.add('pulse');
+  }
+  var newCol=null;
+  function addTickerPicks(){
+    if(newCol) return;
+    newCol=document.createElement('span');
+    newCol.className='tk-col tk-new';
+    newCol.innerHTML='<span class="tk-row up"><span class="s">EUNL</span><span class="v">98,74</span><span class="a">▲</span></span>'
+                    +'<span class="tk-row up"><span class="s">Au</span><span class="v">4.314</span><span class="a">▲</span></span>';
+    ticker.appendChild(newCol);
+    void newCol.offsetWidth; newCol.classList.add('show');
+  }
+  async function removeTickerPicks(){
+    if(!newCol) return;
+    newCol.classList.remove('show'); await wait(400);
+    if(newCol&&newCol.parentNode) newCol.parentNode.removeChild(newCol);
+    newCol=null;
+  }
+  async function reset(){
+    menu.classList.remove('open');
+    etfRow.classList.remove('picking'); goldRow.classList.remove('picking');
+    etfCk.textContent=''; etfCk.classList.remove('pop');
+    goldCk.textContent=''; goldCk.classList.remove('pop');
+    await removeTickerPicks();
+    var s=stage.getBoundingClientRect();
+    cursor.style.transition='none'; cursor.style.opacity='0';
+    cursor.style.transform='translate('+(s.width*0.68)+'px,'+(s.height*0.82)+'px)';
+    void cursor.offsetWidth; cursor.style.transition='';
+  }
+  async function loop(){
+    /* eslint-disable no-constant-condition */
+    while(true){
+      await reset();               await wait(900);
+      var p=moveTo(pill,0,0);      await wait(850);
+      clickAt(p);                  await wait(260);
+      menu.classList.add('open');  await wait(780);
+      var e=moveTo(etfRow,10,0);   await wait(820);
+      clickAt(e);                  await wait(190);
+      etfRow.classList.add('picking');
+      etfCk.textContent='✓'; etfCk.classList.add('pop');
+      await wait(600); etfRow.classList.remove('picking');
+      await wait(340);
+      var g=moveTo(goldRow,10,0);  await wait(760);
+      clickAt(g);                  await wait(190);
+      goldRow.classList.add('picking');
+      goldCk.textContent='✓'; goldCk.classList.add('pop');
+      await wait(600); goldRow.classList.remove('picking');
+      await wait(420);
+      menu.classList.remove('open'); await wait(460);
+      addTickerPicks();            await wait(2500);
+    }
+  }
+  // Erst starten, wenn der Hero sichtbar ist (spart Ressourcen)
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(en){
+      if(en[0].isIntersecting){ io.disconnect(); loop(); }
+    });
+    io.observe(stage);
+  } else { loop(); }
+})();
+
+// Lebendige Settings-Vorschau: Optionen schalten sich nacheinander ein,
+// die Vorschau oben aktualisiert sich dazu (wie ein kurzes Video).
+(function(){
+  var pv=document.getElementById('setPreview');
+  var mode=document.getElementById('setMode');
+  var colors=document.getElementById('setColors');
+  var ck={signs:document.getElementById('setCkSigns'),cur:document.getElementById('setCkCur'),
+          chg:document.getElementById('setCk24'),abbr:document.getElementById('setCkAbbr'),
+          only:document.getElementById('setCkOnly')};
+  if(!pv||!colors||!ck.signs||!ck.cur||!ck.chg||!ck.abbr||!ck.only) return;
+
+  var CHECK='<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>';
+  function setChk(el,on){
+    if(on){ el.classList.add('on'); el.innerHTML=CHECK; }
+    else  { el.classList.remove('on'); el.innerHTML=''; }
+  }
+  // Werte je nach aktiven Optionen zusammenbauen
+  var DATA=[
+    {sym:['BTC','₿'],       full:'83.947', abbr:'83,9K', chg:'−0.3%', dir:'down'},
+    {sym:['ETH','Ξ'],       full:'2.692',  abbr:'2,6K',  chg:'+0.7%', dir:'up'},
+    {sym:['XAU','Au'],      full:'4.314',  abbr:'4,3K',  chg:'+0.4%', dir:'up'},
+    {sym:['IMID.L','IMID.L'],full:'13,30', abbr:'13,30', chg:'+0.8%', dir:'up'}
+  ];
+  // Wie in der App: Änderung hängt am Kurs, der Pfeil bleibt trotzdem dahinter.
+  // "Nur Änderung" ersetzt den Kurs, Währungszeichen/Kürzen wirken dann nicht.
+  function rowHTML(d,st){
+    var sym=st.signs?d.sym[1]:d.sym[0];
+    var val=st.only?d.chg:(st.abbr?d.abbr:d.full)+(st.cur?' $':'')+(st.chg?' '+d.chg:'');
+    return '<span class="tk-row '+d.dir+'"><span class="s">'+sym+'</span><span class="v">'+val+'</span><span class="a">'+(d.dir==='up'?'▲':'▼')+'</span></span>';
+  }
+  function preview(st){
+    return '<span class="tk-col">'+rowHTML(DATA[0],st)+rowHTML(DATA[1],st)+'</span>'
+          +'<span class="tk-col">'+rowHTML(DATA[2],st)+rowHTML(DATA[3],st)+'</span>';
+  }
+  var GREEN='Green Up / Red Down&nbsp; <span class="up">▲</span> <span class="down">▼</span>';
+  var BLUE ='Blue Up / Orange Down&nbsp; <span style="color:#0A84FF">▲</span> <span style="color:#FF9F0A">▼</span>';
+
+  var prev={signs:0,cur:0,chg:0,abbr:0,only:0,cbo:0};
+  function flash(el){
+    var line=el.parentNode; line.classList.add('flash');
+    setTimeout(function(){ line.classList.remove('flash'); },600);
+  }
+  function apply(st){
+    ['signs','cur','chg','abbr','only'].forEach(function(k){
+      setChk(ck[k], st[k]);
+      if(st[k] && !prev[k]) flash(ck[k]);   // neu aktivierte Option hervorheben
+    });
+    ['cur','chg','abbr'].forEach(function(k){ ck[k].parentNode.classList.toggle('off', !!st.only); });
+    if(mode) mode.textContent='Compact: two rows with ▲▼';
+    colors.innerHTML = st.cbo?BLUE:GREEN;
+    pv.className='pt mb-ticker'+(st.cbo?' cbo':'');
+    pv.innerHTML=preview(st);
+    prev=st;
+  }
+
+  // Cursor, der die Optionen der Reihe nach anklickt
+  var win=pv.closest('.win');
+  var colorsBox=colors.closest('.selectish')||colors;
+  var cursor=document.createElement('div'); cursor.className='demo-cursor';
+  cursor.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 2l6 16 2.3-6.3L18.7 9.4z" fill="#fff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></svg>';
+  var ring=document.createElement('div'); ring.className='demo-click';
+  if(win){ win.appendChild(cursor); win.appendChild(ring); }
+  function centerOf(el){ var s=win.getBoundingClientRect(), r=el.getBoundingClientRect(); return {x:r.left-s.left+r.width/2, y:r.top-s.top+r.height/2}; }
+  function moveTo(el){ var c=centerOf(el); cursor.style.opacity='1'; cursor.style.transform='translate('+(c.x-2)+'px,'+(c.y-2)+'px)'; return c; }
+  function click(c){ ring.style.left=c.x+'px'; ring.style.top=c.y+'px'; ring.classList.remove('pulse'); void ring.offsetWidth; ring.classList.add('pulse'); }
+
+  var base={signs:0,cur:0,chg:0,abbr:0,only:0,cbo:0};
+  var steps=[
+    {t:ck.signs, s:{signs:1,cur:0,chg:0,abbr:0,only:0,cbo:0}},
+    {t:ck.cur,   s:{signs:1,cur:1,chg:0,abbr:0,only:0,cbo:0}},
+    {t:ck.chg,   s:{signs:1,cur:1,chg:1,abbr:0,only:0,cbo:0}},
+    {t:ck.abbr,  s:{signs:1,cur:1,chg:1,abbr:1,only:0,cbo:0}},
+    {t:ck.only,  s:{signs:1,cur:1,chg:1,abbr:1,only:1,cbo:0}},
+    {t:colorsBox,s:{signs:1,cur:1,chg:1,abbr:1,only:1,cbo:1}}
+  ];
+  var wait=function(ms){return new Promise(function(r){setTimeout(r,ms);});};
+
+  // Intro: eine Zeile mit Coin-Zeichen (₿ / Ξ), wie in der echten Menüleiste
+  var INTRO='<span class="s">₿</span> <span class="down">84.256</span>   <span class="s">Ξ</span> <span class="up">2.694</span>';
+  function showIntro(){
+    apply({signs:1,cur:0,chg:0,abbr:0,only:0,cbo:0});   // Coin-Zeichen an, eine Zeile
+    if(mode) mode.textContent='Show all checked coins';
+    pv.className='pt mb-ticker big';
+    pv.innerHTML=INTRO;
+  }
+
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches || !win){ showIntro(); return; }
+
+  async function loop(){
+    while(true){
+      // 1) Intro – eine Zeile, zwei Werte
+      cursor.style.opacity='0';
+      pv.style.opacity='0'; await wait(220);
+      showIntro(); pv.style.opacity='1';
+      await wait(2600);
+      // 2) Zu den Optionen wechseln
+      pv.style.opacity='0'; await wait(300);
+      apply(base); pv.style.opacity='1';
+      // Cursor unsichtbar an den Start setzen
+      cursor.style.transition='none'; cursor.style.opacity='0';
+      var st0=centerOf(ck.signs); cursor.style.transform='translate('+(st0.x-2)+'px,'+(st0.y+44)+'px)';
+      void cursor.offsetWidth; cursor.style.transition='';
+      await wait(650);
+      for(var i=0;i<steps.length;i++){
+        var c=moveTo(steps[i].t); await wait(720);
+        click(c); await wait(200);
+        pv.style.opacity='0'; await wait(200);
+        apply(steps[i].s); pv.style.opacity='1';
+        await wait(1000);
+      }
+      await wait(1100);
+    }
+  }
+  if('IntersectionObserver' in window){
+    var io2=new IntersectionObserver(function(en){ if(en[0].isIntersecting){ io2.disconnect(); loop(); } });
+    io2.observe(pv);
+  } else loop();
+})();
+</script>
+</body>
+</html>
