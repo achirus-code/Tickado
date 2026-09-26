@@ -1,0 +1,57 @@
+name: Build & Release Tickado
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version, z. B. v1.0.0"
+        required: true
+        default: "v1.0.0"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Version bestimmen
+        id: ver
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: App bauen (universal) und packen
+        run: |
+          set -euo pipefail
+          # App-Icon erzeugen, falls nicht vorhanden
+          [ -f Resources/AppIcon.icns ] || swift Scripts/make-icon.swift Resources/AppIcon.icns
+          # Universal-Binary (Apple Silicon + Intel)
+          swift build -c release --arch arm64 --arch x86_64
+          APP=Tickado.app
+          rm -rf "$APP"
+          mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
+          cp .build/apple/Products/Release/Tickado "$APP/Contents/MacOS/Tickado"
+          cp Info.plist "$APP/Contents/Info.plist"
+          cp Resources/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
+          # Ad-hoc-Signatur (nicht notarisiert)
+          codesign --force --deep --sign - "$APP"
+          # Als ZIP packen (behält das .app-Bundle)
+          ditto -c -k --keepParent "$APP" Tickado.zip
+
+      - name: Release erstellen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.ver.outputs.tag }}" Tickado.zip \
+            --title "Tickado ${{ steps.ver.outputs.tag }}" \
+            --generate-notes \
+            --target "${{ github.sha }}"
