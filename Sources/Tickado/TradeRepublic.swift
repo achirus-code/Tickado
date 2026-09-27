@@ -142,8 +142,9 @@ enum TRProtocol {
 }
 
 /// Depot bei Trade Republic über die inoffizielle Web-Schnittstelle (dieselbe wie app.traderepublic.com).
-/// Angemeldet wird auf der echten TR-Website in einem Tickado-Fenster (`TradeRepublicLoginWindowController`);
-/// danach übernimmt Tickado nur deren Session-Cookies und legt sie in den Schlüsselbund.
+/// Angemeldet wird auf der echten Website in `TRWebSession`. Das Fenster bleibt danach unsichtbar offen wie ein
+/// Browser-Tab, und alle Abfragen laufen per JavaScript aus dieser Seite heraus: mit ihren Cookies, ihrer Herkunft
+/// und ihrem Bot-Schutz. Nachgebaute Anfragen von außen lehnt Trade Republic dagegen ab.
 @MainActor
 final class TradeRepublic {
     static let shared = TradeRepublic()
@@ -166,109 +167,126 @@ final class TradeRepublic {
         }
     }
 
-    static let host = "https://api.traderepublic.com"
-    /// Nur bis zum ersten Login; danach der User-Agent des Anmeldefensters (Session und Bot-Schutz passen dazu).
-    private static let defaultUserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 "
-        + "(KHTML, like Gecko) Version/18.0 Safari/605.1.15"
-    private static let keychainAccount = "traderepublic-session"
-
-    private let session: URLSession
-    private let cookies: HTTPCookieStorage
     private(set) var state: State = .loggedOut
-    private var sessionRefreshed = Date.distantPast
+    private var web: TRWebSession?
     private var instruments: [String: TRProtocol.Instrument] = [:]
+    private var onConnected: (() -> Void)?
+    private var verifying = false
 
     private init() {
-        let config = URLSessionConfiguration.ephemeral
-        config.timeoutIntervalForRequest = 20
-        cookies = config.httpCookieStorage ?? HTTPCookieStorage.shared
-        session = URLSession(configuration: config)
-        if restoreCookies() { state = .connected }
+        // War Tickado schon verbunden, liegt die Session im WebKit-Speicher; die Seite im Hintergrund laden.
+        if Prefs.shared.trLinked {
+            state = .connected
+            session().load()
+        }
     }
-
-    private var userAgent: String { Prefs.shared.trUserAgent ?? Self.defaultUserAgent }
 
     private var locale: String {
         Locale.preferredLanguages.first.flatMap { Locale.Language(identifier: $0).languageCode?.identifier } ?? "de"
     }
 
-    // MARK: - Login
+    private func session() -> TRWebSession {
+        if let web { return web }
+        let web = TRWebSession { [weak self] onLoginPage in self?.pageChanged(onLoginPage: onLoginPage) }
+        self.web = web
+        return web
+    }
 
-    /// Übernimmt die Cookies aus dem Anmeldefenster. `true`, wenn sie eine gültige Session sind.
-    func adopt(_ newCookies: [HTTPCookie], userAgent: String?) async -> Bool {
-        let previous = cookies.cookies ?? []
-        for cookie in previous { cookies.deleteCookie(cookie) }
-        for cookie in newCookies { cookies.setCookie(cookie) }
-        let oldAgent = Prefs.shared.trUserAgent
-        if let userAgent { Prefs.shared.trUserAgent = userAgent }
-        // Depotnummer für compactPortfolioByType; gelingt die Anfrage, ist die Session gültig.
-        guard let account = try? await request("GET", "/api/v2/auth/account") else {
-            for cookie in cookies.cookies ?? [] { cookies.deleteCookie(cookie) }
-            for cookie in previous { cookies.setCookie(cookie) }
-            Prefs.shared.trUserAgent = oldAgent
-            return false
+    // MARK: - Anmelden
+
+    /// Zeigt die Anmeldeseite; `onConnected` läuft, sobald Tickado die Session erkannt hat.
+    func connect(onConnected: @escaping () -> Void) {
+        self.onConnected = onConnected
+        session().showLogin()
+    }
+
+    /// Die Seite hat gewechselt (auch innerhalb der Web-App ohne Neuladen) oder der Anmelde-Timer fragt nach.
+    private func pageChanged(onLoginPage: Bool) {
+        guard let web else { return }
+        if onLoginPage {
+            // Im Hintergrund auf der Anmeldeseite gelandet: Trade Republic hat die Session beendet.
+            if state == .connected, !web.isWindowVisible, !web.isLoading {
+                TRLog.write("Hintergrundseite zeigt Login → abgelaufen")
+                state = .expired
+            }
+            return
         }
-        Prefs.shared.trAccount = account["securitiesAccountNumber"] as? String
-        sessionRefreshed = Date()
-        instruments = [:]
-        state = .connected
-        saveCookies()
-        return true
+        // Während eine Seite lädt, ist die Prüfung sinnlos (Anfragen scheitern); didFinish meldet sich danach.
+        if (state != .connected || web.isWindowVisible), !web.isLoading { Task { await verify() } }
+    }
+
+    /// Prüft aus der Seite heraus, ob sie angemeldet ist (Depotnummer abrufbar).
+    private func verify() async {
+        guard let web, !verifying else { return }
+        verifying = true
+        defer { verifying = false }
+        do {
+            let (status, json) = try await web.fetchJSON("/api/v2/auth/account")
+            TRLog.write("Prüfung /api/v2/auth/account → HTTP \(status)")
+            guard status == 200, let account = (json as? [String: Any])?["securitiesAccountNumber"] as? String else { return }
+            Prefs.shared.trAccount = account
+            Prefs.shared.trLinked = true
+            instruments = [:]
+            state = .connected
+            web.hideWindow()
+            TRLog.write("verbunden")
+            onConnected?()
+            onConnected = nil
+        } catch {
+            TRLog.write("Prüfung fehlgeschlagen: \(error.localizedDescription)")
+        }
     }
 
     func logOut() {
-        for cookie in cookies.cookies ?? [] { cookies.deleteCookie(cookie) }
-        Keychain.setData(nil, for: Self.keychainAccount)
+        TRLog.write("abgemeldet")
+        web?.clear()
+        web = nil
+        instruments = [:]
+        Prefs.shared.trLinked = false
         Prefs.shared.trAccount = nil
         state = .loggedOut
-    }
-
-    private func expire() {
-        for cookie in cookies.cookies ?? [] { cookies.deleteCookie(cookie) }
-        Keychain.setData(nil, for: Self.keychainAccount)
-        state = .expired
     }
 
     // MARK: - Depot
 
     func fetchPortfolio() async throws -> TRPortfolio {
         guard state == .connected else { throw Failure.sessionExpired }
-        do {
-            try await refreshSessionIfNeeded()
-            let socket = TRSocket(session: session, cookies: cookies.cookies(for: URL(string: Self.host)!) ?? [],
-                                  userAgent: userAgent)
-            // Hängt die Verbindung, beendet der Wächter sie; receive() wirft dann.
-            let watchdog = Task { [socket] in
-                try await Task.sleep(for: .seconds(25))
-                socket.cancel(timedOut: true)
-            }
-            defer {
-                watchdog.cancel()
-                socket.cancel(timedOut: false)
-            }
-            do {
-                return try await load(from: socket)
-            } catch where socket.timedOut {
-                throw Failure.timeout
-            }
-        } catch Failure.sessionExpired {
-            expire()
+        let web = session()
+        await web.waitUntilLoaded()
+        guard !web.onLoginPage else {
+            state = .expired
             throw Failure.sessionExpired
+        }
+        do {
+            return try await load(from: web)
+        } catch Failure.sessionExpired {
+            // Einmal die Session erneuern (wie die Web-App selbst) und erneut versuchen.
+            let refreshed = try? await web.fetchJSON("/api/v1/auth/web/session")
+            TRLog.write("Session erneuern → HTTP \(refreshed?.status ?? 0)")
+            if refreshed?.status == 200, let portfolio = try? await load(from: web) { return portfolio }
+            state = .expired
+            throw Failure.sessionExpired
+        } catch {
+            TRLog.write("Depot: \(error.localizedDescription)")
+            throw error
         }
     }
 
-    private func load(from socket: TRSocket) async throws -> TRPortfolio {
-        try await socket.connect(locale: locale)
+    private func load(from web: TRWebSession) async throws -> TRPortfolio {
+        if Prefs.shared.trAccount == nil,
+           let (status, json) = try? await web.fetchJSON("/api/v2/auth/account"), status == 200 {
+            Prefs.shared.trAccount = (json as? [String: Any])?["securitiesAccountNumber"] as? String
+        }
         let portfolioRequest: [String: Any] = Prefs.shared.trAccount.map { ["type": "compactPortfolioByType", "secAccNo": $0] }
             ?? ["type": "compactPortfolio"]
-        guard case .success(let portfolio) = try await socket.request([portfolioRequest])[0] else {
+        guard case .success(let portfolio) = try await request(web, [portfolioRequest])[0] else {
             throw Failure.invalidResponse
         }
         var positions = TRProtocol.positions(from: portfolio)
 
         // Stammdaten (Name, Börse) nur einmal je Wertpapier holen.
         let missing = Array(Set(positions.map(\.isin)).filter { instruments[$0] == nil })
-        let details = try await socket.request(missing.map { ["type": "instrument", "id": $0] })
+        let details = try await request(web, missing.map { ["type": "instrument", "id": $0] })
         for (isin, result) in zip(missing, details) {
             if case .success(let json) = result, let instrument = TRProtocol.instrument(from: json) {
                 instruments[isin] = instrument
@@ -276,7 +294,7 @@ final class TradeRepublic {
         }
 
         let tickers = positions.map { ["type": "ticker", "id": "\($0.isin).\(instruments[$0.isin]?.exchange ?? "LSX")"] }
-        let answers = try await socket.request(tickers + [["type": "cash"]])
+        let answers = try await request(web, tickers + [["type": "cash"]])
         for index in positions.indices {
             let instrument = instruments[positions[index].isin]
             if let instrument { positions[index].name = instrument.name }
@@ -289,145 +307,44 @@ final class TradeRepublic {
         }
         var cash: Double?
         if case .success(let json) = answers[positions.count] { cash = TRProtocol.cash(from: json) }
+        TRLog.write("Depot geladen: \(positions.count) Positionen")
         return TRPortfolio(positions: positions, cash: cash, updated: Date())
     }
 
-    // MARK: - HTTP
-
-    /// Die Web-Session läuft nach wenigen Minuten ab und wird vorher erneuert (wie pytr: nach knapp 5 Minuten).
-    private func refreshSessionIfNeeded() async throws {
-        guard Date().timeIntervalSince(sessionRefreshed) > 240 else { return }
-        _ = try await request("GET", "/api/v1/auth/web/session")
-        sessionRefreshed = Date()
-        saveCookies()
-    }
-
-    private func request(_ method: String, _ path: String, body: Data? = nil) async throws -> [String: Any] {
-        guard let url = URL(string: Self.host + path) else { throw Failure.invalidResponse }
-        var request = URLRequest(url: url)
-        request.httpMethod = method
-        request.httpBody = body
-        request.setValue(locale, forHTTPHeaderField: "Accept-Language")
-        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
-        if body != nil { request.setValue("application/json", forHTTPHeaderField: "Content-Type") }
-        let (data, response) = try await session.data(for: request)
-        guard let http = response as? HTTPURLResponse else { throw Failure.invalidResponse }
-        let json = try? JSONSerialization.jsonObject(with: data)
-        switch http.statusCode {
-        case 200..<300:
-            return json as? [String: Any] ?? [:]
-        case 401, 403:
-            throw Failure.sessionExpired
-        default:
-            let error = TRProtocol.errorMessage(json)
-            throw Failure.server(error.message ?? error.code ?? L("Trade Republic returned HTTP %d.", http.statusCode))
+    /// Erste Antwort je Thema. Ein Authentifizierungsfehler bricht alles ab, andere Fehler betreffen nur ihr Thema.
+    private func request(_ web: TRWebSession, _ payloads: [[String: Any]]) async throws -> [Result<Any, Failure>] {
+        guard !payloads.isEmpty else { return [] }
+        return try await web.subscribe(payloads, locale: locale).map { code, payload in
+            switch code {
+            case "A":
+                return TRProtocol.json(payload).map { .success($0) } ?? .failure(.invalidResponse)
+            case "E":
+                let error = TRProtocol.errorMessage(TRProtocol.json(payload))
+                if error.code == "AUTHENTICATION_ERROR" || error.code == "UNAUTHORIZED" {
+                    throw Failure.sessionExpired
+                }
+                return .failure(.server(error.message ?? error.code ?? payload))
+            default:
+                return .failure(.invalidResponse)
+            }
         }
-    }
-
-    // MARK: - Cookies im Schlüsselbund
-
-    private func saveCookies() {
-        let list = (cookies.cookies ?? []).map { cookie in
-            Dictionary(uniqueKeysWithValues: (cookie.properties ?? [:]).map { ($0.key.rawValue, $0.value) })
-        }
-        let data = try? PropertyListSerialization.data(fromPropertyList: list, format: .binary, options: 0)
-        Keychain.setData(list.isEmpty ? nil : data, for: Self.keychainAccount)
-    }
-
-    private func restoreCookies() -> Bool {
-        guard let data = Keychain.data(for: Self.keychainAccount),
-              let list = try? PropertyListSerialization.propertyList(from: data, format: nil) as? [[String: Any]]
-        else { return false }
-        let restored = list.compactMap { properties in
-            HTTPCookie(properties: Dictionary(uniqueKeysWithValues: properties.map { (HTTPCookiePropertyKey($0.key), $0.value) }))
-        }
-        for cookie in restored { cookies.setCookie(cookie) }
-        return !restored.isEmpty
     }
 }
 
-/// Eine WebSocket-Verbindung für eine Abfrage: verbinden, Themen abonnieren, erste Antworten einsammeln.
-@MainActor
-private final class TRSocket {
-    private let task: URLSessionWebSocketTask
-    private var nextID = 1
-    private var previous: [Int: String] = [:]
-    private(set) var timedOut = false
-
-    init(session: URLSession, cookies: [HTTPCookie], userAgent: String) {
-        var request = URLRequest(url: URL(string: "wss://api.traderepublic.com")!)
-        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
-        for (field, value) in HTTPCookie.requestHeaderFields(with: cookies) {
-            request.setValue(value, forHTTPHeaderField: field)
+/// Diagnose ohne Cookies, PIN oder Beträge: ~/Library/Logs/Tickado/TradeRepublic.log
+enum TRLog {
+    static func write(_ text: String) {
+        let dir = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Logs/Tickado")
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let file = dir.appendingPathComponent("TradeRepublic.log")
+        let line = "\(Date().formatted(.iso8601)) \(text)\n"
+        if let handle = try? FileHandle(forWritingTo: file) {
+            defer { try? handle.close() }
+            // Nicht endlos wachsen lassen.
+            if (try? handle.seekToEnd()) ?? 0 > 500_000 { try? handle.truncate(atOffset: 0) }
+            handle.write(Data(line.utf8))
+        } else {
+            try? Data(line.utf8).write(to: file)
         }
-        task = session.webSocketTask(with: request)
-        task.resume()
-    }
-
-    func cancel(timedOut: Bool) {
-        if timedOut { self.timedOut = true }
-        task.cancel(with: .normalClosure, reason: nil)
-    }
-
-    func connect(locale: String) async throws {
-        let info: [String: Any] = [
-            "locale": locale, "platformId": "webtrading", "platformVersion": "chrome - 146.0.0",
-            "clientId": "app.traderepublic.com", "clientVersion": "5582",
-        ]
-        try await send("connect 31 " + Self.json(info))
-        guard try await receive().hasPrefix("connected") else { throw TradeRepublic.Failure.invalidResponse }
-    }
-
-    /// Abonniert alle Themen und liefert je Thema die erste Antwort (danach wird wieder abbestellt).
-    /// Ein Authentifizierungsfehler bricht alles ab, andere Fehler betreffen nur ihr Thema.
-    func request(_ payloads: [[String: Any]]) async throws -> [Result<Any, TradeRepublic.Failure>] {
-        guard !payloads.isEmpty else { return [] }
-        var ids: [Int] = []
-        for payload in payloads {
-            let id = nextID
-            nextID += 1
-            ids.append(id)
-            try await send("sub \(id) " + Self.json(payload))
-        }
-        var results: [Int: Result<Any, TradeRepublic.Failure>] = [:]
-        while results.count < ids.count {
-            guard let message = TRProtocol.parse(try await receive()), ids.contains(message.id),
-                  results[message.id] == nil else { continue }
-            switch message.code {
-            case "A":
-                previous[message.id] = message.payload
-                results[message.id] = TRProtocol.json(message.payload).map { .success($0) } ?? .failure(.invalidResponse)
-            case "D":
-                let full = TRProtocol.applyDelta(message.payload, to: previous[message.id] ?? "")
-                previous[message.id] = full
-                results[message.id] = TRProtocol.json(full).map { .success($0) } ?? .failure(.invalidResponse)
-            case "E":
-                let error = TRProtocol.errorMessage(TRProtocol.json(message.payload))
-                if error.code == "AUTHENTICATION_ERROR" || error.code == "UNAUTHORIZED" {
-                    throw TradeRepublic.Failure.sessionExpired
-                }
-                results[message.id] = .failure(.server(error.message ?? error.code ?? message.payload))
-            default:
-                results[message.id] = .failure(.invalidResponse)
-            }
-        }
-        for id in ids { try? await send("unsub \(id)") }
-        return ids.map { results[$0]! }
-    }
-
-    private func send(_ text: String) async throws {
-        try await task.send(.string(text))
-    }
-
-    private func receive() async throws -> String {
-        switch try await task.receive() {
-        case .string(let text): return text
-        case .data(let data): return String(decoding: data, as: UTF8.self)
-        @unknown default: return ""
-        }
-    }
-
-    private static func json(_ object: [String: Any]) -> String {
-        (try? JSONSerialization.data(withJSONObject: object)).map { String(decoding: $0, as: UTF8.self) } ?? "{}"
     }
 }

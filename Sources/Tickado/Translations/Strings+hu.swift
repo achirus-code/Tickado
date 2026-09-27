@@ -196,8 +196,6 @@ extension L10n {
             "A Trade Republic nem válaszol.",
         "Unexpected response from Trade Republic.":
             "Váratlan válasz a Trade Republictól.",
-        "Trade Republic returned HTTP %d.":
-            "A Trade Republic HTTP %d választ adott.",
         "Log Out":
             "Kijelentkezés",
         "Status:":
@@ -210,7 +208,7 @@ extension L10n {
             "Csatlakozás…",
         "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
             "Jelentkezzen be telefonszámmal és PIN-kóddal, majd erősítse meg a Trade Republic alkalmazásban. Az ablak a csatlakozás után automatikusan bezárul.",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado only keeps the session, in the keychain.":
-            "A Trade Republic nem hivatalos webes felületét használja, amely bármikor megváltozhat. A Tickado nem áll kapcsolatban a Trade Republickal. A Trade Republic weboldalán jelentkezik be; a Tickado csak a munkamenetet őrzi meg, a kulcskarikában.",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
+            "A Trade Republic nem hivatalos webes felületét használja, amely bármikor megváltozhat. A Tickado nem áll kapcsolatban a Trade Republickal. A Trade Republic weboldalán jelentkezik be; a Tickado böngészőként őrzi meg a munkamenetet.",
     ]
 }

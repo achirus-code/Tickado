@@ -119,15 +119,15 @@ final class Prefs {
         set { d.set(newValue.rawValue, forKey: "metalUnit") }
     }
 
-    /// Trade Republic: Depotnummer und User-Agent des Anmeldefensters (Anfragen nutzen denselben).
+    /// Trade Republic: einmal verbunden (Session liegt im WebKit-Speicher) und Depotnummer.
+    var trLinked: Bool {
+        get { d.bool(forKey: "trLinked") }
+        set { d.set(newValue, forKey: "trLinked") }
+    }
+
     var trAccount: String? {
         get { d.string(forKey: "trAccount") }
         set { d.set(newValue, forKey: "trAccount") }
-    }
-
-    var trUserAgent: String? {
-        get { d.string(forKey: "trUserAgent") }
-        set { d.set(newValue, forKey: "trUserAgent") }
     }
 
     var apiKeyKind: APIKeyKind {

@@ -15,7 +15,7 @@ final class TradeRepublicSettingsViewController: SettingsPane {
         ], groups: [1])
 
         let disclaimer = NSTextField(wrappingLabelWithString: L(
-            "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado only keeps the session, in the keychain."))
+            "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser."))
         disclaimer.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
         disclaimer.textColor = .tertiaryLabelColor
         disclaimer.translatesAutoresizingMaskIntoConstraints = false
@@ -41,7 +41,7 @@ final class TradeRepublicSettingsViewController: SettingsPane {
     }
 
     @objc private func connect() {
-        TradeRepublicLoginWindowController.show { [weak self] in self?.onChange(.broker) }
+        TradeRepublic.shared.connect { [weak self] in self?.onChange(.broker) }
     }
 
     @objc private func logOut() {

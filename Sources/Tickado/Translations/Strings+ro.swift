@@ -196,8 +196,6 @@ extension L10n {
             "Trade Republic nu răspunde.",
         "Unexpected response from Trade Republic.":
             "Răspuns neașteptat de la Trade Republic.",
-        "Trade Republic returned HTTP %d.":
-            "Trade Republic a returnat HTTP %d.",
         "Log Out":
             "Deconectare",
         "Status:":
@@ -210,7 +208,7 @@ extension L10n {
             "Conectare…",
         "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
             "Autentificați-vă cu numărul de telefon și PIN-ul, apoi confirmați în aplicația Trade Republic. Fereastra se închide automat după conectare.",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado only keeps the session, in the keychain.":
-            "Folosește interfața web neoficială Trade Republic, care se poate schimba oricând. Tickado nu este afiliat cu Trade Republic. Vă autentificați pe site-ul Trade Republic; Tickado păstrează doar sesiunea, în portchei.",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
+            "Folosește interfața web neoficială Trade Republic, care se poate schimba oricând. Tickado nu este afiliat cu Trade Republic. Vă autentificați pe site-ul Trade Republic; Tickado păstrează sesiunea ca un browser.",
     ]
 }

@@ -196,8 +196,6 @@ extension L10n {
             "Trade Republic 没有响应。",
         "Unexpected response from Trade Republic.":
             "Trade Republic 返回了意外的响应。",
-        "Trade Republic returned HTTP %d.":
-            "Trade Republic 返回了 HTTP %d。",
         "Log Out":
             "退出登录",
         "Status:":
@@ -210,7 +208,7 @@ extension L10n {
             "连接…",
         "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
             "请使用手机号码和 PIN 登录，并在 Trade Republic App 中确认。连接成功后，此窗口会自动关闭。",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado only keeps the session, in the keychain.":
-            "使用 Trade Republic 的非官方网页接口，该接口可能随时变化。Tickado 与 Trade Republic 无关联。你在 Trade Republic 网站上登录；Tickado 只在钥匙串中保存会话。",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
+            "使用 Trade Republic 的非官方网页接口，该接口可能随时变化。Tickado 与 Trade Republic 无关联。你在 Trade Republic 网站上登录；Tickado 会像浏览器一样保留会话。",
     ]
 }

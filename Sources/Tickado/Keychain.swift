@@ -1,7 +1,7 @@
 import Foundation
 import Security
 
-/// Speichert den CoinGecko-API-Key und die Trade-Republic-Session als "Generisches Passwort" im Schlüsselbund.
+/// Speichert den CoinGecko-API-Key als "Generisches Passwort" im macOS-Schlüsselbund.
 @MainActor
 enum Keychain {
     private static let service = "de.achirus.tickado"
@@ -15,31 +15,6 @@ enum Keychain {
         [kSecClass as String: kSecClassGenericPassword,
          kSecAttrService as String: service,
          kSecAttrAccount as String: account]
-    }
-
-    /// Beliebige Daten unter eigenem Kontonamen (z. B. Session-Cookies).
-    static func data(for account: String) -> Data? {
-        var q = query(for: account)
-        q[kSecReturnData as String] = true
-        q[kSecMatchLimit as String] = kSecMatchLimitOne
-        var result: AnyObject?
-        guard SecItemCopyMatching(q as CFDictionary, &result) == errSecSuccess else { return nil }
-        return result as? Data
-    }
-
-    static func setData(_ data: Data?, for account: String) {
-        let q = query(for: account)
-        guard let data else {
-            SecItemDelete(q as CFDictionary)
-            return
-        }
-        let status = SecItemUpdate(q as CFDictionary, [kSecValueData as String: data] as CFDictionary)
-        if status == errSecItemNotFound {
-            var add = q
-            add[kSecValueData as String] = data
-            add[kSecAttrLabel as String] = "Tickado \(account)"
-            SecItemAdd(add as CFDictionary, nil)
-        }
     }
 
     static var apiKey: String? {

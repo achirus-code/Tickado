@@ -196,8 +196,6 @@ extension L10n {
             "Trade Republicから応答がありません。",
         "Unexpected response from Trade Republic.":
             "Trade Republicから予期しない応答がありました。",
-        "Trade Republic returned HTTP %d.":
-            "Trade RepublicがHTTP %dを返しました。",
         "Log Out":
             "ログアウト",
         "Status:":
@@ -210,7 +208,7 @@ extension L10n {
             "接続…",
         "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
             "電話番号とPINでログインし、Trade Republicアプリで承認してください。接続が完了すると、このウインドウは自動的に閉じます。",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado only keeps the session, in the keychain.":
-            "Trade Republicの非公式Webインターフェイスを使用しており、いつでも変更される可能性があります。TickadoはTrade Republicとは提携していません。ログインはTrade RepublicのWebサイトで行い、Tickadoはセッションのみをキーチェーンに保存します。",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
+            "Trade Republicの非公式Webインターフェイスを使用しており、いつでも変更される可能性があります。TickadoはTrade Republicとは提携していません。ログインはTrade RepublicのWebサイトで行い、Tickadoはブラウザと同様にセッションを保持します。",
     ]
 }

@@ -385,7 +385,7 @@ final class StatusController: NSObject, NSMenuDelegate {
         if TradeRepublic.shared.state == .expired {
             submenu.addItem(ClosureMenuItem(L("Log in again…")) { [weak self] in
                 DispatchQueue.main.async {
-                    TradeRepublicLoginWindowController.show { self?.settingsDidChange(.broker) }
+                    TradeRepublic.shared.connect { self?.settingsDidChange(.broker) }
                 }
             })
         }
