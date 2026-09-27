@@ -72,6 +72,7 @@ macOS-Menüleisten-App (AppKit, Swift, SwiftPM, macOS 14+), die Kurse für Krypt
 - **App-Icon:** `Scripts/make-icon.swift` zeichnet dunkle Kachel, grün-rote Kerzen und eine goldene Münze mit Aufwärtskurve. `build.sh` erzeugt das Icon nur, wenn `Resources/AppIcon.icns` fehlt.
 
 ## Stolpersteine
+- Im Code erzeugte `NSTableView` in einer `NSScrollView` wächst beim ersten Layout um die Höhe des sichtbaren Bereichs (flexible Höhe, von der Tabelle selbst gesetzt, `autoresizingMask` lässt sich nicht dauerhaft ändern). Folge: eine Seite leerer Zeilen zum Weiterscrollen. Abhilfe: nach dem Layout `tableView.tile()` (siehe `layout()`/`viewDidLayout()` der drei Listen).
 - `JSONDecoder.convertFromSnakeCase` macht aus `price_change_percentage_24h` den Namen `priceChangePercentage24H` (großes **H**). Deshalb braucht `CoinGecko.Market` explizite `CodingKeys`. Ohne sie ist die Änderung immer `nil` und alles bleibt weiß.
 - Yahoo blockt Anfragen ohne User-Agent, aber auch mit langem Browser-UA. `Mozilla/5.0` funktioniert.
 - `.urlQueryAllowed` lässt `&`, `=` und `+` unkodiert. Suchtexte für Yahoo deshalb mit `YahooFinance.queryAllowed` kodieren (sonst wird aus „S&P 500“ die Suche nach „S“).
