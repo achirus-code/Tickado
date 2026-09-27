@@ -20,7 +20,8 @@ macOS-Menüleisten-App (AppKit, Swift, SwiftPM, macOS 14+), die Kurse für Krypt
 - `StatusController.swift`: Das Herzstück der App.
   - NSStatusItem mit NSMenu; `menuNeedsUpdate` baut das Menü jedes Mal neu.
   - Refresh-Timer und Rotations-Timer laufen im `.common`-RunLoop-Modus, damit sie auch bei offenem Menü weiterlaufen.
-  - Ein Refresh fragt CoinGecko (Krypto) und Yahoo (alles andere) parallel ab. Schlägt eine Quelle fehl, bleiben ihre alten Kurse erhalten.
+  - Ein Refresh fragt CoinGecko (Krypto) und Yahoo (alles andere) parallel ab (`async let`, damit ein neuer Refresh die alte Anfrage abbricht). Jeder Refresh schiebt den Refresh-Timer um ein volles Intervall nach hinten.
+  - Schlägt eine Quelle fehl, bleiben ihre alten Kurse erhalten. Jeder `Quote` merkt sich `updated`. Ist er älter als 3 Intervalle + 60 s, wird er grau (`TickerRenderer.staleBefore`), und zwar pro Kurs, nicht global.
   - `ClosureMenuItem` ist ein NSMenuItem mit Closure statt Target/Action.
   - Das Menü hat keine Options-Untermenüs, nur „Settings…“. „Select Coins…“ und „Refresh Now“ wurden auf Wunsch des Nutzers entfernt (Auswahl im Tab *Assets*).
   - `settingsDidChange(_:)` erledigt die Folgeschritte einer Einstellung (Timer neu, Kurse verwerfen, Refresh). `updateTitle()` aktualisiert auch die Vorschau.
@@ -40,7 +41,7 @@ macOS-Menüleisten-App (AppKit, Swift, SwiftPM, macOS 14+), die Kurse für Krypt
   - `Coin` steht für **jeden** Kurswert, nicht nur Coins. Die Art unterscheidet `AssetKind` (`.crypto`, `.stock`, `.etf`, `.metal`).
   - IDs: CoinGecko-ID (`bitcoin`), `stock:SAP.DE`, `etf:EUNL.DE`, `metal:gold`.
   - `kind` wird mit `decodeIfPresent` gelesen, Standard `.crypto`, weil alte Einstellungen es noch nicht kennen.
-- `Prefs.swift`: UserDefaults (Bundle-ID `de.achirus.tickado`). `selectedCoins` wird als JSON gespeichert, `tickerIDs` enthält die Werte mit Häkchen.
+- `Prefs.swift`: UserDefaults (Bundle-ID `de.achirus.tickado`). `selectedCoins` wird als JSON gespeichert und nach dem ersten Lesen im Speicher gehalten (nur über `Prefs` ändern, `defaults write` wirkt erst nach einem Neustart). `tickerIDs` enthält die Werte mit Häkchen.
 - `PriceFormat.swift`:
   - Signifikante Stellen: 84.150 · 1,53 · 0,0398 bei 3 Stellen. Ganzzahlen werden nie abgeschnitten.
   - Das Währungszeichen wird locale-gerecht gesetzt (`84.150 $` auf Deutsch, `$84,150` auf Englisch).
@@ -73,6 +74,7 @@ macOS-Menüleisten-App (AppKit, Swift, SwiftPM, macOS 14+), die Kurse für Krypt
 ## Stolpersteine
 - `JSONDecoder.convertFromSnakeCase` macht aus `price_change_percentage_24h` den Namen `priceChangePercentage24H` (großes **H**). Deshalb braucht `CoinGecko.Market` explizite `CodingKeys`. Ohne sie ist die Änderung immer `nil` und alles bleibt weiß.
 - Yahoo blockt Anfragen ohne User-Agent, aber auch mit langem Browser-UA. `Mozilla/5.0` funktioniert.
+- `.urlQueryAllowed` lässt `&`, `=` und `+` unkodiert. Suchtexte für Yahoo deshalb mit `YahooFinance.queryAllowed` kodieren (sonst wird aus „S&P 500“ die Suche nach „S“).
 - Die öffentliche CoinGecko-API hat ein knappes Rate-Limit (HTTP 429). Das Standardintervall ist deshalb 60 s, und der Katalog wird gecacht.
 - `LaunchAtLogin` (SMAppService) sollte erst eingeschaltet werden, wenn die App in `/Applications` läuft.
 - `statusItem.menu` ist gesetzt. Das Settings-Fenster wird deshalb per `DispatchQueue.main.async` erst nach dem Schließen des Menüs geöffnet.

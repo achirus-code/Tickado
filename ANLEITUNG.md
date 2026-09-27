@@ -14,7 +14,7 @@ Tickado ist eine macOS-Menüleisten-App (ab macOS 14), die Kurse von Kryptowähr
   - **Rotate Checked Coins (5 s)** – immer ein Wert, wechselt alle 5 Sekunden
   - **Compact: Two Rows with ▲▼** – je zwei Werte untereinander mit Pfeil, weitere Paare als Spalten daneben
 - Weitere Ticker-Optionen: Zeichen statt Kürzel (₿, Ξ, Au, Ag …), Währungszeichen, 24h-Änderung, nur 24h-Änderung ohne Kurs (z. B. `₿ −0.3%`), Kürzen großer Preise (84,2K / 2,6K), Update-Intervall (30 s – 30 min).
-- Hat der Ticker länger keine neuen Kurse bekommen (z. B. offline), werden die Preise grau. Nach dem Aufwachen aus dem Ruhezustand wird automatisch neu geladen.
+- Hat ein Wert länger keinen neuen Kurs bekommen (z. B. offline oder wenn CoinGecko das Limit erreicht), wird sein Preis grau. Das gilt für jeden Wert einzeln. Nach dem Aufwachen aus dem Ruhezustand wird automatisch neu geladen.
 
 ### Settings-Fenster
 Öffnet sich über **Settings…** im Menü. Oben steht immer eine **Vorschau**: eine nachgebaute Menüleiste mit dem Ticker und darunter das aufgeklappte Menü (bis zu 5 Zeilen), gezeichnet mit echten Kursen und exakt demselben Code wie die echte Menüleiste. Jede Änderung ist sofort in Vorschau und Menüleiste sichtbar, ein „Speichern“ gibt es nicht. Ist noch nichts für die Menüleiste angehakt, zeigt die Vorschau ein Beispiel aus der Auswahl.

@@ -4,9 +4,12 @@ import AppKit
 @MainActor
 struct TickerRenderer {
     let quotes: [String: Quote]
-    let isStale: Bool
+    /// Kurse von vor diesem Zeitpunkt gelten als veraltet (grau). Pro Kurs, weil eine Quelle allein ausfallen kann.
+    let staleBefore: Date
 
     private var prefs: Prefs { .shared }
+
+    private func isStale(_ quote: Quote) -> Bool { quote.updated < staleBefore }
 
     /// Aktien und ETFs mit festen 2 Nachkommastellen, sonst signifikante Stellen.
     func formattedPrice(_ quote: Quote, of coin: Coin, currencySign: Bool = true, abbreviate: Bool = false) -> String {
@@ -21,7 +24,6 @@ struct TickerRenderer {
         let font = NSFont.monospacedDigitSystemFont(ofSize: size, weight: .regular)
         let green = NSFont.monospacedDigitSystemFont(ofSize: size - 0.5, weight: .regular)
         let small = NSFont.monospacedDigitSystemFont(ofSize: size - 2, weight: .regular)
-        let stale = isStale
 
         let title = NSMutableAttributedString()
         for (index, coin) in coins.enumerated() {
@@ -35,6 +37,7 @@ struct TickerRenderer {
                 title.append(NSAttributedString(string: "…", attributes: [.font: font, .foregroundColor: NSColor.secondaryLabelColor]))
                 continue
             }
+            let stale = isStale(quote)
             let color = stale ? NSColor.secondaryLabelColor : prefs.colorTheme.color(for: quote.change24h)
             let priceFont = !stale && prefs.colorTheme.isGreen(for: quote.change24h) ? green : font
             // Nur Änderung: steht in voller Größe an der Stelle des Kurses
@@ -66,7 +69,6 @@ struct TickerRenderer {
         let font = NSFont.monospacedDigitSystemFont(ofSize: 9, weight: .regular)
         let lineHeight = ceil(font.ascender - font.descender)
         let height = max(NSStatusBar.system.thickness, lineHeight * 2)
-        let stale = isStale
 
         let lines = coins.map { coin -> Line in
             let symbol = coin.displaySymbol
@@ -81,6 +83,7 @@ struct TickerRenderer {
                 value = formattedPrice(quote, of: coin, currencySign: prefs.currencySign, abbreviate: prefs.abbreviate)
                 if prefs.changeInBar, let change = quote.change24h { value += " " + PriceFormat.change(change) }
             }
+            let stale = isStale(quote)
             let color = stale ? NSColor.secondaryLabelColor : prefs.colorTheme.color(for: quote.change24h)
             return Line(label: label, value: value, change: stale ? nil : quote.change24h, color: color)
         }
@@ -166,9 +169,10 @@ struct TickerRenderer {
             return title
         }
 
+        let stale = isStale(quote)
         var colored = base
-        colored[.foregroundColor] = isStale ? NSColor.secondaryLabelColor : prefs.colorTheme.color(for: quote.change24h)
-        if !isStale, prefs.colorTheme.isGreen(for: quote.change24h) {
+        colored[.foregroundColor] = stale ? NSColor.secondaryLabelColor : prefs.colorTheme.color(for: quote.change24h)
+        if !stale, prefs.colorTheme.isGreen(for: quote.change24h) {
             colored[.font] = NSFont(name: "Menlo-Regular", size: 11.5) ?? font
         }
         title.append(NSAttributedString(string: price, attributes: colored))
