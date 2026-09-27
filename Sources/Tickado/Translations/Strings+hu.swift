@@ -224,5 +224,7 @@ extension L10n {
             "Szinkronizáláskor a Trade Republic weboldalán jelentkezik be, a Tickado pedig elmenti a pozícióit (ISIN, mennyiség, vételár). Az árfolyamok ezután a Yahoo Finance-ről töltődnek be. A Trade Republic nem hivatalos webes felületét használja; a Tickado nem áll kapcsolatban a Trade Republickal.",
         "Synchronizing…":
             "Szinkronizálás folyamatban…",
+        "Unchecked positions are hidden in the menu and not counted. Click a name to rename it.":
+            "A nem bejelölt pozíciók rejtve maradnak a menüben, és nem számítanak bele. Kattintson egy névre az átnevezéshez.",
     ]
 }

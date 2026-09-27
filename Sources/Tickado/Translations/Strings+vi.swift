@@ -224,5 +224,7 @@ extension L10n {
             "Khi đồng bộ, bạn đăng nhập trên trang web Trade Republic và Tickado lưu các vị thế của bạn (ISIN, số lượng, giá mua). Sau đó giá được tải từ Yahoo Finance. Sử dụng giao diện web không chính thức của Trade Republic; Tickado không liên kết với Trade Republic.",
         "Synchronizing…":
             "Đang đồng bộ…",
+        "Unchecked positions are hidden in the menu and not counted. Click a name to rename it.":
+            "Các vị thế bỏ chọn sẽ bị ẩn trong menu và không được tính. Bấm vào tên để đổi tên.",
     ]
 }

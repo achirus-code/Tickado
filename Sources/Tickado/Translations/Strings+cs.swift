@@ -224,5 +224,7 @@ extension L10n {
             "Při synchronizaci se přihlásíte na webu Trade Republic a Tickado uloží vaše pozice (ISIN, počet, nákupní cena). Kurzy se pak načítají z Yahoo Finance. Používá neoficiální webové rozhraní Trade Republic; Tickado není spojeno s Trade Republic.",
         "Synchronizing…":
             "Synchronizace…",
+        "Unchecked positions are hidden in the menu and not counted. Click a name to rename it.":
+            "Nezaškrtnuté pozice se v nabídce nezobrazují a nezapočítávají se. Kliknutím na název jej změníte.",
     ]
 }

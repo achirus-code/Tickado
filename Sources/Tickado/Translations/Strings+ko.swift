@@ -224,5 +224,7 @@ extension L10n {
             "동기화하면 Trade Republic 웹사이트에 로그인하고 Tickado가 보유 종목(ISIN, 수량, 매수가)을 저장합니다. 이후 가격은 Yahoo Finance에서 불러옵니다. Trade Republic의 비공식 웹 인터페이스를 사용하며, Tickado는 Trade Republic과 제휴 관계가 없습니다.",
         "Synchronizing…":
             "동기화 중…",
+        "Unchecked positions are hidden in the menu and not counted. Click a name to rename it.":
+            "체크 해제한 종목은 메뉴에서 숨겨지고 합계에 포함되지 않습니다. 이름을 클릭하면 변경할 수 있습니다.",
     ]
 }

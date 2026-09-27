@@ -224,5 +224,7 @@ extension L10n {
             "同期するとTrade RepublicのWebサイトにログインし、Tickadoが保有銘柄（ISIN、数量、取得単価）を保存します。価格はその後Yahoo Financeから読み込まれます。Trade Republicの非公式Webインターフェイスを使用しています。TickadoはTrade Republicとは提携していません。",
         "Synchronizing…":
             "同期中…",
+        "Unchecked positions are hidden in the menu and not counted. Click a name to rename it.":
+            "チェックを外した銘柄はメニューに表示されず、集計にも含まれません。名前をクリックすると変更できます。",
     ]
 }

@@ -54,6 +54,7 @@ Trade Republic hat keine offizielle API. Tickado nutzt zum Abholen der Positione
 - **Synchronisieren:** Settings → Trade Republic → „Synchronisieren …“ (oder im Untermenü). Es öffnet sich ein Fenster mit der echten Website app.traderepublic.com. Dort mit Handynummer und PIN anmelden und in der Trade-Republic-App bestätigen. Tickado holt dann einmal alle Positionen (ISIN, Name, Stückzahl, Ø-Kaufkurs) und das Guthaben, speichert sie und schließt das Fenster. Die Sitzung wird danach verworfen.
 - **Kurse:** kommen laufend von Yahoo Finance über die ISIN (bevorzugt Euro-Börsen, sonst Heimatbörse in Euro umgerechnet). Kleine Abweichungen zu Trade Republic (anderer Börsenplatz, Verzögerung) sind möglich. Papiere ohne Yahoo-Treffer zeigen „—“.
 - **Aktualisieren:** Käufe/Verkäufe erscheinen erst nach erneutem „Synchronisieren“; dafür ist jedes Mal eine neue Anmeldung nötig. Unter dem Button steht das Datum der letzten Synchronisierung.
+- **Positionen-Liste** unter dem Button: Checkbox abwählen = Position erscheint nicht im Menü und zählt nicht in Depotwert/Gewinnen mit; Klick auf den Namen = umbenennen (leer lassen stellt den Namen von Trade Republic wieder her). Beides bleibt bei einer neuen Synchronisierung erhalten (Zuordnung über die ISIN), neue Positionen sind angehakt.
 - „Daten löschen“ entfernt die gespeicherten Positionen. Diagnose (ohne Cookies, PIN oder Beträge): `~/Library/Logs/Tickado/TradeRepublic.log`
 
 ### Datenquellen

@@ -224,5 +224,7 @@ extension L10n {
             "Beim Synchronisieren meldest du dich auf der Website von Trade Republic an, und Tickado speichert deine Positionen (ISIN, Stückzahl, Kaufkurs). Die Kurse kommen danach von Yahoo Finance. Nutzt die inoffizielle Web-Schnittstelle von Trade Republic; Tickado gehört nicht zu Trade Republic.",
         "Synchronizing…":
             "Synchronisiere …",
+        "Unchecked positions are hidden in the menu and not counted. Click a name to rename it.":
+            "Abgewählte Positionen erscheinen nicht im Menü und zählen nicht mit. Klicke auf einen Namen, um ihn zu ändern.",
     ]
 }
