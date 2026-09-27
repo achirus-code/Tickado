@@ -196,41 +196,21 @@ extension L10n {
             "A Trade Republic nem válaszol.",
         "Unexpected response from Trade Republic.":
             "Váratlan válasz a Trade Republictól.",
-        "Login timed out. Please try again.":
-            "A bejelentkezés lejárt. Próbálja újra.",
-        "Login failed: %@":
-            "Sikertelen bejelentkezés: %@",
-        "Trade Republic has changed its login. Tickado needs an update.":
-            "A Trade Republic módosította a bejelentkezést. A Tickado frissítésre szorul.",
         "Trade Republic returned HTTP %d.":
             "A Trade Republic HTTP %d választ adott.",
-        "Log In":
-            "Bejelentkezés",
         "Log Out":
             "Kijelentkezés",
-        "Confirm":
-            "Megerősítés",
         "Status:":
             "Állapot:",
-        "Phone number:":
-            "Telefonszám:",
-        "PIN:":
-            "PIN:",
-        "Authenticator code:":
-            "Hitelesítő kód:",
         "Connected":
             "Csatlakozva",
         "Not connected":
             "Nincs csatlakozva",
-        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
-            "Adja meg telefonszámát (pl. +49 170 1234567) és 4 jegyű PIN-kódját.",
-        "Logging in…":
-            "Bejelentkezés…",
-        "Enter the code from your authenticator app (%@).":
-            "Adja meg a hitelesítő alkalmazás kódját (%@).",
-        "Confirm the login in your Trade Republic app (%@).":
-            "Erősítse meg a bejelentkezést a Trade Republic alkalmazásban (%@).",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
-            "A Trade Republic nem hivatalos webes felületét használja, amely bármikor megváltozhat. A Tickado nem áll kapcsolatban a Trade Republickal. A PIN-kódot csak a bejelentkezéshez küldi el a Trade Republicnak, és nem tárolja.",
+        "Connect…":
+            "Csatlakozás…",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
+            "Jelentkezzen be telefonszámmal és PIN-kóddal, majd erősítse meg a Trade Republic alkalmazásban. Az ablak a csatlakozás után automatikusan bezárul.",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado only keeps the session, in the keychain.":
+            "A Trade Republic nem hivatalos webes felületét használja, amely bármikor megváltozhat. A Tickado nem áll kapcsolatban a Trade Republickal. A Trade Republic weboldalán jelentkezik be; a Tickado csak a munkamenetet őrzi meg, a kulcskarikában.",
     ]
 }

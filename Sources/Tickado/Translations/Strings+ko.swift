@@ -196,41 +196,21 @@ extension L10n {
             "Trade Republic이 응답하지 않습니다.",
         "Unexpected response from Trade Republic.":
             "Trade Republic에서 예상치 못한 응답을 받았습니다.",
-        "Login timed out. Please try again.":
-            "로그인 시간이 초과되었습니다. 다시 시도하십시오.",
-        "Login failed: %@":
-            "로그인 실패: %@",
-        "Trade Republic has changed its login. Tickado needs an update.":
-            "Trade Republic의 로그인 방식이 변경되었습니다. Tickado 업데이트가 필요합니다.",
         "Trade Republic returned HTTP %d.":
             "Trade Republic이 HTTP %d을(를) 반환했습니다.",
-        "Log In":
-            "로그인",
         "Log Out":
             "로그아웃",
-        "Confirm":
-            "확인",
         "Status:":
             "상태:",
-        "Phone number:":
-            "전화번호:",
-        "PIN:":
-            "PIN:",
-        "Authenticator code:":
-            "인증 코드:",
         "Connected":
             "연결됨",
         "Not connected":
             "연결 안 됨",
-        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
-            "전화번호(예: +49 170 1234567)와 4자리 PIN을 입력하십시오.",
-        "Logging in…":
-            "로그인 중…",
-        "Enter the code from your authenticator app (%@).":
-            "인증 앱의 코드를 입력하십시오(%@).",
-        "Confirm the login in your Trade Republic app (%@).":
-            "Trade Republic 앱에서 로그인을 승인하십시오(%@).",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
-            "언제든지 변경될 수 있는 Trade Republic의 비공식 웹 인터페이스를 사용합니다. Tickado는 Trade Republic과 제휴 관계가 없습니다. PIN은 로그인을 위해 Trade Republic에만 전송되며 저장되지 않습니다.",
+        "Connect…":
+            "연결…",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
+            "전화번호와 PIN으로 로그인한 후 Trade Republic 앱에서 승인하십시오. 연결되면 이 윈도우가 자동으로 닫힙니다.",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado only keeps the session, in the keychain.":
+            "언제든지 변경될 수 있는 Trade Republic의 비공식 웹 인터페이스를 사용합니다. Tickado는 Trade Republic과 제휴 관계가 없습니다. 로그인은 Trade Republic 웹사이트에서 하며, Tickado는 세션만 키체인에 보관합니다.",
     ]
 }

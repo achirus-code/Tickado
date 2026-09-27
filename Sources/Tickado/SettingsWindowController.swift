@@ -73,6 +73,11 @@ final class SettingsWindowController: NSWindowController {
         window?.bringToFront()
     }
 
+    /// Login oder Logout bei Trade Republic, auch wenn sie vom Menü aus kamen.
+    func brokerDidChange() {
+        brokerPane.reload()
+    }
+
     /// Wird bei jeder Änderung der Menüleiste aufgerufen (neue Kurse, Rotation, geänderte Einstellungen).
     func updatePreview() {
         guard window?.isVisible == true else { return }

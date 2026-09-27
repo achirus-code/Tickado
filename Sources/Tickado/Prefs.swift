@@ -119,20 +119,15 @@ final class Prefs {
         set { d.set(newValue.rawValue, forKey: "metalUnit") }
     }
 
-    /// Trade Republic: Handynummer (nur zum Vorausfüllen), Depotnummer und stabile Geräte-ID für den Login.
-    var trPhone: String? {
-        get { d.string(forKey: "trPhone") }
-        set { d.set(newValue, forKey: "trPhone") }
-    }
-
+    /// Trade Republic: Depotnummer und User-Agent des Anmeldefensters (Anfragen nutzen denselben).
     var trAccount: String? {
         get { d.string(forKey: "trAccount") }
         set { d.set(newValue, forKey: "trAccount") }
     }
 
-    var trDeviceID: String? {
-        get { d.string(forKey: "trDeviceID") }
-        set { d.set(newValue, forKey: "trDeviceID") }
+    var trUserAgent: String? {
+        get { d.string(forKey: "trUserAgent") }
+        set { d.set(newValue, forKey: "trUserAgent") }
     }
 
     var apiKeyKind: APIKeyKind {

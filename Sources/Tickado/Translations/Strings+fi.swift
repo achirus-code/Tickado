@@ -196,41 +196,21 @@ extension L10n {
             "Trade Republic ei vastaa.",
         "Unexpected response from Trade Republic.":
             "Odottamaton vastaus Trade Republicilta.",
-        "Login timed out. Please try again.":
-            "Kirjautuminen vanheni. Yritä uudelleen.",
-        "Login failed: %@":
-            "Kirjautuminen epäonnistui: %@",
-        "Trade Republic has changed its login. Tickado needs an update.":
-            "Trade Republic on muuttanut kirjautumista. Tickado tarvitsee päivityksen.",
         "Trade Republic returned HTTP %d.":
             "Trade Republic palautti HTTP %d.",
-        "Log In":
-            "Kirjaudu",
         "Log Out":
             "Kirjaudu ulos",
-        "Confirm":
-            "Vahvista",
         "Status:":
             "Tila:",
-        "Phone number:":
-            "Puhelinnumero:",
-        "PIN:":
-            "PIN:",
-        "Authenticator code:":
-            "Todennuskoodi:",
         "Connected":
             "Yhdistetty",
         "Not connected":
             "Ei yhdistetty",
-        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
-            "Anna puhelinnumerosi (esim. +49 170 1234567) ja nelinumeroinen PIN-koodisi.",
-        "Logging in…":
-            "Kirjaudutaan…",
-        "Enter the code from your authenticator app (%@).":
-            "Anna koodi todennussovelluksesta (%@).",
-        "Confirm the login in your Trade Republic app (%@).":
-            "Vahvista kirjautuminen Trade Republic -sovelluksessa (%@).",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
-            "Käyttää Trade Republicin epävirallista verkkorajapintaa, joka voi muuttua milloin tahansa. Tickado ei liity Trade Republiciin. PIN-koodi lähetetään vain Trade Republicille kirjautumista varten eikä sitä tallenneta.",
+        "Connect…":
+            "Yhdistä…",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
+            "Kirjaudu puhelinnumerolla ja PIN-koodilla ja vahvista Trade Republic -sovelluksessa. Ikkuna sulkeutuu automaattisesti, kun yhteys on muodostettu.",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado only keeps the session, in the keychain.":
+            "Käyttää Trade Republicin epävirallista verkkorajapintaa, joka voi muuttua milloin tahansa. Tickado ei liity Trade Republiciin. Kirjaudut Trade Republicin verkkosivustolla; Tickado säilyttää vain istunnon, avainnipussa.",
     ]
 }

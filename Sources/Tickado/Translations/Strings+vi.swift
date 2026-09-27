@@ -196,41 +196,21 @@ extension L10n {
             "Trade Republic không phản hồi.",
         "Unexpected response from Trade Republic.":
             "Phản hồi không mong đợi từ Trade Republic.",
-        "Login timed out. Please try again.":
-            "Hết thời gian đăng nhập. Vui lòng thử lại.",
-        "Login failed: %@":
-            "Đăng nhập thất bại: %@",
-        "Trade Republic has changed its login. Tickado needs an update.":
-            "Trade Republic đã thay đổi cách đăng nhập. Tickado cần được cập nhật.",
         "Trade Republic returned HTTP %d.":
             "Trade Republic trả về HTTP %d.",
-        "Log In":
-            "Đăng nhập",
         "Log Out":
             "Đăng xuất",
-        "Confirm":
-            "Xác nhận",
         "Status:":
             "Trạng thái:",
-        "Phone number:":
-            "Số điện thoại:",
-        "PIN:":
-            "PIN:",
-        "Authenticator code:":
-            "Mã xác thực:",
         "Connected":
             "Đã kết nối",
         "Not connected":
             "Chưa kết nối",
-        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
-            "Nhập số điện thoại (ví dụ +49 170 1234567) và mã PIN 4 chữ số.",
-        "Logging in…":
-            "Đang đăng nhập…",
-        "Enter the code from your authenticator app (%@).":
-            "Nhập mã từ ứng dụng xác thực (%@).",
-        "Confirm the login in your Trade Republic app (%@).":
-            "Xác nhận đăng nhập trong ứng dụng Trade Republic (%@).",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
-            "Sử dụng giao diện web không chính thức của Trade Republic, có thể thay đổi bất cứ lúc nào. Tickado không liên kết với Trade Republic. Mã PIN chỉ được gửi đến Trade Republic để đăng nhập và không được lưu.",
+        "Connect…":
+            "Kết nối…",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
+            "Đăng nhập bằng số điện thoại và mã PIN, rồi xác nhận trong ứng dụng Trade Republic. Cửa sổ này tự đóng khi đã kết nối.",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado only keeps the session, in the keychain.":
+            "Sử dụng giao diện web không chính thức của Trade Republic, có thể thay đổi bất cứ lúc nào. Tickado không liên kết với Trade Republic. Bạn đăng nhập trên trang web Trade Republic; Tickado chỉ giữ phiên, trong chuỗi khóa.",
     ]
 }

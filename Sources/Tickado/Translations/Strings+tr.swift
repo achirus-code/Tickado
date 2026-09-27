@@ -196,41 +196,21 @@ extension L10n {
             "Trade Republic yanıt vermiyor.",
         "Unexpected response from Trade Republic.":
             "Trade Republic’ten beklenmeyen yanıt.",
-        "Login timed out. Please try again.":
-            "Oturum açma süresi doldu. Lütfen tekrar deneyin.",
-        "Login failed: %@":
-            "Oturum açılamadı: %@",
-        "Trade Republic has changed its login. Tickado needs an update.":
-            "Trade Republic oturum açmayı değiştirdi. Tickado’nun güncellenmesi gerekiyor.",
         "Trade Republic returned HTTP %d.":
             "Trade Republic HTTP %d döndürdü.",
-        "Log In":
-            "Oturum Aç",
         "Log Out":
             "Oturumu Kapat",
-        "Confirm":
-            "Onayla",
         "Status:":
             "Durum:",
-        "Phone number:":
-            "Telefon numarası:",
-        "PIN:":
-            "PIN:",
-        "Authenticator code:":
-            "Doğrulama kodu:",
         "Connected":
             "Bağlı",
         "Not connected":
             "Bağlı değil",
-        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
-            "Telefon numaranızı (ör. +49 170 1234567) ve 4 haneli PIN’inizi girin.",
-        "Logging in…":
-            "Oturum açılıyor…",
-        "Enter the code from your authenticator app (%@).":
-            "Doğrulama uygulamanızdaki kodu girin (%@).",
-        "Confirm the login in your Trade Republic app (%@).":
-            "Oturum açmayı Trade Republic uygulamasında onaylayın (%@).",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
-            "Trade Republic’in her an değişebilecek resmî olmayan web arayüzünü kullanır. Tickado’nun Trade Republic ile bir bağlantısı yoktur. PIN’iniz yalnızca oturum açmak için Trade Republic’e gönderilir ve saklanmaz.",
+        "Connect…":
+            "Bağlan…",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
+            "Telefon numaranız ve PIN’inizle oturum açın, ardından Trade Republic uygulamasında onaylayın. Bağlantı kurulunca bu pencere otomatik olarak kapanır.",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado only keeps the session, in the keychain.":
+            "Trade Republic’in her an değişebilecek resmî olmayan web arayüzünü kullanır. Tickado’nun Trade Republic ile bir bağlantısı yoktur. Oturumu Trade Republic web sitesinde açarsınız; Tickado yalnızca oturumu anahtar zincirinde saklar.",
     ]
 }

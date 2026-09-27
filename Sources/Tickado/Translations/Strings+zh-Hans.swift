@@ -196,41 +196,21 @@ extension L10n {
             "Trade Republic 没有响应。",
         "Unexpected response from Trade Republic.":
             "Trade Republic 返回了意外的响应。",
-        "Login timed out. Please try again.":
-            "登录已超时，请重试。",
-        "Login failed: %@":
-            "登录失败：%@",
-        "Trade Republic has changed its login. Tickado needs an update.":
-            "Trade Republic 更改了登录方式，Tickado 需要更新。",
         "Trade Republic returned HTTP %d.":
             "Trade Republic 返回了 HTTP %d。",
-        "Log In":
-            "登录",
         "Log Out":
             "退出登录",
-        "Confirm":
-            "确认",
         "Status:":
             "状态：",
-        "Phone number:":
-            "手机号码：",
-        "PIN:":
-            "PIN：",
-        "Authenticator code:":
-            "验证器代码：",
         "Connected":
             "已连接",
         "Not connected":
             "未连接",
-        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
-            "请输入手机号码（例如 +49 170 1234567）和 4 位 PIN。",
-        "Logging in…":
-            "正在登录…",
-        "Enter the code from your authenticator app (%@).":
-            "请输入验证器 App 中的代码（%@）。",
-        "Confirm the login in your Trade Republic app (%@).":
-            "请在 Trade Republic App 中确认登录（%@）。",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
-            "使用 Trade Republic 的非官方网页接口，该接口可能随时变化。Tickado 与 Trade Republic 无关联。你的 PIN 仅在登录时发送给 Trade Republic，不会被存储。",
+        "Connect…":
+            "连接…",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
+            "请使用手机号码和 PIN 登录，并在 Trade Republic App 中确认。连接成功后，此窗口会自动关闭。",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado only keeps the session, in the keychain.":
+            "使用 Trade Republic 的非官方网页接口，该接口可能随时变化。Tickado 与 Trade Republic 无关联。你在 Trade Republic 网站上登录；Tickado 只在钥匙串中保存会话。",
     ]
 }

@@ -196,41 +196,21 @@ extension L10n {
             "Trade Republicから応答がありません。",
         "Unexpected response from Trade Republic.":
             "Trade Republicから予期しない応答がありました。",
-        "Login timed out. Please try again.":
-            "ログインの有効期限が切れました。もう一度お試しください。",
-        "Login failed: %@":
-            "ログインに失敗しました: %@",
-        "Trade Republic has changed its login. Tickado needs an update.":
-            "Trade Republicのログイン方式が変更されました。Tickadoのアップデートが必要です。",
         "Trade Republic returned HTTP %d.":
             "Trade RepublicがHTTP %dを返しました。",
-        "Log In":
-            "ログイン",
         "Log Out":
             "ログアウト",
-        "Confirm":
-            "確認",
         "Status:":
             "状態:",
-        "Phone number:":
-            "電話番号:",
-        "PIN:":
-            "PIN:",
-        "Authenticator code:":
-            "認証コード:",
         "Connected":
             "接続済み",
         "Not connected":
             "未接続",
-        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
-            "電話番号（例: +49 170 1234567）と4桁のPINを入力してください。",
-        "Logging in…":
-            "ログイン中…",
-        "Enter the code from your authenticator app (%@).":
-            "認証アプリのコードを入力してください（%@）。",
-        "Confirm the login in your Trade Republic app (%@).":
-            "Trade Republicアプリでログインを承認してください（%@）。",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
-            "Trade Republicの非公式Webインターフェイスを使用しており、いつでも変更される可能性があります。TickadoはTrade Republicとは提携していません。PINはログインのためにTrade Republicにのみ送信され、保存されません。",
+        "Connect…":
+            "接続…",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
+            "電話番号とPINでログインし、Trade Republicアプリで承認してください。接続が完了すると、このウインドウは自動的に閉じます。",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado only keeps the session, in the keychain.":
+            "Trade Republicの非公式Webインターフェイスを使用しており、いつでも変更される可能性があります。TickadoはTrade Republicとは提携していません。ログインはTrade RepublicのWebサイトで行い、Tickadoはセッションのみをキーチェーンに保存します。",
     ]
 }

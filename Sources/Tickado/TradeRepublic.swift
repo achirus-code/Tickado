@@ -142,8 +142,8 @@ enum TRProtocol {
 }
 
 /// Depot bei Trade Republic über die inoffizielle Web-Schnittstelle (dieselbe wie app.traderepublic.com).
-/// Login mit Handynummer + PIN, bestätigt per Push in der TR-App oder per Code aus einer Authenticator-App.
-/// Danach reichen die Session-Cookies; sie liegen im Schlüsselbund. Die PIN wird nicht gespeichert.
+/// Angemeldet wird auf der echten TR-Website in einem Tickado-Fenster (`TradeRepublicLoginWindowController`);
+/// danach übernimmt Tickado nur deren Session-Cookies und legt sie in den Schlüsselbund.
 @MainActor
 final class TradeRepublic {
     static let shared = TradeRepublic()
@@ -153,7 +153,7 @@ final class TradeRepublic {
     }
 
     enum Failure: LocalizedError {
-        case sessionExpired, timeout, invalidResponse, loginTimeout
+        case sessionExpired, timeout, invalidResponse
         case server(String)
 
         var errorDescription: String? {
@@ -161,23 +161,15 @@ final class TradeRepublic {
             case .sessionExpired: L("Session expired. Please log in again.")
             case .timeout: L("Trade Republic did not respond.")
             case .invalidResponse: L("Unexpected response from Trade Republic.")
-            case .loginTimeout: L("Login timed out. Please try again.")
             case .server(let message): message
             }
         }
     }
 
-    struct LoginProcess {
-        let id: String
-        let deadline: Date
-        let needsCode: Bool
-    }
-
-    private static let host = "https://api.traderepublic.com"
-    private static let appVersion = "2.2631.13"
-    private static let browserVersion = "146.0.0.0"
-    private static let userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-        + "(KHTML, like Gecko) Chrome/\(browserVersion) Safari/537.36"
+    static let host = "https://api.traderepublic.com"
+    /// Nur bis zum ersten Login; danach der User-Agent des Anmeldefensters (Session und Bot-Schutz passen dazu).
+    private static let defaultUserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 "
+        + "(KHTML, like Gecko) Version/18.0 Safari/605.1.15"
     private static let keychainAccount = "traderepublic-session"
 
     private let session: URLSession
@@ -188,12 +180,13 @@ final class TradeRepublic {
 
     private init() {
         let config = URLSessionConfiguration.ephemeral
-        config.httpAdditionalHeaders = ["User-Agent": Self.userAgent]
         config.timeoutIntervalForRequest = 20
         cookies = config.httpCookieStorage ?? HTTPCookieStorage.shared
         session = URLSession(configuration: config)
         if restoreCookies() { state = .connected }
     }
+
+    private var userAgent: String { Prefs.shared.trUserAgent ?? Self.defaultUserAgent }
 
     private var locale: String {
         Locale.preferredLanguages.first.flatMap { Locale.Language(identifier: $0).languageCode?.identifier } ?? "de"
@@ -201,47 +194,26 @@ final class TradeRepublic {
 
     // MARK: - Login
 
-    func startLogin(phone: String, pin: String) async throws -> LoginProcess {
-        let body = try JSONSerialization.data(withJSONObject: ["phoneNumber": phone, "pin": pin])
-        let started = try await request("POST", "/api/v2/auth/web/login", body: body, login: true)
-        guard let id = started["processId"] as? String else { throw Failure.invalidResponse }
-        let countdown = TRProtocol.number(started["countdownInSeconds"]) ?? 120
-        let process = try await request("GET", "/api/v2/auth/web/login/processes/\(id)", login: true)
-        return LoginProcess(id: id, deadline: Date(timeIntervalSinceNow: countdown + 1),
-                            needsCode: process["requiredAction"] as? String == "AUTHENTICATOR_VERIFICATION")
-    }
-
-    func submitCode(_ code: String, for process: LoginProcess) async throws {
-        let body = try JSONSerialization.data(withJSONObject: ["code": code])
-        _ = try await request("POST", "/api/v2/auth/web/login/processes/\(process.id)/authenticator-verification",
-                              body: body, login: true)
-    }
-
-    /// Wartet, bis der Login in der App bestätigt ist; danach gelten die Session-Cookies.
-    func awaitConfirmation(_ process: LoginProcess) async throws {
-        while true {
-            let status = try await request("GET", "/api/v2/auth/web/login/processes/\(process.id)", login: true)["status"]
-            switch status as? String {
-            case "CONFIRMED", "COMPLETED":
-                try await finishLogin()
-                return
-            case "PENDING", nil:
-                guard Date() < process.deadline else { throw Failure.loginTimeout }
-                try await Task.sleep(for: .seconds(2))
-            case let other?:
-                throw Failure.server(L("Login failed: %@", other))
-            }
+    /// Übernimmt die Cookies aus dem Anmeldefenster. `true`, wenn sie eine gültige Session sind.
+    func adopt(_ newCookies: [HTTPCookie], userAgent: String?) async -> Bool {
+        let previous = cookies.cookies ?? []
+        for cookie in previous { cookies.deleteCookie(cookie) }
+        for cookie in newCookies { cookies.setCookie(cookie) }
+        let oldAgent = Prefs.shared.trUserAgent
+        if let userAgent { Prefs.shared.trUserAgent = userAgent }
+        // Depotnummer für compactPortfolioByType; gelingt die Anfrage, ist die Session gültig.
+        guard let account = try? await request("GET", "/api/v2/auth/account") else {
+            for cookie in cookies.cookies ?? [] { cookies.deleteCookie(cookie) }
+            for cookie in previous { cookies.setCookie(cookie) }
+            Prefs.shared.trUserAgent = oldAgent
+            return false
         }
-    }
-
-    private func finishLogin() async throws {
+        Prefs.shared.trAccount = account["securitiesAccountNumber"] as? String
         sessionRefreshed = Date()
-        // Depotnummer für compactPortfolioByType; ohne sie bleibt das ältere compactPortfolio.
-        let account = try? await request("GET", "/api/v2/auth/account")
-        Prefs.shared.trAccount = account?["securitiesAccountNumber"] as? String
         instruments = [:]
         state = .connected
         saveCookies()
+        return true
     }
 
     func logOut() {
@@ -263,7 +235,8 @@ final class TradeRepublic {
         guard state == .connected else { throw Failure.sessionExpired }
         do {
             try await refreshSessionIfNeeded()
-            let socket = TRSocket(session: session, cookies: cookies.cookies(for: URL(string: Self.host)!) ?? [])
+            let socket = TRSocket(session: session, cookies: cookies.cookies(for: URL(string: Self.host)!) ?? [],
+                                  userAgent: userAgent)
             // Hängt die Verbindung, beendet der Wächter sie; receive() wirft dann.
             let watchdog = Task { [socket] in
                 try await Task.sleep(for: .seconds(25))
@@ -329,58 +302,26 @@ final class TradeRepublic {
         saveCookies()
     }
 
-    private func request(_ method: String, _ path: String, body: Data? = nil, login: Bool = false) async throws
-        -> [String: Any] {
+    private func request(_ method: String, _ path: String, body: Data? = nil) async throws -> [String: Any] {
         guard let url = URL(string: Self.host + path) else { throw Failure.invalidResponse }
         var request = URLRequest(url: url)
         request.httpMethod = method
         request.httpBody = body
         request.setValue(locale, forHTTPHeaderField: "Accept-Language")
+        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         if body != nil { request.setValue("application/json", forHTTPHeaderField: "Content-Type") }
-        if login {
-            request.setValue(deviceInfo, forHTTPHeaderField: "X-TR-Device-Info")
-            request.setValue(Self.appVersion, forHTTPHeaderField: "X-TR-App-Version")
-            request.setValue("web-pro", forHTTPHeaderField: "X-Tr-Platform")
-        }
         let (data, response) = try await session.data(for: request)
         guard let http = response as? HTTPURLResponse else { throw Failure.invalidResponse }
         let json = try? JSONSerialization.jsonObject(with: data)
         switch http.statusCode {
         case 200..<300:
             return json as? [String: Any] ?? [:]
-        case 401 where !login, 403 where !login:
+        case 401, 403:
             throw Failure.sessionExpired
-        case 426:
-            throw Failure.server(L("Trade Republic has changed its login. Tickado needs an update."))
         default:
             let error = TRProtocol.errorMessage(json)
             throw Failure.server(error.message ?? error.code ?? L("Trade Republic returned HTTP %d.", http.statusCode))
         }
-    }
-
-    /// Geräteangaben wie im Browser; die Geräte-ID bleibt pro Installation gleich.
-    private var deviceInfo: String {
-        let prefs = Prefs.shared
-        let deviceID = prefs.trDeviceID ?? {
-            let id = (0..<64).map { _ in String(format: "%02x", UInt8.random(in: 0...255)) }.joined()
-            prefs.trDeviceID = id
-            return id
-        }()
-        let os = ProcessInfo.processInfo.operatingSystemVersion
-        let info: [String: Any] = [
-            "stableDeviceId": deviceID,
-            "browser": "Chrome",
-            "browserVersion": Self.browserVersion,
-            "os": "Mac OS",
-            "osVersion": "\(os.majorVersion).\(os.minorVersion)",
-            "timezone": TimeZone.current.identifier,
-            "timezoneOffset": -TimeZone.current.secondsFromGMT() / 60,
-            "screen": "1920x1080x24",
-            "preferredLanguages": [locale],
-            "numberOfCores": ProcessInfo.processInfo.activeProcessorCount,
-        ]
-        let data = (try? JSONSerialization.data(withJSONObject: info)) ?? Data()
-        return data.base64EncodedString()
     }
 
     // MARK: - Cookies im Schlüsselbund
@@ -413,8 +354,9 @@ private final class TRSocket {
     private var previous: [Int: String] = [:]
     private(set) var timedOut = false
 
-    init(session: URLSession, cookies: [HTTPCookie]) {
+    init(session: URLSession, cookies: [HTTPCookie], userAgent: String) {
         var request = URLRequest(url: URL(string: "wss://api.traderepublic.com")!)
+        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         for (field, value) in HTTPCookie.requestHeaderFields(with: cookies) {
             request.setValue(value, forHTTPHeaderField: field)
         }

@@ -196,41 +196,21 @@ extension L10n {
             "O Trade Republic não responde.",
         "Unexpected response from Trade Republic.":
             "Resposta inesperada do Trade Republic.",
-        "Login timed out. Please try again.":
-            "O login expirou. Tente novamente.",
-        "Login failed: %@":
-            "Falha no login: %@",
-        "Trade Republic has changed its login. Tickado needs an update.":
-            "O Trade Republic mudou o login. O Tickado precisa ser atualizado.",
         "Trade Republic returned HTTP %d.":
             "O Trade Republic retornou HTTP %d.",
-        "Log In":
-            "Entrar",
         "Log Out":
             "Sair",
-        "Confirm":
-            "Confirmar",
         "Status:":
             "Status:",
-        "Phone number:":
-            "Telefone:",
-        "PIN:":
-            "PIN:",
-        "Authenticator code:":
-            "Código do autenticador:",
         "Connected":
             "Conectado",
         "Not connected":
             "Não conectado",
-        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
-            "Digite seu telefone (ex.: +49 170 1234567) e seu PIN de 4 dígitos.",
-        "Logging in…":
-            "Entrando…",
-        "Enter the code from your authenticator app (%@).":
-            "Digite o código do seu app autenticador (%@).",
-        "Confirm the login in your Trade Republic app (%@).":
-            "Confirme o login no app do Trade Republic (%@).",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
-            "Usa a interface web não oficial do Trade Republic, que pode mudar a qualquer momento. O Tickado não é afiliado ao Trade Republic. Seu PIN é enviado apenas ao Trade Republic para o login e não é armazenado.",
+        "Connect…":
+            "Conectar…",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
+            "Entre com seu telefone e PIN e confirme no app do Trade Republic. Esta janela fecha automaticamente quando a conexão for estabelecida.",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado only keeps the session, in the keychain.":
+            "Usa a interface web não oficial do Trade Republic, que pode mudar a qualquer momento. O Tickado não é afiliado ao Trade Republic. Você entra no site do Trade Republic; o Tickado guarda apenas a sessão, nas Chaves.",
     ]
 }

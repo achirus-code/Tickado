@@ -51,8 +51,9 @@ Das Fenster hat eine feste Größe, merkt sich seine Position und lässt sich mi
 
 ### Trade Republic
 Trade Republic hat keine offizielle API. Tickado nutzt dieselbe inoffizielle Web-Schnittstelle wie app.traderepublic.com (wie das Open-Source-Projekt pytr).
-- **Anmelden:** Settings → Trade Republic → Handynummer und 4-stellige PIN → „Anmelden“ → in der Trade-Republic-App bestätigen (Push). Mit Authenticator-App erscheint stattdessen ein Codefeld.
-- Die **PIN wird nicht gespeichert**, nur die Session-Cookies (im Schlüsselbund). Läuft die Session ab, zeigt das Menü „Erneut anmelden …“.
+- **Verbinden:** Settings → Trade Republic → „Verbinden …“. Es öffnet sich ein Fenster mit der echten Website app.traderepublic.com. Dort wie gewohnt mit Handynummer und PIN anmelden und in der Trade-Republic-App bestätigen. Sobald die Anmeldung steht, schließt sich das Fenster von selbst.
+- Ein eigenes Fenster statt Safari/Chrome, weil Tickado an die Anmeldung eines normalen Browsers nicht herankommt.
+- Die PIN tippst du nur auf der Trade-Republic-Seite ein. Tickado behält nur die Session-Cookies (im Schlüsselbund). Läuft die Session ab, zeigt das Menü „Erneut anmelden …“ und öffnet direkt das Anmeldefenster.
 - Abgefragt werden Positionen, Kurse (Tagesänderung gegen Vortagesschluss) und Guthaben, im selben Intervall wie die übrigen Kurse. Beträge immer in Euro.
 - Risiken: Trade Republic kann die Schnittstelle jederzeit ändern oder Fremdzugriffe blockieren; dann funktioniert die Anbindung nicht mehr, bis Tickado angepasst ist.
 
@@ -137,7 +138,8 @@ Damit Fehler in Cloud-Änderungen sofort auffallen, kann ein GitHub-Actions-Work
 | `Sources/Tickado/Keychain.swift` | API-Key im Schlüsselbund |
 | `Sources/Tickado/LaunchAtLogin.swift` | Autostart (SMAppService) |
 | `Sources/Tickado/TradeRepublic.swift` | Trade-Republic-Anbindung: Login, Session, WebSocket-Protokoll, Depot |
-| `Sources/Tickado/TradeRepublicSettingsViewController.swift` | Settings-Tab *Trade Republic* (Login/Logout) |
+| `Sources/Tickado/TradeRepublicSettingsViewController.swift` | Settings-Tab *Trade Republic* (Verbinden/Abmelden) |
+| `Sources/Tickado/TradeRepublicLoginWindowController.swift` | Anmeldefenster mit der TR-Website (WKWebView), übernimmt die Session |
 | `Scripts/make-icon.swift` | Zeichnet das App-Icon → `Resources/AppIcon.icns` |
 | `build.sh` | Build, App-Bundle, Signatur, Installation |
 | `CLAUDE.md` | Projektwissen für Claude |

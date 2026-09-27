@@ -384,7 +384,9 @@ final class StatusController: NSObject, NSMenuDelegate {
         submenu.addItem(.separator())
         if TradeRepublic.shared.state == .expired {
             submenu.addItem(ClosureMenuItem(L("Log in again…")) { [weak self] in
-                DispatchQueue.main.async { self?.showSettings(.broker) }
+                DispatchQueue.main.async {
+                    TradeRepublicLoginWindowController.show { self?.settingsDidChange(.broker) }
+                }
             })
         }
         submenu.addItem(ClosureMenuItem(L("Open Trade Republic")) {
@@ -456,6 +458,7 @@ final class StatusController: NSObject, NSMenuDelegate {
             depotToken = UUID()
             if TradeRepublic.shared.state != .connected { depot = nil }
             refreshDepot()
+            settings?.brokerDidChange()
         case .selection:
             let ids = Set(prefs.selectedCoins.map(\.id))
             prefs.tickerIDs = prefs.tickerIDs.filter(ids.contains)

@@ -196,41 +196,21 @@ extension L10n {
             "Trade Republic nu răspunde.",
         "Unexpected response from Trade Republic.":
             "Răspuns neașteptat de la Trade Republic.",
-        "Login timed out. Please try again.":
-            "Autentificarea a expirat. Încercați din nou.",
-        "Login failed: %@":
-            "Autentificare eșuată: %@",
-        "Trade Republic has changed its login. Tickado needs an update.":
-            "Trade Republic a schimbat autentificarea. Tickado trebuie actualizat.",
         "Trade Republic returned HTTP %d.":
             "Trade Republic a returnat HTTP %d.",
-        "Log In":
-            "Autentificare",
         "Log Out":
             "Deconectare",
-        "Confirm":
-            "Confirmă",
         "Status:":
             "Stare:",
-        "Phone number:":
-            "Număr de telefon:",
-        "PIN:":
-            "PIN:",
-        "Authenticator code:":
-            "Cod de autentificare:",
         "Connected":
             "Conectat",
         "Not connected":
             "Neconectat",
-        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
-            "Introduceți numărul de telefon (de ex. +49 170 1234567) și PIN-ul de 4 cifre.",
-        "Logging in…":
-            "Se autentifică…",
-        "Enter the code from your authenticator app (%@).":
-            "Introduceți codul din aplicația de autentificare (%@).",
-        "Confirm the login in your Trade Republic app (%@).":
-            "Confirmați autentificarea în aplicația Trade Republic (%@).",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
-            "Folosește interfața web neoficială Trade Republic, care se poate schimba oricând. Tickado nu este afiliat cu Trade Republic. PIN-ul este trimis doar către Trade Republic pentru autentificare și nu este salvat.",
+        "Connect…":
+            "Conectare…",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
+            "Autentificați-vă cu numărul de telefon și PIN-ul, apoi confirmați în aplicația Trade Republic. Fereastra se închide automat după conectare.",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado only keeps the session, in the keychain.":
+            "Folosește interfața web neoficială Trade Republic, care se poate schimba oricând. Tickado nu este afiliat cu Trade Republic. Vă autentificați pe site-ul Trade Republic; Tickado păstrează doar sesiunea, în portchei.",
     ]
 }

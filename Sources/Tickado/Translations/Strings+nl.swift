@@ -196,41 +196,21 @@ extension L10n {
             "Trade Republic reageert niet.",
         "Unexpected response from Trade Republic.":
             "Onverwacht antwoord van Trade Republic.",
-        "Login timed out. Please try again.":
-            "Inloggen verlopen. Probeer het opnieuw.",
-        "Login failed: %@":
-            "Inloggen mislukt: %@",
-        "Trade Republic has changed its login. Tickado needs an update.":
-            "Trade Republic heeft het inloggen gewijzigd. Tickado heeft een update nodig.",
         "Trade Republic returned HTTP %d.":
             "Trade Republic gaf HTTP %d terug.",
-        "Log In":
-            "Log in",
         "Log Out":
             "Log uit",
-        "Confirm":
-            "Bevestig",
         "Status:":
             "Status:",
-        "Phone number:":
-            "Telefoonnummer:",
-        "PIN:":
-            "PIN:",
-        "Authenticator code:":
-            "Authenticatorcode:",
         "Connected":
             "Verbonden",
         "Not connected":
             "Niet verbonden",
-        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
-            "Voer je telefoonnummer (bijv. +49 170 1234567) en je 4-cijferige pincode in.",
-        "Logging in…":
-            "Inloggen…",
-        "Enter the code from your authenticator app (%@).":
-            "Voer de code uit je authenticator-app in (%@).",
-        "Confirm the login in your Trade Republic app (%@).":
-            "Bevestig het inloggen in de Trade Republic-app (%@).",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
-            "Gebruikt de onofficiële webinterface van Trade Republic, die op elk moment kan veranderen. Tickado is niet verbonden aan Trade Republic. Je pincode wordt alleen naar Trade Republic gestuurd om in te loggen en wordt niet bewaard.",
+        "Connect…":
+            "Verbind…",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
+            "Log in met je telefoonnummer en pincode en bevestig in de Trade Republic-app. Dit venster sluit automatisch zodra de verbinding er is.",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado only keeps the session, in the keychain.":
+            "Gebruikt de onofficiële webinterface van Trade Republic, die op elk moment kan veranderen. Tickado is niet verbonden aan Trade Republic. Je logt in op de website van Trade Republic; Tickado bewaart alleen de sessie, in de sleutelhanger.",
     ]
 }
