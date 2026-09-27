@@ -198,10 +198,6 @@ extension L10n {
             "Voitto tänään",
         "Total gain":
             "Voitto yhteensä",
-        "TR today":
-            "TR tänään",
-        "TR total":
-            "TR yhteensä",
         "Click to show it in the menu bar.":
             "Näytä valikkorivillä klikkaamalla.",
         "Last synchronized: %@":

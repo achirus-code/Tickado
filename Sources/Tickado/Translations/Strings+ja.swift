@@ -198,10 +198,6 @@ extension L10n {
             "本日の損益",
         "Total gain":
             "累計損益",
-        "TR today":
-            "TR 本日",
-        "TR total":
-            "TR 累計",
         "Click to show it in the menu bar.":
             "クリックするとメニューバーに表示します。",
         "Last synchronized: %@":

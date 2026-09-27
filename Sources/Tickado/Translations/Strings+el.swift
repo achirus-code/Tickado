@@ -198,10 +198,6 @@ extension L10n {
             "Κέρδος σήμερα",
         "Total gain":
             "Συνολικό κέρδος",
-        "TR today":
-            "TR σήμερα",
-        "TR total":
-            "TR σύνολο",
         "Click to show it in the menu bar.":
             "Κάντε κλικ για εμφάνιση στη γραμμή μενού.",
         "Last synchronized: %@":

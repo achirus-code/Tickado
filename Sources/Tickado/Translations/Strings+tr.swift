@@ -198,10 +198,6 @@ extension L10n {
             "Bugünkü kazanç",
         "Total gain":
             "Toplam kazanç",
-        "TR today":
-            "TR bugün",
-        "TR total":
-            "TR toplam",
         "Click to show it in the menu bar.":
             "Menü çubuğunda göstermek için tıklayın.",
         "Last synchronized: %@":

@@ -198,10 +198,6 @@ extension L10n {
             "Zisk dnes",
         "Total gain":
             "Celkový zisk",
-        "TR today":
-            "TR dnes",
-        "TR total":
-            "TR celkem",
         "Click to show it in the menu bar.":
             "Klikněte pro zobrazení v řádku nabídek.",
         "Last synchronized: %@":

@@ -198,10 +198,6 @@ extension L10n {
             "Keuntungan hari ini",
         "Total gain":
             "Total keuntungan",
-        "TR today":
-            "TR hari ini",
-        "TR total":
-            "TR total",
         "Click to show it in the menu bar.":
             "Klik untuk menampilkan di bar menu.",
         "Last synchronized: %@":

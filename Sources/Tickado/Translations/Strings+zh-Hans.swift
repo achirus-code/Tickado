@@ -198,10 +198,6 @@ extension L10n {
             "今日收益",
         "Total gain":
             "总收益",
-        "TR today":
-            "TR 今日",
-        "TR total":
-            "TR 总计",
         "Click to show it in the menu bar.":
             "点按以在菜单栏中显示。",
         "Last synchronized: %@":

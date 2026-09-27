@@ -198,10 +198,6 @@ extension L10n {
             "Прибыль сегодня",
         "Total gain":
             "Общая прибыль",
-        "TR today":
-            "TR сегодня",
-        "TR total":
-            "TR всего",
         "Click to show it in the menu bar.":
             "Нажмите, чтобы показать в строке меню.",
         "Last synchronized: %@":

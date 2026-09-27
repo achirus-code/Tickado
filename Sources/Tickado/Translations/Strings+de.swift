@@ -198,10 +198,6 @@ extension L10n {
             "Gewinn heute",
         "Total gain":
             "Gewinn gesamt",
-        "TR today":
-            "TR heute",
-        "TR total":
-            "TR gesamt",
         "Click to show it in the menu bar.":
             "Klicken, um den Wert in der Menüleiste zu zeigen.",
         "Last synchronized: %@":

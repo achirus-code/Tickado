@@ -68,12 +68,12 @@ enum DepotTicker: String, CaseIterable {
         }
     }
 
-    /// Kurzer Name in der Menüleiste
+    /// Kurzer Name in der Menüleiste: Δ = Veränderung heute, Σ = Summe seit Kauf (sprachunabhängig, kurz).
     var label: String {
         switch self {
         case .value: "TR"
-        case .today: L("TR today")
-        case .total: L("TR total")
+        case .today: "TRΔ"
+        case .total: "TRΣ"
         }
     }
 

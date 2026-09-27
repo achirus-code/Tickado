@@ -198,10 +198,6 @@ extension L10n {
             "Прибуток сьогодні",
         "Total gain":
             "Загальний прибуток",
-        "TR today":
-            "TR сьогодні",
-        "TR total":
-            "TR усього",
         "Click to show it in the menu bar.":
             "Клацніть, щоб показати в рядку меню.",
         "Last synchronized: %@":

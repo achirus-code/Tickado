@@ -198,10 +198,6 @@ extension L10n {
             "Vinst i dag",
         "Total gain":
             "Total vinst",
-        "TR today":
-            "TR i dag",
-        "TR total":
-            "TR totalt",
         "Click to show it in the menu bar.":
             "Klicka för att visa i menyraden.",
         "Last synchronized: %@":

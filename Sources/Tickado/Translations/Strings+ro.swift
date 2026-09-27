@@ -198,10 +198,6 @@ extension L10n {
             "Câștig azi",
         "Total gain":
             "Câștig total",
-        "TR today":
-            "TR azi",
-        "TR total":
-            "TR total",
         "Click to show it in the menu bar.":
             "Faceți clic pentru a afișa în bara de meniu.",
         "Last synchronized: %@":

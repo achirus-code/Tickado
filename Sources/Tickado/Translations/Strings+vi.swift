@@ -198,10 +198,6 @@ extension L10n {
             "Lãi hôm nay",
         "Total gain":
             "Tổng lãi",
-        "TR today":
-            "TR hôm nay",
-        "TR total":
-            "TR tổng",
         "Click to show it in the menu bar.":
             "Bấm để hiện trên thanh menu.",
         "Last synchronized: %@":

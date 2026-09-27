@@ -198,10 +198,6 @@ extension L10n {
             "오늘 수익",
         "Total gain":
             "총 수익",
-        "TR today":
-            "TR 오늘",
-        "TR total":
-            "TR 합계",
         "Click to show it in the menu bar.":
             "클릭하면 메뉴 막대에 표시합니다.",
         "Last synchronized: %@":

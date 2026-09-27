@@ -198,10 +198,6 @@ extension L10n {
             "Winst vandaag",
         "Total gain":
             "Totale winst",
-        "TR today":
-            "TR vandaag",
-        "TR total":
-            "TR totaal",
         "Click to show it in the menu bar.":
             "Klik om het in de menubalk te tonen.",
         "Last synchronized: %@":

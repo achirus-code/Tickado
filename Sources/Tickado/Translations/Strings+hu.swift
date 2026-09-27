@@ -198,10 +198,6 @@ extension L10n {
             "Mai nyereség",
         "Total gain":
             "Teljes nyereség",
-        "TR today":
-            "TR ma",
-        "TR total":
-            "TR összesen",
         "Click to show it in the menu bar.":
             "Kattintson a menüsorban való megjelenítéshez.",
         "Last synchronized: %@":
