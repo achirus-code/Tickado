@@ -56,12 +56,6 @@ final class StatusController: NSObject, NSMenuDelegate {
         return [coins[rotationIndex % coins.count]]
     }
 
-    /// Letzte erfolgreiche Abfrage ist deutlich älter als das Intervall.
-    private var isStale: Bool {
-        guard let lastUpdate else { return false }
-        return Date().timeIntervalSince(lastUpdate) > Double(prefs.refreshInterval * 3 + 60)
-    }
-
     @objc private func didWake() {
         // Nach dem Aufwachen kurz warten, bis das Netzwerk wieder da ist.
         scheduleRefresh(after: 5)
@@ -70,6 +64,9 @@ final class StatusController: NSObject, NSMenuDelegate {
     @objc private func refresh() {
         pendingRefresh?.cancel()
         refreshTask?.cancel()
+        // Nächste reguläre Abfrage erst ein volles Intervall später, sonst folgen z. B. nach einer
+        // Einstellungsänderung zwei Anfragen dicht aufeinander (Rate-Limit).
+        refreshTimer?.fireDate = Date(timeIntervalSinceNow: TimeInterval(prefs.refreshInterval))
 
         let selection = prefs.selectedCoins
         guard !selection.isEmpty else {
@@ -85,13 +82,23 @@ final class StatusController: NSObject, NSMenuDelegate {
         let currency = prefs.baseCurrency
         let metalUnit = prefs.metalUnit
         refreshTask = Task { [weak self] in
-            let crypto = Task { () async throws -> [CoinGecko.Market] in
-                cryptoIDs.isEmpty ? [] : try await client.markets(ids: cryptoIDs, currency: currency)
-            }
+            // async let statt eigenem Task: wird mit refreshTask abgebrochen und verbraucht dann kein Rate-Limit.
+            async let crypto = StatusController.fetchMarkets(client, ids: cryptoIDs, currency: currency)
             let yahoo = await YahooFinance.quotes(for: others, currency: currency, metalUnit: metalUnit)
-            let markets = await crypto.result
+            let markets = await crypto
             guard !Task.isCancelled, let self else { return }
             self.apply(markets, yahoo: yahoo.quotes, yahooError: yahoo.error)
+        }
+    }
+
+    /// Krypto-Kurse von CoinGecko; ohne ids keine Anfrage.
+    private nonisolated static func fetchMarkets(_ client: CoinGecko, ids: [String], currency: String) async
+        -> Result<[CoinGecko.Market], Error> {
+        guard !ids.isEmpty else { return .success([]) }
+        do {
+            return .success(try await client.markets(ids: ids, currency: currency))
+        } catch {
+            return .failure(error)
         }
     }
 
@@ -166,14 +173,18 @@ final class StatusController: NSObject, NSMenuDelegate {
 
     // MARK: - Menüleiste
 
-    private var renderer: TickerRenderer { TickerRenderer(quotes: quotes, isStale: isStale) }
+    /// Kurse, deren letzte erfolgreiche Abfrage deutlich älter als das Intervall ist, werden grau.
+    private var renderer: TickerRenderer {
+        TickerRenderer(quotes: quotes, staleBefore: Date(timeIntervalSinceNow: -Double(prefs.refreshInterval * 3 + 60)))
+    }
 
     private func updateUI() {
         updateTitle()
-        for (id, item) in coinRows {
-            if let coin = prefs.selectedCoins.first(where: { $0.id == id }) {
-                item.attributedTitle = renderer.rowTitle(for: coin)
-            }
+        // Zeilen gibt es nur bei offenem Menü (siehe menuDidClose).
+        guard !coinRows.isEmpty else { return }
+        let renderer = self.renderer
+        for coin in prefs.selectedCoins {
+            coinRows[coin.id]?.attributedTitle = renderer.rowTitle(for: coin)
         }
     }
 
@@ -214,6 +225,12 @@ final class StatusController: NSObject, NSMenuDelegate {
         rebuildMenu()
     }
 
+    func menuDidClose(_ menu: NSMenu) {
+        guard menu === self.menu else { return }
+        // Geschlossenes Menü nicht weiter aktualisieren; beim Öffnen wird es ohnehin neu gebaut.
+        coinRows = [:]
+    }
+
     private func rebuildMenu() {
         menu.removeAllItems()
         coinRows = [:]
@@ -231,6 +248,7 @@ final class StatusController: NSObject, NSMenuDelegate {
             menu.addItem(empty)
         }
         let tickerIDs = Set(prefs.tickerIDs)
+        let renderer = self.renderer
         for (index, coin) in coins.enumerated() {
             if index > 0, coins[index - 1].kind != coin.kind { menu.addItem(.separator()) }
             let item = ClosureMenuItem("", state: tickerIDs.contains(coin.id)) { [weak self] in

@@ -34,15 +34,21 @@ final class Prefs {
         }
     }
 
-    /// Im Menü angezeigte Coins (Tab "Assets").
+    /// Im Menü angezeigte Coins (Tab "Assets"). Wird bei jedem Zeichnen gebraucht, deshalb nur einmal dekodiert.
     var selectedCoins: [Coin] {
         get {
-            guard let data = d.data(forKey: "selectedCoins"),
-                  let coins = try? JSONDecoder().decode([Coin].self, from: data) else { return Coin.defaults }
+            if let cachedSelection { return cachedSelection }
+            let coins = d.data(forKey: "selectedCoins")
+                .flatMap { try? JSONDecoder().decode([Coin].self, from: $0) } ?? Coin.defaults
+            cachedSelection = coins
             return coins
         }
-        set { d.set(try? JSONEncoder().encode(newValue), forKey: "selectedCoins") }
+        set {
+            cachedSelection = newValue
+            d.set(try? JSONEncoder().encode(newValue), forKey: "selectedCoins")
+        }
     }
+    private var cachedSelection: [Coin]?
 
     /// In der Menüleiste angezeigte Coins (Häkchen im Menü).
     var tickerIDs: [String] {

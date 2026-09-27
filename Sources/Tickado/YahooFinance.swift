@@ -3,6 +3,9 @@ import Foundation
 /// Kurse für Aktien und Edelmetalle über die (inoffizielle, schlüsselfreie) Yahoo-Finance-API.
 enum YahooFinance {
     private static let base = "https://query1.finance.yahoo.com"
+    // Nur unreservierte ASCII-Zeichen unkodiert lassen; `.urlQueryAllowed` lässt "&" und "+" durch ("S&P 500" → Suche nach "S").
+    private static let queryAllowed = CharacterSet(
+        charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~")
 
     struct RawQuote {
         let price: Double
@@ -44,7 +47,7 @@ enum YahooFinance {
 
     /// Aktien/Indizes bzw. ETFs nach Name, Tickersymbol oder ISIN suchen.
     static func search(_ text: String, kind: AssetKind) async throws -> [Coin] {
-        let query = text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? text
+        let query = text.addingPercentEncoding(withAllowedCharacters: queryAllowed) ?? text
         let response: SearchResponse = try await get("/v1/finance/search?q=\(query)&quotesCount=15&newsCount=0")
         let allowed: Set<String> = kind == .etf ? ["ETF"] : ["EQUITY", "INDEX", "MUTUALFUND"]
         return (response.quotes ?? []).compactMap { item in
@@ -70,11 +73,7 @@ enum YahooFinance {
             }
         }
 
-        // Benötigte Wechselkurse einmal pro Quellwährung abfragen.
-        var rates: [String: Double] = [:]
-        for source in Set(raw.values.map { normalized($0.currency).code }) {
-            rates[source] = await rate(from: source, to: currency)
-        }
+        let rates = await exchangeRates(from: Set(raw.values.map { normalized($0.currency).code }), to: currency)
 
         var result: [String: Quote] = [:]
         for asset in assets {
@@ -98,19 +97,40 @@ enum YahooFinance {
         }
     }
 
-    /// Wechselkurs Fiat → Basiswährung (auch BTC/ETH/sats).
-    private static func rate(from source: String, to target: String) async -> Double? {
+    /// Wechselkurse Fiat → Basiswährung, alle gleichzeitig abgefragt. BTC/ETH/sats laufen über USD,
+    /// BTC-USD bzw. ETH-USD wird dabei nur einmal geholt. Fehlt ein Kurs, fehlt die Quellwährung im Ergebnis.
+    private static func exchangeRates(from sources: Set<String>, to target: String) async -> [String: Double] {
+        guard !sources.isEmpty else { return [:] }
         let crypto: [String: (symbol: String, multiplier: Double)] = [
             "btc": ("BTC-USD", 1), "eth": ("ETH-USD", 1), "sats": ("BTC-USD", 100_000_000),
         ]
-        if let (symbol, multiplier) = crypto[target] {
-            guard let toUSD = await rate(from: source, to: "usd"),
-                  let cryptoUSD = try? await quote(symbol).price, cryptoUSD > 0 else { return nil }
-            return toUSD / cryptoUSD * multiplier
+        let viaCrypto = crypto[target]
+        let fiat = viaCrypto == nil ? target.uppercased() : "USD"
+
+        var symbols = Set(sources.filter { $0 != fiat }.map { "\($0)\(fiat)=X" })
+        if let viaCrypto { symbols.insert(viaCrypto.symbol) }
+        var prices: [String: Double] = [:]
+        await withTaskGroup(of: (String, Double?).self) { group in
+            for symbol in symbols {
+                group.addTask { (symbol, try? await quote(symbol).price) }
+            }
+            for await (symbol, price) in group {
+                if let price { prices[symbol] = price }
+            }
         }
-        let targetCode = target.uppercased()
-        if source == targetCode { return 1 }
-        return try? await quote("\(source)\(targetCode)=X").price
+
+        var rates: [String: Double] = [:]
+        for source in sources {
+            let toFiat: Double? = source == fiat ? 1 : prices["\(source)\(fiat)=X"]
+            guard let toFiat else { continue }
+            if let viaCrypto {
+                guard let cryptoUSD = prices[viaCrypto.symbol], cryptoUSD > 0 else { continue }
+                rates[source] = toFiat / cryptoUSD * viaCrypto.multiplier
+            } else {
+                rates[source] = toFiat
+            }
+        }
+        return rates
     }
 
     private static func get<T: Decodable>(_ pathAndQuery: String) async throws -> T {

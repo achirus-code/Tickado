@@ -151,6 +151,8 @@ enum MetalUnit: String, CaseIterable {
 struct Quote {
     let price: Double
     let change24h: Double?
+    /// Zeitpunkt der Abfrage; zu alte Kurse werden grau gezeichnet (`TickerRenderer.staleBefore`).
+    var updated = Date()
 }
 
 /// Währungszeichen für die Menüleiste (₿ 84.213  Ξ 2.676).
