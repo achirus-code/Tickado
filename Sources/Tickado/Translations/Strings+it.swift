@@ -220,7 +220,7 @@ extension L10n {
             "Sincronizzando accedi al sito di Trade Republic e Tickado salva le tue posizioni (ISIN, quantità, prezzo di acquisto). I prezzi vengono poi caricati da Yahoo Finance. Usa l’interfaccia web non ufficiale di Trade Republic; Tickado non è affiliato a Trade Republic.",
         "Synchronizing…":
             "Sincronizzazione…",
-        "Unchecked positions are hidden in the menu and not counted. Click a name to rename it.":
-            "Le posizioni non spuntate sono nascoste nel menu e non vengono conteggiate. Fai clic su un nome per modificarlo.",
+        "Unchecked positions are hidden in the menu and not counted.":
+            "Le posizioni non spuntate sono nascoste nel menu e non vengono conteggiate.",
     ]
 }

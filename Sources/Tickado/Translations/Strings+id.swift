@@ -220,7 +220,7 @@ extension L10n {
             "Saat sinkronisasi, Anda masuk di situs web Trade Republic dan Tickado menyimpan posisi Anda (ISIN, jumlah, harga beli). Harga kemudian dimuat dari Yahoo Finance. Menggunakan antarmuka web tidak resmi Trade Republic; Tickado tidak berafiliasi dengan Trade Republic.",
         "Synchronizing…":
             "Menyinkronkan…",
-        "Unchecked positions are hidden in the menu and not counted. Click a name to rename it.":
-            "Posisi yang tidak dicentang disembunyikan di menu dan tidak dihitung. Klik nama untuk mengubahnya.",
+        "Unchecked positions are hidden in the menu and not counted.":
+            "Posisi yang tidak dicentang disembunyikan di menu dan tidak dihitung.",
     ]
 }

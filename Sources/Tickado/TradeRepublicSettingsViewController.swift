@@ -1,22 +1,16 @@
 import AppKit
 
-/// Tab "Trade Republic": Stand der letzten Synchronisierung, die Positionen zum Abwählen und Umbenennen,
+/// Tab "Trade Republic": Stand der letzten Synchronisierung, die Positionen zum Abwählen,
 /// darunter "Synchronisieren" (Anmeldung auf der TR-Website, Positionen werden gespeichert) und "Daten löschen".
 final class TradeRepublicSettingsViewController: SettingsPane {
     private lazy var syncButton = NSButton(title: L("Synchronize…"), target: self, action: #selector(synchronize))
     private lazy var removeButton = NSButton(title: L("Remove Data"), target: self, action: #selector(removeData))
     private let lastSyncLabel = NSTextField(labelWithString: "")
     private let message = NSTextField(wrappingLabelWithString: "")
-    private lazy var list = HoldingsList(
-        onToggle: { [weak self] isin, on in
-            TradeRepublic.shared.update(isin: isin, hidden: !on)
-            self?.onChange(.broker)   // andere Positionen brauchen andere Kurse; lädt auch diesen Tab neu
-        },
-        onRename: { [weak self] isin, name in
-            TradeRepublic.shared.update(isin: isin, customName: name)
-            self?.onChange(.display)
-            self?.reload()
-        })
+    private lazy var list = HoldingsList { [weak self] isin, on in
+        TradeRepublic.shared.setHidden(!on, isin: isin)
+        self?.onChange(.broker)   // andere Positionen brauchen andere Kurse; lädt auch diesen Tab neu
+    }
     private let listHint = NSTextField(wrappingLabelWithString: "")
     private var grid: NSGridView?
 
@@ -31,7 +25,7 @@ final class TradeRepublicSettingsViewController: SettingsPane {
         message.textColor = .secondaryLabelColor
         message.preferredMaxLayoutWidth = 320
         message.widthAnchor.constraint(lessThanOrEqualToConstant: 320).isActive = true
-        listHint.stringValue = L("Unchecked positions are hidden in the menu and not counted. Click a name to rename it.")
+        listHint.stringValue = L("Unchecked positions are hidden in the menu and not counted.")
         listHint.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
         listHint.textColor = .secondaryLabelColor
         listHint.preferredMaxLayoutWidth = HoldingsList.width
@@ -94,7 +88,7 @@ final class TradeRepublicSettingsViewController: SettingsPane {
     }
 }
 
-/// Gespeicherte Positionen: Checkbox (im Menü zeigen und mitzählen), Name zum Bearbeiten, ISIN.
+/// Gespeicherte Positionen: Checkbox (im Menü zeigen und mitzählen), Name, ISIN.
 private final class HoldingsList: NSView, NSTableViewDataSource, NSTableViewDelegate {
     private static let check = NSUserInterfaceItemIdentifier("check")
     private static let name = NSUserInterfaceItemIdentifier("name")
@@ -102,18 +96,17 @@ private final class HoldingsList: NSView, NSTableViewDataSource, NSTableViewDele
     static let width: CGFloat = 420
 
     private let onToggle: (String, Bool) -> Void
-    private let onRename: (String, String) -> Void
-    private let tableView = ClickToEditTableView()
+    private let tableView = NSTableView()
     private var holdings: [TRHolding] = []
 
-    init(onToggle: @escaping (String, Bool) -> Void, onRename: @escaping (String, String) -> Void) {
+    init(onToggle: @escaping (String, Bool) -> Void) {
         self.onToggle = onToggle
-        self.onRename = onRename
         super.init(frame: .zero)
 
         tableView.headerView = nil
         tableView.style = .plain
         tableView.usesAlternatingRowBackgroundColors = true
+        tableView.selectionHighlightStyle = .none
         tableView.rowHeight = 22
         tableView.intercellSpacing = NSSize(width: 6, height: 0)
         tableView.columnAutoresizingStyle = .noColumnAutoresizing
@@ -174,22 +167,14 @@ private final class HoldingsList: NSView, NSTableViewDataSource, NSTableViewDele
             return box
         case Self.name:
             let cell = tableView.makeView(withIdentifier: id, owner: nil) as? CenteredCell ?? {
-                let field = NSTextField()
-                field.isBordered = false
-                field.drawsBackground = false
-                field.lineBreakMode = .byTruncatingTail
-                field.cell?.usesSingleLineMode = true
-                (field.cell as? NSTextFieldCell)?.sendsActionOnEndEditing = true
-                field.target = self
-                field.action = #selector(renamed(_:))
-                return CenteredCell(identifier: id, content: field)
+                let label = NSTextField(labelWithString: "")
+                label.lineBreakMode = .byTruncatingTail
+                return CenteredCell(identifier: id, content: label)
             }()
-            let field = cell.content as! NSTextField
-            field.stringValue = holding.displayName
-            // Leer lassen stellt den Namen von Trade Republic wieder her; der steht dann als Platzhalter da.
-            field.placeholderString = holding.name
-            field.textColor = holding.hidden ? .secondaryLabelColor : .labelColor
-            field.toolTip = holding.customName == nil ? holding.name : "\(holding.displayName) (\(holding.name))"
+            let label = cell.content as! NSTextField
+            label.stringValue = holding.name
+            label.textColor = holding.hidden ? .secondaryLabelColor : .labelColor
+            label.toolTip = holding.name
             return cell
         default:
             let cell = tableView.makeView(withIdentifier: id, owner: nil) as? CenteredCell ?? {
@@ -208,18 +193,6 @@ private final class HoldingsList: NSView, NSTableViewDataSource, NSTableViewDele
         guard row >= 0 else { return }
         onToggle(holdings[row].isin, sender.state == .on)
     }
-
-    /// Die Zeile des Textfelds (es steckt in einer CenteredCell).
-    @objc private func renamed(_ sender: NSTextField) {
-        let row = tableView.row(for: sender)
-        guard row >= 0, sender.stringValue != holdings[row].displayName else { return }
-        onRename(holdings[row].isin, sender.stringValue)
-    }
-}
-
-/// Ein Klick in ein Textfeld startet sofort das Bearbeiten (sonst markiert der erste Klick nur die Zeile).
-private final class ClickToEditTableView: NSTableView {
-    override func validateProposedFirstResponder(_ responder: NSResponder, for event: NSEvent?) -> Bool { true }
 }
 
 /// Tabellenzelle, die ihr Textfeld vertikal mittig hält (sonst sitzt kleiner Text oben in der Zeile).

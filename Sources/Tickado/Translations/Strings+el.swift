@@ -220,7 +220,7 @@ extension L10n {
             "Κατά τον συγχρονισμό συνδέεστε στον ιστότοπο του Trade Republic και το Tickado αποθηκεύει τις θέσεις σας (ISIN, ποσότητα, τιμή αγοράς). Οι τιμές φορτώνονται μετά από το Yahoo Finance. Χρησιμοποιεί την ανεπίσημη διαδικτυακή διεπαφή του Trade Republic· το Tickado δεν συνδέεται με το Trade Republic.",
         "Synchronizing…":
             "Συγχρονισμός σε εξέλιξη…",
-        "Unchecked positions are hidden in the menu and not counted. Click a name to rename it.":
-            "Οι θέσεις χωρίς επιλογή αποκρύπτονται στο μενού και δεν υπολογίζονται. Κάντε κλικ σε ένα όνομα για να το αλλάξετε.",
+        "Unchecked positions are hidden in the menu and not counted.":
+            "Οι θέσεις χωρίς επιλογή αποκρύπτονται στο μενού και δεν υπολογίζονται.",
     ]
 }

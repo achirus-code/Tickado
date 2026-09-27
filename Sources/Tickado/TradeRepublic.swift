@@ -197,26 +197,21 @@ enum TRProtocol {
 }
 
 /// Gespeicherte Depotposition aus der letzten Synchronisierung. Kurse kommen laufend von Yahoo Finance (`symbol`).
-/// `customName` und `hidden` stellt der Nutzer in den Settings ein; sie überstehen eine neue Synchronisierung.
+/// `hidden` stellt der Nutzer in den Settings ein; es übersteht eine neue Synchronisierung.
 struct TRHolding: Codable, Equatable {
     let isin: String
     var name: String
     let quantity: Double
     let averageBuyIn: Double?
     var symbol: String?
-    var customName: String?
     var hidden = false
 
-    var displayName: String { customName ?? name }
-
-    init(isin: String, name: String, quantity: Double, averageBuyIn: Double?, symbol: String?,
-         customName: String? = nil, hidden: Bool = false) {
+    init(isin: String, name: String, quantity: Double, averageBuyIn: Double?, symbol: String?, hidden: Bool = false) {
         self.isin = isin
         self.name = name
         self.quantity = quantity
         self.averageBuyIn = averageBuyIn
         self.symbol = symbol
-        self.customName = customName
         self.hidden = hidden
     }
 
@@ -227,8 +222,7 @@ struct TRHolding: Codable, Equatable {
         quantity = try c.decode(Double.self, forKey: .quantity)
         averageBuyIn = try c.decodeIfPresent(Double.self, forKey: .averageBuyIn)
         symbol = try c.decodeIfPresent(String.self, forKey: .symbol)
-        // Ältere Daten kennen die Nutzereinstellungen noch nicht.
-        customName = try c.decodeIfPresent(String.self, forKey: .customName)
+        // Ältere Daten kennen die Nutzereinstellung noch nicht.
         hidden = try c.decodeIfPresent(Bool.self, forKey: .hidden) ?? false
     }
 }
@@ -284,15 +278,11 @@ final class TradeRepublic {
         Array(Set(holdings.filter { !$0.hidden }.compactMap(\.symbol))).sorted().map { Coin(stock: $0, name: $0) }
     }
 
-    /// Name oder Sichtbarkeit einer Position ändern (Settings). Leerer Name = wieder der von Trade Republic.
-    func update(isin: String, customName: String? = nil, hidden: Bool? = nil) {
+    /// Position in den Settings ab- oder wieder anwählen.
+    func setHidden(_ hidden: Bool, isin: String) {
         var list = holdings
         guard let index = list.firstIndex(where: { $0.isin == isin }) else { return }
-        if let customName {
-            let trimmed = customName.trimmingCharacters(in: .whitespaces)
-            list[index].customName = trimmed.isEmpty || trimmed == list[index].name ? nil : trimmed
-        }
-        if let hidden { list[index].hidden = hidden }
+        list[index].hidden = hidden
         Prefs.shared.trHoldings = list
     }
 
@@ -301,7 +291,7 @@ final class TradeRepublic {
         guard hasData else { return nil }
         let priced = holdings.filter { !$0.hidden }.map { holding in (holding, holding.symbol.flatMap { quotes["stock:" + $0] }) }
         let positions = priced.map { holding, quote in
-            TRPosition(isin: holding.isin, name: holding.displayName, quantity: holding.quantity, averageBuyIn: holding.averageBuyIn,
+            TRPosition(isin: holding.isin, name: holding.name, quantity: holding.quantity, averageBuyIn: holding.averageBuyIn,
                        price: quote?.price,
                        previousClose: quote.flatMap { q in q.change24h.map { q.price / (1 + $0 / 100) } })
         }
@@ -342,12 +332,11 @@ final class TradeRepublic {
         web.showStatus(L("Synchronizing…"))
         do {
             let (positions, cash) = try await loadPositions(from: web, account: account)
-            // Yahoo-Symbole und Nutzereinstellungen (Name, abgewählt) übernehmen, neue Symbole über die ISIN suchen.
+            // Yahoo-Symbole und die Nutzereinstellung (abgewählt) übernehmen, neue Symbole über die ISIN suchen.
             let known = Dictionary(holdings.map { ($0.isin, $0) }, uniquingKeysWith: { first, _ in first })
             var result = positions.map {
                 TRHolding(isin: $0.isin, name: $0.name, quantity: $0.quantity, averageBuyIn: $0.averageBuyIn,
-                          symbol: known[$0.isin]?.symbol, customName: known[$0.isin]?.customName,
-                          hidden: known[$0.isin]?.hidden ?? false)
+                          symbol: known[$0.isin]?.symbol, hidden: known[$0.isin]?.hidden ?? false)
             }
             let missing = result.indices.filter { result[$0].symbol == nil }
             await withTaskGroup(of: (Int, String?).self) { group in
