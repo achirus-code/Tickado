@@ -182,6 +182,39 @@ struct TickerRenderer {
         return title
     }
 
+    /// Depotzeile im selben Raster wie `rowTitle`: Name ab Spalte 0, Wert in Euro rechtsbündig bis 28, Änderung bis 36.
+    /// `extraWidth` verbreitert die Namensspalte (im Untermenü, das nicht an die Kurszeilen gebunden ist).
+    func depotRowTitle(_ name: String, value: Double?, change: Double?, stale: Bool, extraWidth: Int = 0) -> NSAttributedString {
+        let font = NSFont(name: "Menlo-Regular", size: 12) ?? .monospacedSystemFont(ofSize: 12, weight: .regular)
+        let w = ("0" as NSString).size(withAttributes: [.font: font]).width
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.tabStops = [
+            NSTextTab(textAlignment: .right, location: CGFloat(28 + extraWidth) * w),
+            NSTextTab(textAlignment: .right, location: CGFloat(36 + extraWidth) * w),
+        ]
+        let base: [NSAttributedString.Key: Any] = [.font: font, .paragraphStyle: paragraph, .foregroundColor: NSColor.labelColor]
+
+        let amount = value.map { PriceFormat.price($0, currency: "eur", digits: 0, fixedDecimals: 2) }
+        let nameLength = max(27 + extraWidth - (amount?.count ?? 1), 6)
+        let title = NSMutableAttributedString(string: truncate(name, nameLength) + "\t", attributes: base)
+        guard let amount else {
+            var dim = base
+            dim[.foregroundColor] = NSColor.secondaryLabelColor
+            title.append(NSAttributedString(string: "—", attributes: dim))
+            return title
+        }
+        var colored = base
+        colored[.foregroundColor] = stale ? NSColor.secondaryLabelColor : prefs.colorTheme.color(for: change)
+        if !stale, prefs.colorTheme.isGreen(for: change) {
+            colored[.font] = NSFont(name: "Menlo-Regular", size: 11.5) ?? font
+        }
+        title.append(NSAttributedString(string: amount, attributes: colored))
+        if prefs.showChange, let change {
+            title.append(NSAttributedString(string: "\t" + PriceFormat.change(change), attributes: colored))
+        }
+        return title
+    }
+
     private func truncate(_ text: String, _ length: Int) -> String {
         text.count > length ? String(text.prefix(length - 1)) + "…" : text
     }

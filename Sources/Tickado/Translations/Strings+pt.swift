@@ -176,5 +176,61 @@ extension L10n {
             "Paládio",
         "Legal notice & privacy":
             "Aviso legal e privacidade",
+        "No positions":
+            "Nenhuma posição",
+        "Quantity: %@":
+            "Quantidade: %@",
+        "Avg. buy-in: %@":
+            "Preço médio: %@",
+        "Cash":
+            "Saldo",
+        "Loading portfolio…":
+            "Carregando carteira…",
+        "Log in again…":
+            "Entrar novamente…",
+        "Open Trade Republic":
+            "Abrir Trade Republic",
+        "Session expired. Please log in again.":
+            "A sessão expirou. Entre novamente.",
+        "Trade Republic did not respond.":
+            "O Trade Republic não responde.",
+        "Unexpected response from Trade Republic.":
+            "Resposta inesperada do Trade Republic.",
+        "Login timed out. Please try again.":
+            "O login expirou. Tente novamente.",
+        "Login failed: %@":
+            "Falha no login: %@",
+        "Trade Republic has changed its login. Tickado needs an update.":
+            "O Trade Republic mudou o login. O Tickado precisa ser atualizado.",
+        "Trade Republic returned HTTP %d.":
+            "O Trade Republic retornou HTTP %d.",
+        "Log In":
+            "Entrar",
+        "Log Out":
+            "Sair",
+        "Confirm":
+            "Confirmar",
+        "Status:":
+            "Status:",
+        "Phone number:":
+            "Telefone:",
+        "PIN:":
+            "PIN:",
+        "Authenticator code:":
+            "Código do autenticador:",
+        "Connected":
+            "Conectado",
+        "Not connected":
+            "Não conectado",
+        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
+            "Digite seu telefone (ex.: +49 170 1234567) e seu PIN de 4 dígitos.",
+        "Logging in…":
+            "Entrando…",
+        "Enter the code from your authenticator app (%@).":
+            "Digite o código do seu app autenticador (%@).",
+        "Confirm the login in your Trade Republic app (%@).":
+            "Confirme o login no app do Trade Republic (%@).",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
+            "Usa a interface web não oficial do Trade Republic, que pode mudar a qualquer momento. O Tickado não é afiliado ao Trade Republic. Seu PIN é enviado apenas ao Trade Republic para o login e não é armazenado.",
     ]
 }

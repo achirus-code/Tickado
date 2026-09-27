@@ -8,11 +8,11 @@ struct TickerPreviewState {
     let tickerIDs: Set<String>
 }
 
-/// Settings-Fenster: oben die Vorschau, darunter Tabs "Display", "Assets" und "General".
+/// Settings-Fenster: oben die Vorschau, darunter Tabs "Display", "Assets", "General" und "Trade Republic".
 @MainActor
 final class SettingsWindowController: NSWindowController {
     enum Tab: Int {
-        case display, assets, general
+        case display, assets, general, broker
     }
 
     private unowned let status: StatusController
@@ -20,12 +20,14 @@ final class SettingsWindowController: NSWindowController {
     private let tabs = NSTabViewController()
     private let displayPane: DisplaySettingsViewController
     private let generalPane: GeneralSettingsViewController
+    private let brokerPane: TradeRepublicSettingsViewController
 
     init(status: StatusController) {
         self.status = status
         let onChange: (StatusController.SettingsChange) -> Void = { [weak status] in status?.settingsDidChange($0) }
         displayPane = DisplaySettingsViewController(onChange: onChange)
         generalPane = GeneralSettingsViewController(onChange: onChange)
+        brokerPane = TradeRepublicSettingsViewController(onChange: onChange)
         let picker = CoinPickerViewController { onChange(.selection) }
 
         let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 560, height: 720),
@@ -36,7 +38,10 @@ final class SettingsWindowController: NSWindowController {
         super.init(window: window)
 
         tabs.tabStyle = .segmentedControlOnTop
-        for (pane, label) in [(displayPane, L("Display")), (picker, L("Assets")), (generalPane, L("General"))] as [(NSViewController, String)] {
+        let panes: [(NSViewController, String)] = [
+            (displayPane, L("Display")), (picker, L("Assets")), (generalPane, L("General")), (brokerPane, "Trade Republic"),
+        ]
+        for (pane, label) in panes {
             let item = NSTabViewItem(viewController: pane)
             item.label = label
             tabs.addTabViewItem(item)
@@ -62,6 +67,7 @@ final class SettingsWindowController: NSWindowController {
     func show(_ tab: Tab) {
         displayPane.reload()
         generalPane.reload()
+        brokerPane.reload()
         tabs.selectedTabViewItemIndex = tab.rawValue
         update(status.previewState)
         window?.bringToFront()

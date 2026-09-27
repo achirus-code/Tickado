@@ -176,5 +176,61 @@ extension L10n {
             "Palladium",
         "Legal notice & privacy":
             "Tiráž a ochrana osobních údajů",
+        "No positions":
+            "Žádné pozice",
+        "Quantity: %@":
+            "Počet: %@",
+        "Avg. buy-in: %@":
+            "Prům. nákupní cena: %@",
+        "Cash":
+            "Hotovost",
+        "Loading portfolio…":
+            "Načítání portfolia…",
+        "Log in again…":
+            "Znovu přihlásit…",
+        "Open Trade Republic":
+            "Otevřít Trade Republic",
+        "Session expired. Please log in again.":
+            "Relace vypršela. Přihlaste se znovu.",
+        "Trade Republic did not respond.":
+            "Trade Republic neodpovídá.",
+        "Unexpected response from Trade Republic.":
+            "Neočekávaná odpověď od Trade Republic.",
+        "Login timed out. Please try again.":
+            "Přihlášení vypršelo. Zkuste to znovu.",
+        "Login failed: %@":
+            "Přihlášení se nezdařilo: %@",
+        "Trade Republic has changed its login. Tickado needs an update.":
+            "Trade Republic změnil přihlašování. Tickado potřebuje aktualizaci.",
+        "Trade Republic returned HTTP %d.":
+            "Trade Republic vrátil HTTP %d.",
+        "Log In":
+            "Přihlásit",
+        "Log Out":
+            "Odhlásit",
+        "Confirm":
+            "Potvrdit",
+        "Status:":
+            "Stav:",
+        "Phone number:":
+            "Telefonní číslo:",
+        "PIN:":
+            "PIN:",
+        "Authenticator code:":
+            "Ověřovací kód:",
+        "Connected":
+            "Připojeno",
+        "Not connected":
+            "Nepřipojeno",
+        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
+            "Zadejte telefonní číslo (např. +49 170 1234567) a čtyřmístný PIN.",
+        "Logging in…":
+            "Přihlašování…",
+        "Enter the code from your authenticator app (%@).":
+            "Zadejte kód z ověřovací aplikace (%@).",
+        "Confirm the login in your Trade Republic app (%@).":
+            "Potvrďte přihlášení v aplikaci Trade Republic (%@).",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
+            "Používá neoficiální webové rozhraní Trade Republic, které se může kdykoli změnit. Tickado není spojeno s Trade Republic. PIN se posílá pouze Trade Republic k přihlášení a neukládá se.",
     ]
 }

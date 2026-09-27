@@ -176,5 +176,61 @@ extension L10n {
             "Palladium",
         "Legal notice & privacy":
             "Juridisk informasjon og personvern",
+        "No positions":
+            "Ingen beholdninger",
+        "Quantity: %@":
+            "Antall: %@",
+        "Avg. buy-in: %@":
+            "Snittkurs: %@",
+        "Cash":
+            "Kontanter",
+        "Loading portfolio…":
+            "Laster inn portefølje…",
+        "Log in again…":
+            "Logg på igjen…",
+        "Open Trade Republic":
+            "Åpne Trade Republic",
+        "Session expired. Please log in again.":
+            "Økten er utløpt. Logg på igjen.",
+        "Trade Republic did not respond.":
+            "Trade Republic svarer ikke.",
+        "Unexpected response from Trade Republic.":
+            "Uventet svar fra Trade Republic.",
+        "Login timed out. Please try again.":
+            "Påloggingen utløp. Prøv igjen.",
+        "Login failed: %@":
+            "Pålogging mislyktes: %@",
+        "Trade Republic has changed its login. Tickado needs an update.":
+            "Trade Republic har endret påloggingen. Tickado må oppdateres.",
+        "Trade Republic returned HTTP %d.":
+            "Trade Republic returnerte HTTP %d.",
+        "Log In":
+            "Logg på",
+        "Log Out":
+            "Logg av",
+        "Confirm":
+            "Bekreft",
+        "Status:":
+            "Status:",
+        "Phone number:":
+            "Telefonnummer:",
+        "PIN:":
+            "PIN:",
+        "Authenticator code:":
+            "Autentiseringskode:",
+        "Connected":
+            "Tilkoblet",
+        "Not connected":
+            "Ikke tilkoblet",
+        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
+            "Skriv inn telefonnummeret ditt (f.eks. +49 170 1234567) og den firesifrede PIN-koden.",
+        "Logging in…":
+            "Logger på…",
+        "Enter the code from your authenticator app (%@).":
+            "Skriv inn koden fra autentiseringsappen (%@).",
+        "Confirm the login in your Trade Republic app (%@).":
+            "Bekreft påloggingen i Trade Republic-appen (%@).",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
+            "Bruker Trade Republics uoffisielle nettgrensesnitt, som kan endres når som helst. Tickado er ikke tilknyttet Trade Republic. PIN-koden sendes bare til Trade Republic for pålogging og lagres ikke.",
     ]
 }

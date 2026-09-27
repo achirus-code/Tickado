@@ -176,5 +176,61 @@ extension L10n {
             "Palladium",
         "Legal notice & privacy":
             "Julkaisutiedot ja tietosuoja",
+        "No positions":
+            "Ei omistuksia",
+        "Quantity: %@":
+            "Määrä: %@",
+        "Avg. buy-in: %@":
+            "Keskihinta: %@",
+        "Cash":
+            "Käteinen",
+        "Loading portfolio…":
+            "Ladataan salkkua…",
+        "Log in again…":
+            "Kirjaudu uudelleen…",
+        "Open Trade Republic":
+            "Avaa Trade Republic",
+        "Session expired. Please log in again.":
+            "Istunto vanheni. Kirjaudu uudelleen.",
+        "Trade Republic did not respond.":
+            "Trade Republic ei vastaa.",
+        "Unexpected response from Trade Republic.":
+            "Odottamaton vastaus Trade Republicilta.",
+        "Login timed out. Please try again.":
+            "Kirjautuminen vanheni. Yritä uudelleen.",
+        "Login failed: %@":
+            "Kirjautuminen epäonnistui: %@",
+        "Trade Republic has changed its login. Tickado needs an update.":
+            "Trade Republic on muuttanut kirjautumista. Tickado tarvitsee päivityksen.",
+        "Trade Republic returned HTTP %d.":
+            "Trade Republic palautti HTTP %d.",
+        "Log In":
+            "Kirjaudu",
+        "Log Out":
+            "Kirjaudu ulos",
+        "Confirm":
+            "Vahvista",
+        "Status:":
+            "Tila:",
+        "Phone number:":
+            "Puhelinnumero:",
+        "PIN:":
+            "PIN:",
+        "Authenticator code:":
+            "Todennuskoodi:",
+        "Connected":
+            "Yhdistetty",
+        "Not connected":
+            "Ei yhdistetty",
+        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
+            "Anna puhelinnumerosi (esim. +49 170 1234567) ja nelinumeroinen PIN-koodisi.",
+        "Logging in…":
+            "Kirjaudutaan…",
+        "Enter the code from your authenticator app (%@).":
+            "Anna koodi todennussovelluksesta (%@).",
+        "Confirm the login in your Trade Republic app (%@).":
+            "Vahvista kirjautuminen Trade Republic -sovelluksessa (%@).",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
+            "Käyttää Trade Republicin epävirallista verkkorajapintaa, joka voi muuttua milloin tahansa. Tickado ei liity Trade Republiciin. PIN-koodi lähetetään vain Trade Republicille kirjautumista varten eikä sitä tallenneta.",
     ]
 }

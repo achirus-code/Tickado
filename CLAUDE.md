@@ -27,7 +27,7 @@ macOS-Menüleisten-App (AppKit, Swift, SwiftPM, macOS 14+), die Kurse für Krypt
   - `settingsDidChange(_:)` erledigt die Folgeschritte einer Einstellung (Timer neu, Kurse verwerfen, Refresh). `updateTitle()` aktualisiert auch die Vorschau.
 - `TickerRenderer.swift`: Zeichnet Ticker (Text oder kompaktes Bild) und Menüzeilen. Menüleiste und Vorschau nutzen denselben Code, deshalb Designänderungen nur hier.
 - `SettingsWindowController.swift`:
-  - Fenster mit fester Größe (nicht resizable) und fester Vorschau oben (nachgebaute Menüleiste + aufgeklapptes Menü mit bis zu 5 Zeilen) und `NSTabViewController` (Display | Assets | General) darunter.
+  - Fenster mit fester Größe (nicht resizable) und fester Vorschau oben (nachgebaute Menüleiste + aufgeklapptes Menü mit bis zu 5 Zeilen) und `NSTabViewController` (Display | Assets | General | Trade Republic) darunter.
   - Formulare als `NSGridView` mit Auswahlboxen und Checkboxen. Änderungen wirken sofort, kein Speichern-Knopf.
   - Die Vorschau zeigt die echten Kurse (`StatusController.previewState`). Ist nichts angehakt, zeigt sie ein Beispiel aus der Auswahl.
   - Tab *Display* → *Menu bar*: `TickerChoiceList` mit allen ausgewählten Werten und Checkbox für `tickerIDs` (gleich wie ein Klick im Menü, beides über `SettingsChange.ticker`).
@@ -37,6 +37,13 @@ macOS-Menüleisten-App (AppKit, Swift, SwiftPM, macOS 14+), die Kurse für Krypt
   - `Prefs.language` (nil = System) ruft `L10n.apply`. `L10n.systemLanguage` nimmt die erste passende Sprache aus `Locale.preferredLanguages` (zh → Hans/Hant, no/nn → nb).
   - Nur die Texte folgen der Sprache. Zahlen und Preise bleiben bei der Region des Systems. Währungsnamen kommen von `Locale.localizedString(forCurrencyCode:)`, Intervalle vom `DateComponentsFormatter`, Metallnamen über `Coin.displayName`.
   - Ein Sprachwechsel baut das Settings-Fenster neu auf (`StatusController.rebuildSettings`), das Menü wird ohnehin bei jedem Öffnen neu gebaut.
+- `TradeRepublic.swift` (Depot, inoffizielle Web-API wie pytr, keine offizielle API):
+  - Login v2: `POST /api/v2/auth/web/login` {phoneNumber, pin} mit Headern `X-TR-Device-Info` (Base64-JSON, stabile Geräte-ID in `Prefs.trDeviceID`), `X-TR-App-Version`, `X-Tr-Platform: web-pro`; dann `GET …/processes/{id}` pollen bis `CONFIRMED`/`COMPLETED` (Push in der App). `requiredAction == AUTHENTICATOR_VERIFICATION` → Code an `…/authenticator-verification`. v1 (4-stelliger SMS-Code) liefert inzwischen 426.
+  - Danach nur Cookies (eigener `URLSession`-Cookie-Speicher, gesichert im Schlüsselbund, Konto `traderepublic-session`). PIN wird nie gespeichert. `GET /api/v1/auth/web/session` erneuert die Session nach 4 min. 401/403 oder WS-Fehler `AUTHENTICATION_ERROR` → Zustand `.expired`.
+  - Depotnummer aus `GET /api/v2/auth/account` (`securitiesAccountNumber`) → `Prefs.trAccount`.
+  - WebSocket `wss://api.traderepublic.com`: `connect 31 {…}` → `connected`; `sub N {json}` → `N A <json>` (voll), `N D <delta>` (Delta, `TRProtocol.applyDelta`), `N E <fehler>`. Pro Abfrage eine Verbindung: `compactPortfolioByType` (Fallback `compactPortfolio`), `instrument` (Name, Börse, gecacht), `ticker` `ISIN.BÖRSE` (`last.price`, `pre.price`), `cash`. Wächter bricht nach 25 s ab.
+  - `TRProtocol` ist reine Logik ohne Netzwerk und im Harness testbar. Getestet wurde gegen einen lokalen Nachbau, nicht gegen die echten Server (Auto-Modus blockt Zugriffe dorthin).
+  - `StatusController.refreshDepot()` läuft bei jedem Refresh parallel; Menüeintrag „Trade Republic“ mit Untermenü nur, wenn nicht abgemeldet. `TickerRenderer.depotRowTitle` nutzt dasselbe Menlo-Raster (Untermenü mit `extraWidth: 12`).
 - `Models.swift`:
   - `Coin` steht für **jeden** Kurswert, nicht nur Coins. Die Art unterscheidet `AssetKind` (`.crypto`, `.stock`, `.etf`, `.metal`).
   - IDs: CoinGecko-ID (`bitcoin`), `stock:SAP.DE`, `etf:EUNL.DE`, `metal:gold`.

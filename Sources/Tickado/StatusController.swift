@@ -20,6 +20,13 @@ final class StatusController: NSObject, NSMenuDelegate {
     private var coinRows: [String: NSMenuItem] = [:]
     private var settings: SettingsWindowController?
 
+    // Trade-Republic-Depot (eigene Abfrage, läuft neben den Kursen)
+    private var depot: TRPortfolio?
+    private var depotError: String?
+    private var depotTask: Task<Void, Never>?
+    private var depotToken = UUID()
+    private var depotRow: NSMenuItem?
+
     override init() {
         super.init()
         menu.delegate = self
@@ -67,6 +74,7 @@ final class StatusController: NSObject, NSMenuDelegate {
         // Nächste reguläre Abfrage erst ein volles Intervall später, sonst folgen z. B. nach einer
         // Einstellungsänderung zwei Anfragen dicht aufeinander (Rate-Limit).
         refreshTimer?.fireDate = Date(timeIntervalSinceNow: TimeInterval(prefs.refreshInterval))
+        refreshDepot()
 
         let selection = prefs.selectedCoins
         guard !selection.isEmpty else {
@@ -99,6 +107,40 @@ final class StatusController: NSObject, NSMenuDelegate {
             return .success(try await client.markets(ids: ids, currency: currency))
         } catch {
             return .failure(error)
+        }
+    }
+
+    private func refreshDepot() {
+        let tr = TradeRepublic.shared
+        guard tr.state == .connected else {
+            if tr.state == .loggedOut { depot = nil }
+            depotError = tr.state == .expired ? TradeRepublic.Failure.sessionExpired.localizedDescription : nil
+            return
+        }
+        // Eine laufende Abfrage nicht abbrechen, sonst kommt bei langsamer Verbindung nie ein Ergebnis an.
+        guard depotTask == nil else { return }
+        let token = UUID()
+        depotToken = token
+        depotTask = Task { [weak self] in
+            let result: Result<TRPortfolio, Error>
+            do {
+                result = .success(try await tr.fetchPortfolio())
+            } catch {
+                result = .failure(error)
+            }
+            // Ergebnis einer inzwischen ersetzten Abfrage (z. B. nach neuem Login) verwerfen.
+            guard let self, self.depotToken == token else { return }
+            self.depotTask = nil
+            switch result {
+            case .success(let portfolio):
+                self.depot = portfolio
+                self.depotError = nil
+            case .failure(let error):
+                if (error as? URLError)?.code != .cancelled, !(error is CancellationError) {
+                    self.depotError = error.localizedDescription
+                }
+            }
+            self.updateUI()
         }
     }
 
@@ -180,9 +222,10 @@ final class StatusController: NSObject, NSMenuDelegate {
 
     private func updateUI() {
         updateTitle()
+        let renderer = self.renderer
+        depotRow?.attributedTitle = depotTitle(renderer)
         // Zeilen gibt es nur bei offenem Menü (siehe menuDidClose).
         guard !coinRows.isEmpty else { return }
-        let renderer = self.renderer
         for coin in prefs.selectedCoins {
             coinRows[coin.id]?.attributedTitle = renderer.rowTitle(for: coin)
         }
@@ -229,11 +272,13 @@ final class StatusController: NSObject, NSMenuDelegate {
         guard menu === self.menu else { return }
         // Geschlossenes Menü nicht weiter aktualisieren; beim Öffnen wird es ohnehin neu gebaut.
         coinRows = [:]
+        depotRow = nil
     }
 
     private func rebuildMenu() {
         menu.removeAllItems()
         coinRows = [:]
+        depotRow = nil
 
         // Fenster erst nach dem Schließen des Menüs öffnen.
         menu.addItem(ClosureMenuItem(L("Settings…")) { [weak self] in
@@ -267,20 +312,95 @@ final class StatusController: NSObject, NSMenuDelegate {
             menu.addItem(open)
         }
 
-        if let lastError {
-            let item = NSMenuItem(title: "", action: nil, keyEquivalent: "")
-            item.attributedTitle = NSAttributedString(string: "⚠︎ " + lastError, attributes: [
-                .font: NSFont.menuFont(ofSize: NSFont.smallSystemFontSize),
-                .foregroundColor: NSColor.secondaryLabelColor,
-            ])
-            item.isEnabled = false
+        if TradeRepublic.shared.state != .loggedOut {
+            menu.addItem(.separator())
+            let item = NSMenuItem(title: "Trade Republic", action: nil, keyEquivalent: "")
+            item.attributedTitle = depotTitle(renderer)
+            item.submenu = depotMenu(renderer)
             menu.addItem(item)
+            depotRow = item
         }
+
+        if let lastError { menu.addItem(Self.warningItem(lastError)) }
 
         menu.addItem(.separator())
         menu.addItem(ClosureMenuItem(L("About…")) { Self.showAbout() })
         menu.addItem(.separator())
         menu.addItem(ClosureMenuItem(L("Quit")) { NSApp.terminate(nil) })
+    }
+
+    private func depotTitle(_ renderer: TickerRenderer) -> NSAttributedString {
+        renderer.depotRowTitle("Trade Republic", value: depot.map { $0.value + ($0.cash ?? 0) }, change: depot?.change,
+                               stale: isDepotStale(renderer))
+    }
+
+    private func isDepotStale(_ renderer: TickerRenderer) -> Bool {
+        depot.map { $0.updated < renderer.staleBefore } ?? false
+    }
+
+    /// Untermenü: Positionen nach Wert, Guthaben, Hinweise und Link zur Web-App.
+    private func depotMenu(_ renderer: TickerRenderer) -> NSMenu {
+        let submenu = NSMenu()
+        let stale = isDepotStale(renderer)
+        if let depot {
+            let positions = depot.positions.sorted { ($0.value ?? 0) > ($1.value ?? 0) }
+            if positions.isEmpty {
+                let empty = NSMenuItem(title: L("No positions"), action: nil, keyEquivalent: "")
+                empty.isEnabled = false
+                submenu.addItem(empty)
+            }
+            for position in positions {
+                let item = ClosureMenuItem("") {
+                    if let url = URL(string: "https://app.traderepublic.com/instrument/\(position.isin)") {
+                        NSWorkspace.shared.open(url)
+                    }
+                }
+                item.attributedTitle = renderer.depotRowTitle(position.name, value: position.value,
+                                                              change: position.change, stale: stale, extraWidth: 12)
+                let quantity = position.quantity.formatted(.number.precision(.fractionLength(0...6)))
+                var tip = [position.name, position.isin, L("Quantity: %@", quantity)]
+                if let buyIn = position.averageBuyIn {
+                    tip.append(L("Avg. buy-in: %@", PriceFormat.price(buyIn, currency: "eur", digits: 0, fixedDecimals: 2)))
+                }
+                item.toolTip = tip.joined(separator: "\n")
+                submenu.addItem(item)
+            }
+            if let cash = depot.cash {
+                submenu.addItem(.separator())
+                let item = NSMenuItem(title: "", action: nil, keyEquivalent: "")
+                item.attributedTitle = renderer.depotRowTitle(L("Cash"), value: cash, change: nil, stale: stale, extraWidth: 12)
+                submenu.addItem(item)
+            }
+        } else if depotError == nil {
+            let loading = NSMenuItem(title: L("Loading portfolio…"), action: nil, keyEquivalent: "")
+            loading.isEnabled = false
+            submenu.addItem(loading)
+        }
+
+        if let depotError {
+            submenu.addItem(.separator())
+            submenu.addItem(Self.warningItem(depotError))
+        }
+        submenu.addItem(.separator())
+        if TradeRepublic.shared.state == .expired {
+            submenu.addItem(ClosureMenuItem(L("Log in again…")) { [weak self] in
+                DispatchQueue.main.async { self?.showSettings(.broker) }
+            })
+        }
+        submenu.addItem(ClosureMenuItem(L("Open Trade Republic")) {
+            if let url = URL(string: "https://app.traderepublic.com/portfolio") { NSWorkspace.shared.open(url) }
+        })
+        return submenu
+    }
+
+    private static func warningItem(_ text: String) -> NSMenuItem {
+        let item = NSMenuItem(title: "", action: nil, keyEquivalent: "")
+        item.attributedTitle = NSAttributedString(string: "⚠︎ " + text, attributes: [
+            .font: NSFont.menuFont(ofSize: NSFont.smallSystemFontSize),
+            .foregroundColor: NSColor.secondaryLabelColor,
+        ])
+        item.isEnabled = false
+        return item
     }
 
     private func toggleTicker(_ id: String) {
@@ -294,7 +414,7 @@ final class StatusController: NSObject, NSMenuDelegate {
 
     /// Was im Settings-Fenster geändert wurde; bestimmt die nötigen Folgeschritte.
     enum SettingsChange {
-        case display, tickerMode, ticker, interval, currency, metalUnit, apiKey, selection, language
+        case display, tickerMode, ticker, interval, currency, metalUnit, apiKey, selection, language, broker
     }
 
     /// Daten für die Vorschau im Settings-Fenster.
@@ -329,6 +449,13 @@ final class StatusController: NSObject, NSMenuDelegate {
             // Fenster neu aufbauen, damit alle Texte in der neuen Sprache erscheinen.
             // Asynchron, weil der Aufruf aus einem Steuerelement des alten Fensters kommt.
             DispatchQueue.main.async { [weak self] in self?.rebuildSettings() }
+        case .broker:
+            // Nach Login sofort laden, nach Logout Depot ausblenden.
+            depotTask?.cancel()
+            depotTask = nil
+            depotToken = UUID()
+            if TradeRepublic.shared.state != .connected { depot = nil }
+            refreshDepot()
         case .selection:
             let ids = Set(prefs.selectedCoins.map(\.id))
             prefs.tickerIDs = prefs.tickerIDs.filter(ids.contains)

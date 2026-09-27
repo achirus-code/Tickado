@@ -176,5 +176,61 @@ extension L10n {
             "Palađi",
         "Legal notice & privacy":
             "Thông tin pháp lý & quyền riêng tư",
+        "No positions":
+            "Không có vị thế",
+        "Quantity: %@":
+            "Số lượng: %@",
+        "Avg. buy-in: %@":
+            "Giá mua TB: %@",
+        "Cash":
+            "Tiền mặt",
+        "Loading portfolio…":
+            "Đang tải danh mục…",
+        "Log in again…":
+            "Đăng nhập lại…",
+        "Open Trade Republic":
+            "Mở Trade Republic",
+        "Session expired. Please log in again.":
+            "Phiên đã hết hạn. Vui lòng đăng nhập lại.",
+        "Trade Republic did not respond.":
+            "Trade Republic không phản hồi.",
+        "Unexpected response from Trade Republic.":
+            "Phản hồi không mong đợi từ Trade Republic.",
+        "Login timed out. Please try again.":
+            "Hết thời gian đăng nhập. Vui lòng thử lại.",
+        "Login failed: %@":
+            "Đăng nhập thất bại: %@",
+        "Trade Republic has changed its login. Tickado needs an update.":
+            "Trade Republic đã thay đổi cách đăng nhập. Tickado cần được cập nhật.",
+        "Trade Republic returned HTTP %d.":
+            "Trade Republic trả về HTTP %d.",
+        "Log In":
+            "Đăng nhập",
+        "Log Out":
+            "Đăng xuất",
+        "Confirm":
+            "Xác nhận",
+        "Status:":
+            "Trạng thái:",
+        "Phone number:":
+            "Số điện thoại:",
+        "PIN:":
+            "PIN:",
+        "Authenticator code:":
+            "Mã xác thực:",
+        "Connected":
+            "Đã kết nối",
+        "Not connected":
+            "Chưa kết nối",
+        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
+            "Nhập số điện thoại (ví dụ +49 170 1234567) và mã PIN 4 chữ số.",
+        "Logging in…":
+            "Đang đăng nhập…",
+        "Enter the code from your authenticator app (%@).":
+            "Nhập mã từ ứng dụng xác thực (%@).",
+        "Confirm the login in your Trade Republic app (%@).":
+            "Xác nhận đăng nhập trong ứng dụng Trade Republic (%@).",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
+            "Sử dụng giao diện web không chính thức của Trade Republic, có thể thay đổi bất cứ lúc nào. Tickado không liên kết với Trade Republic. Mã PIN chỉ được gửi đến Trade Republic để đăng nhập và không được lưu.",
     ]
 }

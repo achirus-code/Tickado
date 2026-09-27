@@ -176,5 +176,61 @@ extension L10n {
             "Paladiu",
         "Legal notice & privacy":
             "Informații legale și confidențialitate",
+        "No positions":
+            "Nicio poziție",
+        "Quantity: %@":
+            "Cantitate: %@",
+        "Avg. buy-in: %@":
+            "Preț mediu: %@",
+        "Cash":
+            "Numerar",
+        "Loading portfolio…":
+            "Se încarcă portofoliul…",
+        "Log in again…":
+            "Autentificare din nou…",
+        "Open Trade Republic":
+            "Deschide Trade Republic",
+        "Session expired. Please log in again.":
+            "Sesiunea a expirat. Autentificați-vă din nou.",
+        "Trade Republic did not respond.":
+            "Trade Republic nu răspunde.",
+        "Unexpected response from Trade Republic.":
+            "Răspuns neașteptat de la Trade Republic.",
+        "Login timed out. Please try again.":
+            "Autentificarea a expirat. Încercați din nou.",
+        "Login failed: %@":
+            "Autentificare eșuată: %@",
+        "Trade Republic has changed its login. Tickado needs an update.":
+            "Trade Republic a schimbat autentificarea. Tickado trebuie actualizat.",
+        "Trade Republic returned HTTP %d.":
+            "Trade Republic a returnat HTTP %d.",
+        "Log In":
+            "Autentificare",
+        "Log Out":
+            "Deconectare",
+        "Confirm":
+            "Confirmă",
+        "Status:":
+            "Stare:",
+        "Phone number:":
+            "Număr de telefon:",
+        "PIN:":
+            "PIN:",
+        "Authenticator code:":
+            "Cod de autentificare:",
+        "Connected":
+            "Conectat",
+        "Not connected":
+            "Neconectat",
+        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
+            "Introduceți numărul de telefon (de ex. +49 170 1234567) și PIN-ul de 4 cifre.",
+        "Logging in…":
+            "Se autentifică…",
+        "Enter the code from your authenticator app (%@).":
+            "Introduceți codul din aplicația de autentificare (%@).",
+        "Confirm the login in your Trade Republic app (%@).":
+            "Confirmați autentificarea în aplicația Trade Republic (%@).",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
+            "Folosește interfața web neoficială Trade Republic, care se poate schimba oricând. Tickado nu este afiliat cu Trade Republic. PIN-ul este trimis doar către Trade Republic pentru autentificare și nu este salvat.",
     ]
 }

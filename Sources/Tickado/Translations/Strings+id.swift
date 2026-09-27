@@ -176,5 +176,61 @@ extension L10n {
             "Paladium",
         "Legal notice & privacy":
             "Informasi hukum & privasi",
+        "No positions":
+            "Tidak ada posisi",
+        "Quantity: %@":
+            "Jumlah: %@",
+        "Avg. buy-in: %@":
+            "Harga beli rata-rata: %@",
+        "Cash":
+            "Kas",
+        "Loading portfolio…":
+            "Memuat portofolio…",
+        "Log in again…":
+            "Masuk lagi…",
+        "Open Trade Republic":
+            "Buka Trade Republic",
+        "Session expired. Please log in again.":
+            "Sesi berakhir. Silakan masuk lagi.",
+        "Trade Republic did not respond.":
+            "Trade Republic tidak merespons.",
+        "Unexpected response from Trade Republic.":
+            "Respons tak terduga dari Trade Republic.",
+        "Login timed out. Please try again.":
+            "Waktu masuk habis. Silakan coba lagi.",
+        "Login failed: %@":
+            "Gagal masuk: %@",
+        "Trade Republic has changed its login. Tickado needs an update.":
+            "Trade Republic mengubah cara masuk. Tickado perlu diperbarui.",
+        "Trade Republic returned HTTP %d.":
+            "Trade Republic mengembalikan HTTP %d.",
+        "Log In":
+            "Masuk",
+        "Log Out":
+            "Keluar",
+        "Confirm":
+            "Konfirmasi",
+        "Status:":
+            "Status:",
+        "Phone number:":
+            "Nomor telepon:",
+        "PIN:":
+            "PIN:",
+        "Authenticator code:":
+            "Kode autentikator:",
+        "Connected":
+            "Terhubung",
+        "Not connected":
+            "Tidak terhubung",
+        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
+            "Masukkan nomor telepon (mis. +49 170 1234567) dan PIN 4 digit Anda.",
+        "Logging in…":
+            "Sedang masuk…",
+        "Enter the code from your authenticator app (%@).":
+            "Masukkan kode dari aplikasi autentikator (%@).",
+        "Confirm the login in your Trade Republic app (%@).":
+            "Konfirmasi masuk di aplikasi Trade Republic (%@).",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
+            "Menggunakan antarmuka web tidak resmi Trade Republic yang dapat berubah sewaktu-waktu. Tickado tidak berafiliasi dengan Trade Republic. PIN Anda hanya dikirim ke Trade Republic untuk masuk dan tidak disimpan.",
     ]
 }

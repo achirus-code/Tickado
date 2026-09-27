@@ -176,5 +176,61 @@ extension L10n {
             "鈀金",
         "Legal notice & privacy":
             "法律聲明與隱私",
+        "No positions":
+            "無持倉",
+        "Quantity: %@":
+            "數量：%@",
+        "Avg. buy-in: %@":
+            "平均買入價：%@",
+        "Cash":
+            "現金",
+        "Loading portfolio…":
+            "正在載入投資組合⋯",
+        "Log in again…":
+            "重新登入⋯",
+        "Open Trade Republic":
+            "打開 Trade Republic",
+        "Session expired. Please log in again.":
+            "工作階段已過期，請重新登入。",
+        "Trade Republic did not respond.":
+            "Trade Republic 沒有回應。",
+        "Unexpected response from Trade Republic.":
+            "Trade Republic 回傳了非預期的回應。",
+        "Login timed out. Please try again.":
+            "登入已逾時，請再試一次。",
+        "Login failed: %@":
+            "登入失敗：%@",
+        "Trade Republic has changed its login. Tickado needs an update.":
+            "Trade Republic 更改了登入方式，Tickado 需要更新。",
+        "Trade Republic returned HTTP %d.":
+            "Trade Republic 回傳了 HTTP %d。",
+        "Log In":
+            "登入",
+        "Log Out":
+            "登出",
+        "Confirm":
+            "確認",
+        "Status:":
+            "狀態：",
+        "Phone number:":
+            "手機號碼：",
+        "PIN:":
+            "PIN：",
+        "Authenticator code:":
+            "驗證器代碼：",
+        "Connected":
+            "已連線",
+        "Not connected":
+            "未連線",
+        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
+            "請輸入手機號碼（例如 +49 170 1234567）和 4 位數 PIN。",
+        "Logging in…":
+            "正在登入⋯",
+        "Enter the code from your authenticator app (%@).":
+            "請輸入驗證器 App 中的代碼（%@）。",
+        "Confirm the login in your Trade Republic app (%@).":
+            "請在 Trade Republic App 中確認登入（%@）。",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
+            "使用 Trade Republic 的非官方網頁介面，該介面可能隨時變更。Tickado 與 Trade Republic 並無關聯。你的 PIN 只會在登入時傳送給 Trade Republic，不會被儲存。",
     ]
 }

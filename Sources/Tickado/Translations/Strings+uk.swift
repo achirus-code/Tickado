@@ -176,5 +176,61 @@ extension L10n {
             "Паладій",
         "Legal notice & privacy":
             "Правова інформація та конфіденційність",
+        "No positions":
+            "Немає позицій",
+        "Quantity: %@":
+            "Кількість: %@",
+        "Avg. buy-in: %@":
+            "Сер. ціна купівлі: %@",
+        "Cash":
+            "Готівка",
+        "Loading portfolio…":
+            "Завантаження портфеля…",
+        "Log in again…":
+            "Увійти знову…",
+        "Open Trade Republic":
+            "Відкрити Trade Republic",
+        "Session expired. Please log in again.":
+            "Сеанс завершився. Увійдіть знову.",
+        "Trade Republic did not respond.":
+            "Trade Republic не відповідає.",
+        "Unexpected response from Trade Republic.":
+            "Неочікувана відповідь від Trade Republic.",
+        "Login timed out. Please try again.":
+            "Час входу минув. Спробуйте ще раз.",
+        "Login failed: %@":
+            "Не вдалося увійти: %@",
+        "Trade Republic has changed its login. Tickado needs an update.":
+            "Trade Republic змінив вхід. Tickado потребує оновлення.",
+        "Trade Republic returned HTTP %d.":
+            "Trade Republic повернув HTTP %d.",
+        "Log In":
+            "Увійти",
+        "Log Out":
+            "Вийти",
+        "Confirm":
+            "Підтвердити",
+        "Status:":
+            "Статус:",
+        "Phone number:":
+            "Номер телефону:",
+        "PIN:":
+            "PIN:",
+        "Authenticator code:":
+            "Код автентифікатора:",
+        "Connected":
+            "Підключено",
+        "Not connected":
+            "Не підключено",
+        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
+            "Введіть номер телефону (наприклад, +49 170 1234567) і 4-значний PIN.",
+        "Logging in…":
+            "Виконується вхід…",
+        "Enter the code from your authenticator app (%@).":
+            "Введіть код із застосунку-автентифікатора (%@).",
+        "Confirm the login in your Trade Republic app (%@).":
+            "Підтвердьте вхід у застосунку Trade Republic (%@).",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
+            "Використовує неофіційний вебінтерфейс Trade Republic, який може змінитися будь-коли. Tickado не пов’язаний з Trade Republic. PIN надсилається лише до Trade Republic для входу й не зберігається.",
     ]
 }

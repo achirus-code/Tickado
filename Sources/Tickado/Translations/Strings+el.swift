@@ -176,5 +176,61 @@ extension L10n {
             "Παλλάδιο",
         "Legal notice & privacy":
             "Νομικές πληροφορίες & απόρρητο",
+        "No positions":
+            "Καμία θέση",
+        "Quantity: %@":
+            "Ποσότητα: %@",
+        "Avg. buy-in: %@":
+            "Μέση τιμή αγοράς: %@",
+        "Cash":
+            "Μετρητά",
+        "Loading portfolio…":
+            "Φόρτωση χαρτοφυλακίου…",
+        "Log in again…":
+            "Νέα σύνδεση…",
+        "Open Trade Republic":
+            "Άνοιγμα Trade Republic",
+        "Session expired. Please log in again.":
+            "Η συνεδρία έληξε. Συνδεθείτε ξανά.",
+        "Trade Republic did not respond.":
+            "Το Trade Republic δεν αποκρίνεται.",
+        "Unexpected response from Trade Republic.":
+            "Μη αναμενόμενη απάντηση από το Trade Republic.",
+        "Login timed out. Please try again.":
+            "Η σύνδεση έληξε. Δοκιμάστε ξανά.",
+        "Login failed: %@":
+            "Η σύνδεση απέτυχε: %@",
+        "Trade Republic has changed its login. Tickado needs an update.":
+            "Το Trade Republic άλλαξε τη σύνδεση. Το Tickado χρειάζεται ενημέρωση.",
+        "Trade Republic returned HTTP %d.":
+            "Το Trade Republic επέστρεψε HTTP %d.",
+        "Log In":
+            "Σύνδεση",
+        "Log Out":
+            "Αποσύνδεση",
+        "Confirm":
+            "Επιβεβαίωση",
+        "Status:":
+            "Κατάσταση:",
+        "Phone number:":
+            "Αριθμός τηλεφώνου:",
+        "PIN:":
+            "PIN:",
+        "Authenticator code:":
+            "Κωδικός επαλήθευσης:",
+        "Connected":
+            "Συνδεδεμένο",
+        "Not connected":
+            "Μη συνδεδεμένο",
+        "Enter your phone number (e.g. +49 170 1234567) and your 4-digit PIN.":
+            "Εισαγάγετε τον αριθμό τηλεφώνου σας (π.χ. +49 170 1234567) και το 4ψήφιο PIN.",
+        "Logging in…":
+            "Σύνδεση σε εξέλιξη…",
+        "Enter the code from your authenticator app (%@).":
+            "Εισαγάγετε τον κωδικό από την εφαρμογή επαλήθευσης (%@).",
+        "Confirm the login in your Trade Republic app (%@).":
+            "Επιβεβαιώστε τη σύνδεση στην εφαρμογή Trade Republic (%@).",
+        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. Your PIN is only sent to Trade Republic to log in and is not stored.":
+            "Χρησιμοποιεί την ανεπίσημη διαδικτυακή διεπαφή του Trade Republic, η οποία μπορεί να αλλάξει ανά πάσα στιγμή. Το Tickado δεν συνδέεται με το Trade Republic. Το PIN αποστέλλεται μόνο στο Trade Republic για τη σύνδεση και δεν αποθηκεύεται.",
     ]
 }
