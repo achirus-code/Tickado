@@ -585,7 +585,12 @@ private final class TickerChoiceList: NSView, NSTableViewDataSource, NSTableView
         title.append(NSAttributedString(string: coin.displayName, attributes: [
             .font: font, .foregroundColor: NSColor.secondaryLabelColor,
         ]))
+        // Formatierte Titel ignorieren den lineBreakMode der Schaltfläche; lange Namen würden sonst umbrechen.
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineBreakMode = .byTruncatingTail
+        title.addAttribute(.paragraphStyle, value: paragraph, range: NSRange(location: 0, length: title.length))
         cell.checkbox.attributedTitle = title
+        cell.checkbox.toolTip = "\(coin.displayName) (\(coin.displaySymbol))"
         cell.checkbox.state = checked.contains(coin.id) ? .on : .off
         return cell
     }
