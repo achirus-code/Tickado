@@ -1,7 +1,7 @@
 import AppKit
 
-/// Tab "Trade Republic": Synchronisieren (Anmeldung auf der TR-Website, Positionen werden gespeichert),
-/// darunter Datum der letzten Synchronisierung, die Positionen zum Abwählen und Umbenennen, und Löschen.
+/// Tab "Trade Republic": Stand der letzten Synchronisierung, die Positionen zum Abwählen und Umbenennen,
+/// darunter "Synchronisieren" (Anmeldung auf der TR-Website, Positionen werden gespeichert) und "Daten löschen".
 final class TradeRepublicSettingsViewController: SettingsPane {
     private lazy var syncButton = NSButton(title: L("Synchronize…"), target: self, action: #selector(synchronize))
     private lazy var removeButton = NSButton(title: L("Remove Data"), target: self, action: #selector(removeData))
@@ -18,10 +18,14 @@ final class TradeRepublicSettingsViewController: SettingsPane {
             self?.reload()
         })
     private let listHint = NSTextField(wrappingLabelWithString: "")
+    private var grid: NSGridView?
 
     override func loadView() {
-        let buttons = NSStackView(views: [syncButton, removeButton])
-        buttons.spacing = 8
+        // Button-Zeile in Listenbreite: Synchronisieren links, Löschen rechts
+        let spacer = NSView()
+        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        let buttons = NSStackView(views: [syncButton, spacer, removeButton])
+        buttons.widthAnchor.constraint(equalToConstant: HoldingsList.width).isActive = true
         lastSyncLabel.textColor = .secondaryLabelColor
         message.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
         message.textColor = .secondaryLabelColor
@@ -30,15 +34,16 @@ final class TradeRepublicSettingsViewController: SettingsPane {
         listHint.stringValue = L("Unchecked positions are hidden in the menu and not counted. Click a name to rename it.")
         listHint.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
         listHint.textColor = .secondaryLabelColor
-        listHint.preferredMaxLayoutWidth = 420
-        listHint.widthAnchor.constraint(lessThanOrEqualToConstant: 420).isActive = true
+        listHint.preferredMaxLayoutWidth = HoldingsList.width
+        listHint.widthAnchor.constraint(lessThanOrEqualToConstant: HoldingsList.width).isActive = true
         let root = makeForm([
-            (nil, buttons),
             (nil, lastSyncLabel),
             (nil, list),
             (nil, listHint),
+            (nil, buttons),
             (nil, message),
-        ], tall: [2])
+        ], groups: [3], tall: [1])
+        grid = root.subviews.first as? NSGridView
 
         let disclaimer = NSTextField(wrappingLabelWithString: L(
             "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic."))
@@ -65,8 +70,9 @@ final class TradeRepublicSettingsViewController: SettingsPane {
         syncButton.isEnabled = !tr.isSyncing
         removeButton.isHidden = !tr.hasData
         list.update(tr.holdings)
-        list.isHidden = tr.holdings.isEmpty
-        listHint.isHidden = tr.holdings.isEmpty
+        // Ohne Positionen Liste und Hinweis samt ihrer Rasterzeilen ausblenden, sonst bleibt eine Lücke.
+        grid?.row(at: 1).isHidden = tr.holdings.isEmpty
+        grid?.row(at: 2).isHidden = tr.holdings.isEmpty
         if tr.isSyncing { message.stringValue = L("Log in in the Trade Republic window.") }
     }
 
@@ -93,6 +99,7 @@ private final class HoldingsList: NSView, NSTableViewDataSource, NSTableViewDele
     private static let check = NSUserInterfaceItemIdentifier("check")
     private static let name = NSUserInterfaceItemIdentifier("name")
     private static let isin = NSUserInterfaceItemIdentifier("isin")
+    static let width: CGFloat = 420
 
     private let onToggle: (String, Bool) -> Void
     private let onRename: (String, String) -> Void
@@ -127,7 +134,7 @@ private final class HoldingsList: NSView, NSTableViewDataSource, NSTableViewDele
         addSubview(scroll)
         NSLayoutConstraint.activate([
             // Feste Größe: 9 Zeilen sichtbar, mehr per Scrollen.
-            widthAnchor.constraint(equalToConstant: 420),
+            widthAnchor.constraint(equalToConstant: Self.width),
             heightAnchor.constraint(equalToConstant: 9 * 22 + 2),
             scroll.topAnchor.constraint(equalTo: topAnchor),
             scroll.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -137,6 +144,13 @@ private final class HoldingsList: NSView, NSTableViewDataSource, NSTableViewDele
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    /// Die Tabelle wächst beim ersten Layout um die Höhe des sichtbaren Bereichs (flexible Höhe, von NSTableView
+    /// selbst gesetzt); danach ließe sich eine Seite leerer Zeilen weiterscrollen. `tile()` rechnet die Höhe neu.
+    override func layout() {
+        super.layout()
+        tableView.tile()
+    }
 
     func update(_ holdings: [TRHolding]) {
         guard holdings != self.holdings else { return }

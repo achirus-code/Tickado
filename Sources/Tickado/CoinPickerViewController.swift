@@ -144,6 +144,13 @@ final class CoinPickerViewController: NSViewController, NSTableViewDataSource, N
         updateFooter()
     }
 
+    /// Die Tabelle wächst beim ersten Layout um die Höhe des sichtbaren Bereichs; `tile()` rechnet die Höhe neu,
+    /// sonst ließe sich eine Seite leerer Zeilen weiterscrollen.
+    override func viewDidLayout() {
+        super.viewDidLayout()
+        tableView.tile()
+    }
+
     override func viewDidAppear() {
         super.viewDidAppear()
         view.window?.makeFirstResponder(searchField)

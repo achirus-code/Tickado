@@ -577,6 +577,13 @@ private final class TickerChoiceList: NSView, NSTableViewDataSource, NSTableView
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
+    /// Die Tabelle wächst beim ersten Layout um die Höhe des sichtbaren Bereichs (flexible Höhe, von NSTableView
+    /// selbst gesetzt); danach ließe sich eine Seite leerer Zeilen weiterscrollen. `tile()` rechnet die Höhe neu.
+    override func layout() {
+        super.layout()
+        tableView.tile()
+    }
+
     func update(_ coins: [Coin], checked: Set<String>) {
         // Wird auch bei jeder Rotation aufgerufen, deshalb nur bei Änderungen neu laden.
         guard coins != self.coins || checked != self.checked else { return }
