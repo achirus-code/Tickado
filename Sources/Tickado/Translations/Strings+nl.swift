@@ -210,5 +210,17 @@ extension L10n {
             "Log in met je telefoonnummer en pincode en bevestig in de Trade Republic-app. Dit venster sluit automatisch zodra de verbinding er is.",
         "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
             "Gebruikt de onofficiële webinterface van Trade Republic, die op elk moment kan veranderen. Tickado is niet verbonden aan Trade Republic. Je logt in op de website van Trade Republic; Tickado bewaart de sessie zoals een browser.",
+        "Portfolio value":
+            "Portefeuillewaarde",
+        "Gain today":
+            "Winst vandaag",
+        "Total gain":
+            "Totale winst",
+        "TR today":
+            "TR vandaag",
+        "TR total":
+            "TR totaal",
+        "Click to show it in the menu bar.":
+            "Klik om het in de menubalk te tonen.",
     ]
 }

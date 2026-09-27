@@ -210,5 +210,17 @@ extension L10n {
             "Telefon numaranız ve PIN’inizle oturum açın, ardından Trade Republic uygulamasında onaylayın. Bağlantı kurulunca bu pencere otomatik olarak kapanır.",
         "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
             "Trade Republic’in her an değişebilecek resmî olmayan web arayüzünü kullanır. Tickado’nun Trade Republic ile bir bağlantısı yoktur. Oturumu Trade Republic web sitesinde açarsınız; Tickado oturumu bir tarayıcı gibi saklar.",
+        "Portfolio value":
+            "Portföy değeri",
+        "Gain today":
+            "Bugünkü kazanç",
+        "Total gain":
+            "Toplam kazanç",
+        "TR today":
+            "TR bugün",
+        "TR total":
+            "TR toplam",
+        "Click to show it in the menu bar.":
+            "Menü çubuğunda göstermek için tıklayın.",
     ]
 }

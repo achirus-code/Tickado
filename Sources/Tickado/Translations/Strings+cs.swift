@@ -210,5 +210,17 @@ extension L10n {
             "Přihlaste se telefonním číslem a PINem a potvrďte to v aplikaci Trade Republic. Okno se po připojení samo zavře.",
         "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
             "Používá neoficiální webové rozhraní Trade Republic, které se může kdykoli změnit. Tickado není spojeno s Trade Republic. Přihlašujete se na webu Trade Republic; Tickado si relaci ponechá jako prohlížeč.",
+        "Portfolio value":
+            "Hodnota portfolia",
+        "Gain today":
+            "Zisk dnes",
+        "Total gain":
+            "Celkový zisk",
+        "TR today":
+            "TR dnes",
+        "TR total":
+            "TR celkem",
+        "Click to show it in the menu bar.":
+            "Klikněte pro zobrazení v řádku nabídek.",
     ]
 }

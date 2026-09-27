@@ -46,7 +46,7 @@ Das Fenster hat eine feste Größe, merkt sich seine Position und lässt sich mi
 - **Kursliste** – Symbol, Name, Preis, 24h-Änderung in Spalten; gruppiert nach Krypto / Metalle / Aktien / ETFs
   - Klick = in der Menüleiste an-/abwählen (Häkchen)
   - ⌥ + Klick = Wert auf CoinGecko bzw. Yahoo Finance öffnen
-- **Trade Republic** (nur wenn angemeldet) – Gesamtwert des Depots inkl. Guthaben und Tagesänderung; Untermenü mit allen Positionen (Wert, Tagesänderung, Tooltip mit Stückzahl und Ø-Kaufkurs), Guthaben und „Trade Republic öffnen“. Klick auf eine Position öffnet sie in der TR-Web-App.
+- **Trade Republic** (nur wenn angemeldet) – Gesamtwert des Depots inkl. Guthaben und Tagesänderung; Untermenü oben mit **Depotwert**, **Gewinn heute** und **Gewinn gesamt** (seit Kauf, aus dem Ø-Kaufkurs) – per Klick anhaken, dann erscheinen sie in der Menüleiste als „TR“, „TR heute“, „TR gesamt“ (auch unter Settings → Display → *Menu bar*); darunter alle Positionen (Wert, Tagesänderung, Tooltip mit Stückzahl und Ø-Kaufkurs), Guthaben und „Trade Republic öffnen“. Klick auf eine Position öffnet sie in der TR-Web-App.
 - About…, Quit
 
 ### Trade Republic

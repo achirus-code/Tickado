@@ -210,5 +210,17 @@ extension L10n {
             "전화번호와 PIN으로 로그인한 후 Trade Republic 앱에서 승인하십시오. 연결되면 이 윈도우가 자동으로 닫힙니다.",
         "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
             "언제든지 변경될 수 있는 Trade Republic의 비공식 웹 인터페이스를 사용합니다. Tickado는 Trade Republic과 제휴 관계가 없습니다. 로그인은 Trade Republic 웹사이트에서 하며, Tickado는 브라우저처럼 세션을 보관합니다.",
+        "Portfolio value":
+            "포트폴리오 가치",
+        "Gain today":
+            "오늘 수익",
+        "Total gain":
+            "총 수익",
+        "TR today":
+            "TR 오늘",
+        "TR total":
+            "TR 합계",
+        "Click to show it in the menu bar.":
+            "클릭하면 메뉴 막대에 표시합니다.",
     ]
 }

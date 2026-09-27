@@ -210,5 +210,17 @@ extension L10n {
             "Jelentkezzen be telefonszámmal és PIN-kóddal, majd erősítse meg a Trade Republic alkalmazásban. Az ablak a csatlakozás után automatikusan bezárul.",
         "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
             "A Trade Republic nem hivatalos webes felületét használja, amely bármikor megváltozhat. A Tickado nem áll kapcsolatban a Trade Republickal. A Trade Republic weboldalán jelentkezik be; a Tickado böngészőként őrzi meg a munkamenetet.",
+        "Portfolio value":
+            "Portfólió értéke",
+        "Gain today":
+            "Mai nyereség",
+        "Total gain":
+            "Teljes nyereség",
+        "TR today":
+            "TR ma",
+        "TR total":
+            "TR összesen",
+        "Click to show it in the menu bar.":
+            "Kattintson a menüsorban való megjelenítéshez.",
     ]
 }

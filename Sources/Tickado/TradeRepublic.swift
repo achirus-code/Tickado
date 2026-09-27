@@ -25,6 +25,25 @@ struct TRPortfolio {
 
     var value: Double { positions.compactMap(\.value).reduce(0, +) }
 
+    /// Depotwert einschließlich Guthaben.
+    var total: Double { value + (cash ?? 0) }
+
+    /// Gewinn heute in Euro (gegen die Schlusskurse vom Vortag).
+    var todayGain: Double? {
+        let priced = positions.filter { $0.price != nil && $0.previousClose != nil }
+        guard !priced.isEmpty else { return nil }
+        return priced.reduce(0) { $0 + ($1.price! - $1.previousClose!) * $1.quantity }
+    }
+
+    /// Gewinn seit Kauf in Euro und Prozent (aus dem Ø-Kaufkurs).
+    var totalGain: (amount: Double, percent: Double?)? {
+        let priced = positions.filter { $0.price != nil && ($0.averageBuyIn ?? 0) > 0 }
+        guard !priced.isEmpty else { return nil }
+        let cost = priced.reduce(0) { $0 + $1.averageBuyIn! * $1.quantity }
+        let now = priced.reduce(0) { $0 + $1.price! * $1.quantity }
+        return (now - cost, cost > 0 ? (now / cost - 1) * 100 : nil)
+    }
+
     /// Tagesänderung des ganzen Depots, gewichtet über die Positionen mit Vortageskurs.
     var change: Double? {
         let priced = positions.filter { $0.price != nil && ($0.previousClose ?? 0) > 0 }
@@ -32,6 +51,41 @@ struct TRPortfolio {
         guard before > 0 else { return nil }
         let now = priced.reduce(0) { $0 + $1.price! * $1.quantity }
         return (now / before - 1) * 100
+    }
+}
+
+/// Depotkennzahlen, die sich wie ein Kurs in der Menüleiste anzeigen lassen (Häkchen im Untermenü).
+enum DepotTicker: String, CaseIterable {
+    case value = "tr:value", today = "tr:today", total = "tr:total"
+
+    /// Titel im Untermenü
+    var title: String {
+        switch self {
+        case .value: L("Portfolio value")
+        case .today: L("Gain today")
+        case .total: L("Total gain")
+        }
+    }
+
+    /// Kurzer Name in der Menüleiste
+    var label: String {
+        switch self {
+        case .value: "TR"
+        case .today: L("TR today")
+        case .total: L("TR total")
+        }
+    }
+
+    /// Als Pseudo-Wert, damit Ticker, Rotation und Vorschau ihn wie einen Kurs behandeln.
+    var coin: Coin { Coin(id: rawValue, symbol: label, name: title, rank: nil, kind: .stock) }
+
+    /// (Betrag, Prozent für Farbe und Anzeige, mit Vorzeichen?)
+    func figures(in portfolio: TRPortfolio) -> (amount: Double?, percent: Double?, signed: Bool) {
+        switch self {
+        case .value: (portfolio.total, portfolio.change, false)
+        case .today: (portfolio.todayGain, portfolio.change, true)
+        case .total: (portfolio.totalGain?.amount, portfolio.totalGain?.percent, true)
+        }
     }
 }
 

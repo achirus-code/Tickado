@@ -5,6 +5,7 @@ struct TickerPreviewState {
     let renderer: TickerRenderer
     let barCoins: [Coin]      // wie in der Menüleiste (beim Rotieren nur der aktuelle Wert)
     let menuCoins: [Coin]     // sortiert wie im Menü
+    let choices: [Coin]       // zum Anhaken für die Menüleiste: Auswahl plus Depotkennzahlen
     let tickerIDs: Set<String>
 }
 
@@ -86,7 +87,7 @@ final class SettingsWindowController: NSWindowController {
 
     private func update(_ state: TickerPreviewState) {
         preview.update(state)
-        displayPane.showTickerChoices(state.menuCoins, checked: state.tickerIDs)
+        displayPane.showTickerChoices(state.choices, checked: state.tickerIDs)
     }
 }
 
@@ -249,7 +250,7 @@ private final class TickerPreviewView: NSView {
         if barCoins.isEmpty, !state.menuCoins.isEmpty {
             barCoins = Array(state.menuCoins.prefix(prefs.tickerMode == .rotate ? 1 : 2))
             notes.append(L("Sample: check values under Display › Menu bar to show them."))
-        } else if prefs.tickerMode == .rotate, state.menuCoins.filter({ state.tickerIDs.contains($0.id) }).count > 1 {
+        } else if prefs.tickerMode == .rotate, state.choices.filter({ state.tickerIDs.contains($0.id) }).count > 1 {
             notes.append(L("Rotates through the checked values every 5 seconds."))
         }
 
@@ -479,10 +480,12 @@ private final class DisplaySettingsViewController: SettingsPane {
     }
 
     private func setTicker(_ id: String, _ on: Bool) {
-        var ids = prefs.tickerIDs
+        // Depotkennzahlen haben eine eigene Liste, weil tickerIDs auf die Auswahl beschränkt wird.
+        let isDepot = DepotTicker(rawValue: id) != nil
+        var ids = isDepot ? prefs.trTickerItems : prefs.tickerIDs
         ids.removeAll { $0 == id }
         if on { ids.append(id) }
-        prefs.tickerIDs = ids
+        if isDepot { prefs.trTickerItems = ids } else { prefs.tickerIDs = ids }
         onChange(.ticker)
     }
 

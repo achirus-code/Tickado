@@ -53,7 +53,14 @@ final class StatusController: NSObject, NSMenuDelegate {
 
     private var tickerCoins: [Coin] {
         let ids = Set(prefs.tickerIDs)
-        return sortedSelection.filter { ids.contains($0.id) }
+        return sortedSelection.filter { ids.contains($0.id) } + depotTickerCoins
+    }
+
+    /// Angehakte Depotkennzahlen, solange Trade Republic nicht abgemeldet ist.
+    private var depotTickerCoins: [Coin] {
+        guard TradeRepublic.shared.state != .loggedOut else { return [] }
+        let ids = Set(prefs.trTickerItems)
+        return DepotTicker.allCases.filter { ids.contains($0.rawValue) }.map(\.coin)
     }
 
     /// Was gerade in der Menüleiste steht (beim Rotieren nur der aktuelle Wert).
@@ -217,7 +224,8 @@ final class StatusController: NSObject, NSMenuDelegate {
 
     /// Kurse, deren letzte erfolgreiche Abfrage deutlich älter als das Intervall ist, werden grau.
     private var renderer: TickerRenderer {
-        TickerRenderer(quotes: quotes, staleBefore: Date(timeIntervalSinceNow: -Double(prefs.refreshInterval * 3 + 60)))
+        TickerRenderer(quotes: quotes, staleBefore: Date(timeIntervalSinceNow: -Double(prefs.refreshInterval * 3 + 60)),
+                       depot: depot)
     }
 
     private func updateUI() {
@@ -343,6 +351,20 @@ final class StatusController: NSObject, NSMenuDelegate {
         let submenu = NSMenu()
         let stale = isDepotStale(renderer)
         if let depot {
+            // Kennzahlen oben, mit Häkchen für die Menüleiste
+            let checked = Set(prefs.trTickerItems)
+            for item in DepotTicker.allCases {
+                let figures = item.figures(in: depot)
+                let row = ClosureMenuItem("", state: checked.contains(item.rawValue)) { [weak self] in
+                    self?.toggleDepotTicker(item)
+                }
+                row.attributedTitle = renderer.depotRowTitle(item.title, value: figures.amount, change: figures.percent,
+                                                             stale: stale, extraWidth: 12, signed: figures.signed)
+                row.toolTip = L("Click to show it in the menu bar.")
+                submenu.addItem(row)
+            }
+            submenu.addItem(.separator())
+
             let positions = depot.positions.sorted { ($0.value ?? 0) > ($1.value ?? 0) }
             if positions.isEmpty {
                 let empty = NSMenuItem(title: L("No positions"), action: nil, keyEquivalent: "")
@@ -405,6 +427,13 @@ final class StatusController: NSObject, NSMenuDelegate {
         return item
     }
 
+    private func toggleDepotTicker(_ item: DepotTicker) {
+        var ids = prefs.trTickerItems
+        if let index = ids.firstIndex(of: item.rawValue) { ids.remove(at: index) } else { ids.append(item.rawValue) }
+        prefs.trTickerItems = ids
+        settingsDidChange(.ticker)
+    }
+
     private func toggleTicker(_ id: String) {
         var ids = prefs.tickerIDs
         if let index = ids.firstIndex(of: id) { ids.remove(at: index) } else { ids.append(id) }
@@ -421,8 +450,9 @@ final class StatusController: NSObject, NSMenuDelegate {
 
     /// Daten für die Vorschau im Settings-Fenster.
     var previewState: TickerPreviewState {
-        TickerPreviewState(renderer: renderer, barCoins: visibleTickerCoins,
-                           menuCoins: sortedSelection, tickerIDs: Set(prefs.tickerIDs))
+        TickerPreviewState(renderer: renderer, barCoins: visibleTickerCoins, menuCoins: sortedSelection,
+                           choices: sortedSelection + (TradeRepublic.shared.state == .loggedOut ? [] : DepotTicker.allCases.map(\.coin)),
+                           tickerIDs: Set(prefs.tickerIDs + prefs.trTickerItems))
     }
 
     func settingsDidChange(_ change: SettingsChange) {

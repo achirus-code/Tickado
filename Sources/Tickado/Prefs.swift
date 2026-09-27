@@ -125,6 +125,12 @@ final class Prefs {
         set { d.set(newValue, forKey: "trLinked") }
     }
 
+    /// Depotkennzahlen mit Häkchen für die Menüleiste (`DepotTicker.rawValue`).
+    var trTickerItems: [String] {
+        get { d.stringArray(forKey: "trTickerItems") ?? [] }
+        set { d.set(newValue, forKey: "trTickerItems") }
+    }
+
     var trAccount: String? {
         get { d.string(forKey: "trAccount") }
         set { d.set(newValue, forKey: "trAccount") }
