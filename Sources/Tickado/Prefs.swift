@@ -119,21 +119,26 @@ final class Prefs {
         set { d.set(newValue.rawValue, forKey: "metalUnit") }
     }
 
-    /// Trade Republic: einmal verbunden (Session liegt im WebKit-Speicher) und Depotnummer.
-    var trLinked: Bool {
-        get { d.bool(forKey: "trLinked") }
-        set { d.set(newValue, forKey: "trLinked") }
+    /// Trade Republic: Positionen, Guthaben und Zeitpunkt der letzten Synchronisierung.
+    var trHoldings: [TRHolding] {
+        get { d.data(forKey: "trHoldings").flatMap { try? JSONDecoder().decode([TRHolding].self, from: $0) } ?? [] }
+        set { d.set(try? JSONEncoder().encode(newValue), forKey: "trHoldings") }
+    }
+
+    var trCash: Double? {
+        get { d.object(forKey: "trCash") as? Double }
+        set { d.set(newValue, forKey: "trCash") }
+    }
+
+    var trSyncDate: Date? {
+        get { d.object(forKey: "trSyncDate") as? Date }
+        set { d.set(newValue, forKey: "trSyncDate") }
     }
 
     /// Depotkennzahlen mit Häkchen für die Menüleiste (`DepotTicker.rawValue`).
     var trTickerItems: [String] {
         get { d.stringArray(forKey: "trTickerItems") ?? [] }
         set { d.set(newValue, forKey: "trTickerItems") }
-    }
-
-    var trAccount: String? {
-        get { d.string(forKey: "trAccount") }
-        set { d.set(newValue, forKey: "trAccount") }
     }
 
     var apiKeyKind: APIKeyKind {

@@ -184,10 +184,6 @@ extension L10n {
             "Gns. købskurs: %@",
         "Cash":
             "Kontant",
-        "Loading portfolio…":
-            "Indlæser portefølje…",
-        "Log in again…":
-            "Log ind igen…",
         "Open Trade Republic":
             "Åbn Trade Republic",
         "Session expired. Please log in again.":
@@ -196,20 +192,6 @@ extension L10n {
             "Trade Republic svarer ikke.",
         "Unexpected response from Trade Republic.":
             "Uventet svar fra Trade Republic.",
-        "Log Out":
-            "Log ud",
-        "Status:":
-            "Status:",
-        "Connected":
-            "Forbundet",
-        "Not connected":
-            "Ikke forbundet",
-        "Connect…":
-            "Forbind…",
-        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
-            "Log ind med telefonnummer og pinkode, og bekræft i Trade Republic-appen. Vinduet lukker automatisk, når forbindelsen er oprettet.",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
-            "Bruger Trade Republics uofficielle webgrænseflade, som kan ændre sig når som helst. Tickado er ikke tilknyttet Trade Republic. Du logger ind på Trade Republics websted; Tickado gemmer sessionen som en browser.",
         "Portfolio value":
             "Porteføljeværdi",
         "Gain today":
@@ -222,5 +204,25 @@ extension L10n {
             "TR i alt",
         "Click to show it in the menu bar.":
             "Klik for at vise i menulinjen.",
+        "Last synchronized: %@":
+            "Senest synkroniseret: %@",
+        "Log in in the Trade Republic window.":
+            "Log ind i Trade Republic-vinduet.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Log ind med telefonnummer og pinkode, og bekræft i Trade Republic-appen. Vinduet lukker automatisk, når din portefølje er synkroniseret.",
+        "Not synchronized yet":
+            "Ikke synkroniseret endnu",
+        "Positions: %d":
+            "Beholdninger: %d",
+        "Remove Data":
+            "Slet data",
+        "Synchronization failed: %@":
+            "Synkronisering mislykkedes: %@",
+        "Synchronize…":
+            "Synkroniser…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "Ved synkronisering logger du ind på Trade Republics websted, og Tickado gemmer dine beholdninger (ISIN, antal, købskurs). Kurserne hentes derefter fra Yahoo Finance. Bruger Trade Republics uofficielle webgrænseflade; Tickado er ikke tilknyttet Trade Republic.",
+        "Synchronizing…":
+            "Synkroniserer…",
     ]
 }

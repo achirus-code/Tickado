@@ -184,10 +184,6 @@ extension L10n {
             "Prům. nákupní cena: %@",
         "Cash":
             "Hotovost",
-        "Loading portfolio…":
-            "Načítání portfolia…",
-        "Log in again…":
-            "Znovu přihlásit…",
         "Open Trade Republic":
             "Otevřít Trade Republic",
         "Session expired. Please log in again.":
@@ -196,20 +192,6 @@ extension L10n {
             "Trade Republic neodpovídá.",
         "Unexpected response from Trade Republic.":
             "Neočekávaná odpověď od Trade Republic.",
-        "Log Out":
-            "Odhlásit",
-        "Status:":
-            "Stav:",
-        "Connected":
-            "Připojeno",
-        "Not connected":
-            "Nepřipojeno",
-        "Connect…":
-            "Připojit…",
-        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
-            "Přihlaste se telefonním číslem a PINem a potvrďte to v aplikaci Trade Republic. Okno se po připojení samo zavře.",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
-            "Používá neoficiální webové rozhraní Trade Republic, které se může kdykoli změnit. Tickado není spojeno s Trade Republic. Přihlašujete se na webu Trade Republic; Tickado si relaci ponechá jako prohlížeč.",
         "Portfolio value":
             "Hodnota portfolia",
         "Gain today":
@@ -222,5 +204,25 @@ extension L10n {
             "TR celkem",
         "Click to show it in the menu bar.":
             "Klikněte pro zobrazení v řádku nabídek.",
+        "Last synchronized: %@":
+            "Naposledy synchronizováno: %@",
+        "Log in in the Trade Republic window.":
+            "Přihlaste se v okně Trade Republic.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Přihlaste se telefonním číslem a PINem a potvrďte to v aplikaci Trade Republic. Okno se samo zavře, jakmile bude portfolio synchronizováno.",
+        "Not synchronized yet":
+            "Zatím nesynchronizováno",
+        "Positions: %d":
+            "Pozice: %d",
+        "Remove Data":
+            "Smazat data",
+        "Synchronization failed: %@":
+            "Synchronizace se nezdařila: %@",
+        "Synchronize…":
+            "Synchronizovat…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "Při synchronizaci se přihlásíte na webu Trade Republic a Tickado uloží vaše pozice (ISIN, počet, nákupní cena). Kurzy se pak načítají z Yahoo Finance. Používá neoficiální webové rozhraní Trade Republic; Tickado není spojeno s Trade Republic.",
+        "Synchronizing…":
+            "Synchronizace…",
     ]
 }

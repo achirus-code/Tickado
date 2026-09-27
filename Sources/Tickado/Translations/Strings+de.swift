@@ -184,10 +184,6 @@ extension L10n {
             "Ø Kaufkurs: %@",
         "Cash":
             "Guthaben",
-        "Loading portfolio…":
-            "Depot wird geladen …",
-        "Log in again…":
-            "Erneut anmelden …",
         "Open Trade Republic":
             "Trade Republic öffnen",
         "Session expired. Please log in again.":
@@ -196,20 +192,6 @@ extension L10n {
             "Trade Republic antwortet nicht.",
         "Unexpected response from Trade Republic.":
             "Unerwartete Antwort von Trade Republic.",
-        "Log Out":
-            "Abmelden",
-        "Status:":
-            "Status:",
-        "Connected":
-            "Verbunden",
-        "Not connected":
-            "Nicht verbunden",
-        "Connect…":
-            "Verbinden …",
-        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
-            "Melde dich mit Handynummer und PIN an und bestätige in der Trade-Republic-App. Das Fenster schließt sich automatisch, sobald die Verbindung steht.",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
-            "Nutzt die inoffizielle Web-Schnittstelle von Trade Republic, die sich jederzeit ändern kann. Tickado gehört nicht zu Trade Republic. Du meldest dich auf der Website von Trade Republic an; Tickado behält die Sitzung wie ein Browser.",
         "Portfolio value":
             "Depotwert",
         "Gain today":
@@ -222,5 +204,25 @@ extension L10n {
             "TR gesamt",
         "Click to show it in the menu bar.":
             "Klicken, um den Wert in der Menüleiste zu zeigen.",
+        "Last synchronized: %@":
+            "Zuletzt synchronisiert: %@",
+        "Log in in the Trade Republic window.":
+            "Melde dich im Trade-Republic-Fenster an.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Melde dich mit Handynummer und PIN an und bestätige in der Trade-Republic-App. Das Fenster schließt sich automatisch, sobald dein Depot synchronisiert ist.",
+        "Not synchronized yet":
+            "Noch nicht synchronisiert",
+        "Positions: %d":
+            "Positionen: %d",
+        "Remove Data":
+            "Daten löschen",
+        "Synchronization failed: %@":
+            "Synchronisierung fehlgeschlagen: %@",
+        "Synchronize…":
+            "Synchronisieren …",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "Beim Synchronisieren meldest du dich auf der Website von Trade Republic an, und Tickado speichert deine Positionen (ISIN, Stückzahl, Kaufkurs). Die Kurse kommen danach von Yahoo Finance. Nutzt die inoffizielle Web-Schnittstelle von Trade Republic; Tickado gehört nicht zu Trade Republic.",
+        "Synchronizing…":
+            "Synchronisiere …",
     ]
 }

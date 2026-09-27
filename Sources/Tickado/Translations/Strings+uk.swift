@@ -184,10 +184,6 @@ extension L10n {
             "Сер. ціна купівлі: %@",
         "Cash":
             "Готівка",
-        "Loading portfolio…":
-            "Завантаження портфеля…",
-        "Log in again…":
-            "Увійти знову…",
         "Open Trade Republic":
             "Відкрити Trade Republic",
         "Session expired. Please log in again.":
@@ -196,20 +192,6 @@ extension L10n {
             "Trade Republic не відповідає.",
         "Unexpected response from Trade Republic.":
             "Неочікувана відповідь від Trade Republic.",
-        "Log Out":
-            "Вийти",
-        "Status:":
-            "Статус:",
-        "Connected":
-            "Підключено",
-        "Not connected":
-            "Не підключено",
-        "Connect…":
-            "Під’єднати…",
-        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
-            "Увійдіть із номером телефону та PIN і підтвердьте вхід у застосунку Trade Republic. Вікно закриється автоматично після під’єднання.",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
-            "Використовує неофіційний вебінтерфейс Trade Republic, який може змінитися будь-коли. Tickado не пов’язаний з Trade Republic. Ви входите на сайті Trade Republic; Tickado зберігає сеанс, як браузер.",
         "Portfolio value":
             "Вартість портфеля",
         "Gain today":
@@ -222,5 +204,25 @@ extension L10n {
             "TR усього",
         "Click to show it in the menu bar.":
             "Клацніть, щоб показати в рядку меню.",
+        "Last synchronized: %@":
+            "Остання синхронізація: %@",
+        "Log in in the Trade Republic window.":
+            "Увійдіть у вікні Trade Republic.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Увійдіть із номером телефону та PIN і підтвердьте вхід у застосунку Trade Republic. Вікно закриється автоматично після синхронізації портфеля.",
+        "Not synchronized yet":
+            "Ще не синхронізовано",
+        "Positions: %d":
+            "Позицій: %d",
+        "Remove Data":
+            "Видалити дані",
+        "Synchronization failed: %@":
+            "Помилка синхронізації: %@",
+        "Synchronize…":
+            "Синхронізувати…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "Під час синхронізації ви входите на сайті Trade Republic, а Tickado зберігає ваші позиції (ISIN, кількість, ціну купівлі). Потім курси завантажуються з Yahoo Finance. Використовує неофіційний вебінтерфейс Trade Republic; Tickado не пов’язаний з Trade Republic.",
+        "Synchronizing…":
+            "Синхронізація…",
     ]
 }

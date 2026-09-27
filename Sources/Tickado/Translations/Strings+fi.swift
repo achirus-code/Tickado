@@ -184,10 +184,6 @@ extension L10n {
             "Keskihinta: %@",
         "Cash":
             "Käteinen",
-        "Loading portfolio…":
-            "Ladataan salkkua…",
-        "Log in again…":
-            "Kirjaudu uudelleen…",
         "Open Trade Republic":
             "Avaa Trade Republic",
         "Session expired. Please log in again.":
@@ -196,20 +192,6 @@ extension L10n {
             "Trade Republic ei vastaa.",
         "Unexpected response from Trade Republic.":
             "Odottamaton vastaus Trade Republicilta.",
-        "Log Out":
-            "Kirjaudu ulos",
-        "Status:":
-            "Tila:",
-        "Connected":
-            "Yhdistetty",
-        "Not connected":
-            "Ei yhdistetty",
-        "Connect…":
-            "Yhdistä…",
-        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
-            "Kirjaudu puhelinnumerolla ja PIN-koodilla ja vahvista Trade Republic -sovelluksessa. Ikkuna sulkeutuu automaattisesti, kun yhteys on muodostettu.",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
-            "Käyttää Trade Republicin epävirallista verkkorajapintaa, joka voi muuttua milloin tahansa. Tickado ei liity Trade Republiciin. Kirjaudut Trade Republicin verkkosivustolla; Tickado säilyttää istunnon kuten selain.",
         "Portfolio value":
             "Salkun arvo",
         "Gain today":
@@ -222,5 +204,25 @@ extension L10n {
             "TR yhteensä",
         "Click to show it in the menu bar.":
             "Näytä valikkorivillä klikkaamalla.",
+        "Last synchronized: %@":
+            "Viimeksi synkronoitu: %@",
+        "Log in in the Trade Republic window.":
+            "Kirjaudu Trade Republic -ikkunassa.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Kirjaudu puhelinnumerolla ja PIN-koodilla ja vahvista Trade Republic -sovelluksessa. Ikkuna sulkeutuu automaattisesti, kun salkku on synkronoitu.",
+        "Not synchronized yet":
+            "Ei vielä synkronoitu",
+        "Positions: %d":
+            "Omistukset: %d",
+        "Remove Data":
+            "Poista tiedot",
+        "Synchronization failed: %@":
+            "Synkronointi epäonnistui: %@",
+        "Synchronize…":
+            "Synkronoi…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "Synkronoidessa kirjaudut Trade Republicin verkkosivustolle, ja Tickado tallentaa omistuksesi (ISIN, määrä, ostohinta). Kurssit haetaan sen jälkeen Yahoo Financesta. Käyttää Trade Republicin epävirallista verkkorajapintaa; Tickado ei liity Trade Republiciin.",
+        "Synchronizing…":
+            "Synkronoidaan…",
     ]
 }

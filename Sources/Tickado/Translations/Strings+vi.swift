@@ -184,10 +184,6 @@ extension L10n {
             "Giá mua TB: %@",
         "Cash":
             "Tiền mặt",
-        "Loading portfolio…":
-            "Đang tải danh mục…",
-        "Log in again…":
-            "Đăng nhập lại…",
         "Open Trade Republic":
             "Mở Trade Republic",
         "Session expired. Please log in again.":
@@ -196,20 +192,6 @@ extension L10n {
             "Trade Republic không phản hồi.",
         "Unexpected response from Trade Republic.":
             "Phản hồi không mong đợi từ Trade Republic.",
-        "Log Out":
-            "Đăng xuất",
-        "Status:":
-            "Trạng thái:",
-        "Connected":
-            "Đã kết nối",
-        "Not connected":
-            "Chưa kết nối",
-        "Connect…":
-            "Kết nối…",
-        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
-            "Đăng nhập bằng số điện thoại và mã PIN, rồi xác nhận trong ứng dụng Trade Republic. Cửa sổ này tự đóng khi đã kết nối.",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
-            "Sử dụng giao diện web không chính thức của Trade Republic, có thể thay đổi bất cứ lúc nào. Tickado không liên kết với Trade Republic. Bạn đăng nhập trên trang web Trade Republic; Tickado giữ phiên như một trình duyệt.",
         "Portfolio value":
             "Giá trị danh mục",
         "Gain today":
@@ -222,5 +204,25 @@ extension L10n {
             "TR tổng",
         "Click to show it in the menu bar.":
             "Bấm để hiện trên thanh menu.",
+        "Last synchronized: %@":
+            "Đồng bộ lần cuối: %@",
+        "Log in in the Trade Republic window.":
+            "Hãy đăng nhập trong cửa sổ Trade Republic.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Đăng nhập bằng số điện thoại và mã PIN, rồi xác nhận trong ứng dụng Trade Republic. Cửa sổ này tự đóng khi danh mục đã được đồng bộ.",
+        "Not synchronized yet":
+            "Chưa đồng bộ",
+        "Positions: %d":
+            "Vị thế: %d",
+        "Remove Data":
+            "Xóa dữ liệu",
+        "Synchronization failed: %@":
+            "Đồng bộ thất bại: %@",
+        "Synchronize…":
+            "Đồng bộ…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "Khi đồng bộ, bạn đăng nhập trên trang web Trade Republic và Tickado lưu các vị thế của bạn (ISIN, số lượng, giá mua). Sau đó giá được tải từ Yahoo Finance. Sử dụng giao diện web không chính thức của Trade Republic; Tickado không liên kết với Trade Republic.",
+        "Synchronizing…":
+            "Đang đồng bộ…",
     ]
 }

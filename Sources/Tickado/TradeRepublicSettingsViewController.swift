@@ -1,21 +1,29 @@
 import AppKit
 
-/// Tab "Trade Republic": Status, "Verbinden" (Anmeldung auf der TR-Website im eigenen Fenster) und Abmelden.
+/// Tab "Trade Republic": Synchronisieren (Anmeldung auf der TR-Website, Positionen werden gespeichert),
+/// darunter Datum der letzten Synchronisierung, und Löschen der gespeicherten Daten.
 final class TradeRepublicSettingsViewController: SettingsPane {
-    private let statusLabel = NSTextField(labelWithString: "")
-    private lazy var connectButton = NSButton(title: L("Connect…"), target: self, action: #selector(connect))
-    private lazy var logoutButton = NSButton(title: L("Log Out"), target: self, action: #selector(logOut))
+    private lazy var syncButton = NSButton(title: L("Synchronize…"), target: self, action: #selector(synchronize))
+    private lazy var removeButton = NSButton(title: L("Remove Data"), target: self, action: #selector(removeData))
+    private let lastSyncLabel = NSTextField(labelWithString: "")
+    private let message = NSTextField(wrappingLabelWithString: "")
 
     override func loadView() {
-        let buttons = NSStackView(views: [connectButton, logoutButton])
+        let buttons = NSStackView(views: [syncButton, removeButton])
         buttons.spacing = 8
+        lastSyncLabel.textColor = .secondaryLabelColor
+        message.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
+        message.textColor = .secondaryLabelColor
+        message.preferredMaxLayoutWidth = 320
+        message.widthAnchor.constraint(lessThanOrEqualToConstant: 320).isActive = true
         let root = makeForm([
-            (L("Status:"), statusLabel),
-            (nil, buttons),
-        ], groups: [1])
+            ("Trade Republic:", buttons),
+            (nil, lastSyncLabel),
+            (nil, message),
+        ])
 
         let disclaimer = NSTextField(wrappingLabelWithString: L(
-            "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser."))
+            "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic."))
         disclaimer.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
         disclaimer.textColor = .tertiaryLabelColor
         disclaimer.translatesAutoresizingMaskIntoConstraints = false
@@ -30,22 +38,31 @@ final class TradeRepublicSettingsViewController: SettingsPane {
     }
 
     override func reload() {
-        let state = TradeRepublic.shared.state
-        statusLabel.stringValue = switch state {
-        case .connected: L("Connected")
-        case .expired: L("Session expired. Please log in again.")
-        case .loggedOut: L("Not connected")
+        let tr = TradeRepublic.shared
+        if let lastSync = tr.lastSync {
+            lastSyncLabel.stringValue = StatusController.lastSyncText(lastSync) + " · " + L("Positions: %d", tr.holdings.count)
+        } else {
+            lastSyncLabel.stringValue = L("Not synchronized yet")
         }
-        connectButton.isHidden = state == .connected
-        logoutButton.isHidden = state == .loggedOut
+        syncButton.isEnabled = !tr.isSyncing
+        removeButton.isHidden = !tr.hasData
+        if tr.isSyncing { message.stringValue = L("Log in in the Trade Republic window.") }
     }
 
-    @objc private func connect() {
-        TradeRepublic.shared.connect { [weak self] in self?.onChange(.broker) }
+    @objc private func synchronize() {
+        message.stringValue = ""
+        TradeRepublic.shared.synchronize { [weak self] error in
+            guard let self else { return }
+            self.message.stringValue = error.map { L("Synchronization failed: %@", $0.localizedDescription) } ?? ""
+            self.onChange(.broker)
+            self.reload()
+        }
+        reload()
     }
 
-    @objc private func logOut() {
-        TradeRepublic.shared.logOut()
+    @objc private func removeData() {
+        TradeRepublic.shared.removeData()
+        message.stringValue = ""
         onChange(.broker)
     }
 }

@@ -184,10 +184,6 @@ extension L10n {
             "平均買入價：%@",
         "Cash":
             "現金",
-        "Loading portfolio…":
-            "正在載入投資組合⋯",
-        "Log in again…":
-            "重新登入⋯",
         "Open Trade Republic":
             "打開 Trade Republic",
         "Session expired. Please log in again.":
@@ -196,20 +192,6 @@ extension L10n {
             "Trade Republic 沒有回應。",
         "Unexpected response from Trade Republic.":
             "Trade Republic 回傳了非預期的回應。",
-        "Log Out":
-            "登出",
-        "Status:":
-            "狀態：",
-        "Connected":
-            "已連線",
-        "Not connected":
-            "未連線",
-        "Connect…":
-            "連線⋯",
-        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
-            "請使用手機號碼和 PIN 登入，並在 Trade Republic App 中確認。連線成功後，此視窗會自動關閉。",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
-            "使用 Trade Republic 的非官方網頁介面，該介面可能隨時變更。Tickado 與 Trade Republic 並無關聯。你在 Trade Republic 網站上登入；Tickado 會像瀏覽器一樣保留工作階段。",
         "Portfolio value":
             "投資組合價值",
         "Gain today":
@@ -222,5 +204,25 @@ extension L10n {
             "TR 總計",
         "Click to show it in the menu bar.":
             "按一下即可在選單列顯示。",
+        "Last synchronized: %@":
+            "上次同步：%@",
+        "Log in in the Trade Republic window.":
+            "請在 Trade Republic 視窗中登入。",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "請使用手機號碼和 PIN 登入，並在 Trade Republic App 中確認。投資組合同步完成後，此視窗會自動關閉。",
+        "Not synchronized yet":
+            "尚未同步",
+        "Positions: %d":
+            "持倉數：%d",
+        "Remove Data":
+            "刪除資料",
+        "Synchronization failed: %@":
+            "同步失敗：%@",
+        "Synchronize…":
+            "同步⋯",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "同步時你會登入 Trade Republic 網站，Tickado 會儲存你的持倉（ISIN、數量、買入價）。之後價格從 Yahoo Finance 載入。使用 Trade Republic 的非官方網頁介面；Tickado 與 Trade Republic 並無關聯。",
+        "Synchronizing…":
+            "正在同步⋯",
     ]
 }

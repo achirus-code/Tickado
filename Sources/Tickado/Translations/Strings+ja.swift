@@ -184,10 +184,6 @@ extension L10n {
             "平均取得単価: %@",
         "Cash":
             "現金",
-        "Loading portfolio…":
-            "ポートフォリオを読み込み中…",
-        "Log in again…":
-            "再ログイン…",
         "Open Trade Republic":
             "Trade Republicを開く",
         "Session expired. Please log in again.":
@@ -196,20 +192,6 @@ extension L10n {
             "Trade Republicから応答がありません。",
         "Unexpected response from Trade Republic.":
             "Trade Republicから予期しない応答がありました。",
-        "Log Out":
-            "ログアウト",
-        "Status:":
-            "状態:",
-        "Connected":
-            "接続済み",
-        "Not connected":
-            "未接続",
-        "Connect…":
-            "接続…",
-        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
-            "電話番号とPINでログインし、Trade Republicアプリで承認してください。接続が完了すると、このウインドウは自動的に閉じます。",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
-            "Trade Republicの非公式Webインターフェイスを使用しており、いつでも変更される可能性があります。TickadoはTrade Republicとは提携していません。ログインはTrade RepublicのWebサイトで行い、Tickadoはブラウザと同様にセッションを保持します。",
         "Portfolio value":
             "評価額",
         "Gain today":
@@ -222,5 +204,25 @@ extension L10n {
             "TR 累計",
         "Click to show it in the menu bar.":
             "クリックするとメニューバーに表示します。",
+        "Last synchronized: %@":
+            "最終同期: %@",
+        "Log in in the Trade Republic window.":
+            "Trade Republicのウインドウでログインしてください。",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "電話番号とPINでログインし、Trade Republicアプリで承認してください。ポートフォリオの同期が完了すると、このウインドウは自動的に閉じます。",
+        "Not synchronized yet":
+            "まだ同期されていません",
+        "Positions: %d":
+            "銘柄数: %d",
+        "Remove Data":
+            "データを削除",
+        "Synchronization failed: %@":
+            "同期に失敗しました: %@",
+        "Synchronize…":
+            "同期…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "同期するとTrade RepublicのWebサイトにログインし、Tickadoが保有銘柄（ISIN、数量、取得単価）を保存します。価格はその後Yahoo Financeから読み込まれます。Trade Republicの非公式Webインターフェイスを使用しています。TickadoはTrade Republicとは提携していません。",
+        "Synchronizing…":
+            "同期中…",
     ]
 }

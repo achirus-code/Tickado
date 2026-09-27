@@ -1,4 +1,5 @@
 import Foundation
+import WebKit
 
 /// Eine Depotposition bei Trade Republic (Kurse in Euro).
 struct TRPosition {
@@ -195,17 +196,21 @@ enum TRProtocol {
     }
 }
 
-/// Depot bei Trade Republic über die inoffizielle Web-Schnittstelle (dieselbe wie app.traderepublic.com).
-/// Angemeldet wird auf der echten Website in `TRWebSession`. Das Fenster bleibt danach unsichtbar offen wie ein
-/// Browser-Tab, und alle Abfragen laufen per JavaScript aus dieser Seite heraus: mit ihren Cookies, ihrer Herkunft
-/// und ihrem Bot-Schutz. Nachgebaute Anfragen von außen lehnt Trade Republic dagegen ab.
+/// Gespeicherte Depotposition aus der letzten Synchronisierung. Kurse kommen laufend von Yahoo Finance (`symbol`).
+struct TRHolding: Codable, Equatable {
+    let isin: String
+    var name: String
+    let quantity: Double
+    let averageBuyIn: Double?
+    var symbol: String?
+}
+
+/// Depot bei Trade Republic. "Synchronisieren" meldet frisch auf der echten TR-Website an (`TRWebSession`),
+/// holt die Positionen einmal aus der eingeloggten Seite und speichert sie; danach wird die Sitzung verworfen.
+/// Die laufenden Kurse kommen von Yahoo Finance über die ISIN.
 @MainActor
 final class TradeRepublic {
     static let shared = TradeRepublic()
-
-    enum State {
-        case loggedOut, connected, expired
-    }
 
     enum Failure: LocalizedError {
         case sessionExpired, timeout, invalidResponse
@@ -221,148 +226,143 @@ final class TradeRepublic {
         }
     }
 
-    private(set) var state: State = .loggedOut
     private var web: TRWebSession?
-    private var instruments: [String: TRProtocol.Instrument] = [:]
-    private var onConnected: (() -> Void)?
-    private var verifying = false
+    private var onFinished: ((Error?) -> Void)?
+    private var fetching = false
 
     private init() {
-        // War Tickado schon verbunden, liegt die Session im WebKit-Speicher; die Seite im Hintergrund laden.
-        if Prefs.shared.trLinked {
-            state = .connected
-            session().load()
+        // Die Vorversion hielt die TR-Sitzung dauerhaft im WebKit-Speicher; diese Reste einmalig löschen.
+        let defaults = UserDefaults.standard
+        if defaults.object(forKey: "trLinked") != nil {
+            WKWebsiteDataStore.default().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
+                                                    modifiedSince: .distantPast) {}
+            defaults.removeObject(forKey: "trLinked")
+            defaults.removeObject(forKey: "trAccount")
+            defaults.removeObject(forKey: "trUserAgent")
         }
     }
+
+    var holdings: [TRHolding] { Prefs.shared.trHoldings }
+    var lastSync: Date? { Prefs.shared.trSyncDate }
+    var hasData: Bool { lastSync != nil }
+    var isSyncing: Bool { web != nil }
 
     private var locale: String {
         Locale.preferredLanguages.first.flatMap { Locale.Language(identifier: $0).languageCode?.identifier } ?? "de"
     }
 
-    private func session() -> TRWebSession {
-        if let web { return web }
-        let web = TRWebSession { [weak self] onLoginPage in self?.pageChanged(onLoginPage: onLoginPage) }
-        self.web = web
-        return web
+    /// Yahoo-Werte für die Kursabfrage (Kurse in Euro).
+    var quoteCoins: [Coin] {
+        Array(Set(holdings.compactMap(\.symbol))).sorted().map { Coin(stock: $0, name: $0) }
     }
 
-    // MARK: - Anmelden
-
-    /// Zeigt die Anmeldeseite; `onConnected` läuft, sobald Tickado die Session erkannt hat.
-    func connect(onConnected: @escaping () -> Void) {
-        self.onConnected = onConnected
-        session().showLogin()
+    /// Depot aus den gespeicherten Positionen und den aktuellen Yahoo-Kursen.
+    func portfolio(quotes: [String: Quote]) -> TRPortfolio? {
+        guard hasData else { return nil }
+        let priced = holdings.map { holding in (holding, holding.symbol.flatMap { quotes["stock:" + $0] }) }
+        let positions = priced.map { holding, quote in
+            TRPosition(isin: holding.isin, name: holding.name, quantity: holding.quantity, averageBuyIn: holding.averageBuyIn,
+                       price: quote?.price,
+                       previousClose: quote.flatMap { q in q.change24h.map { q.price / (1 + $0 / 100) } })
+        }
+        // Grau, sobald einer der Kurse veraltet ist; ohne Kurse gilt das Depot als veraltet.
+        let updated = priced.compactMap { $0.1?.updated }.min() ?? .distantPast
+        return TRPortfolio(positions: positions, cash: Prefs.shared.trCash, updated: updated)
     }
 
-    /// Die Seite hat gewechselt (auch innerhalb der Web-App ohne Neuladen) oder der Anmelde-Timer fragt nach.
+    // MARK: - Synchronisieren
+
+    /// Öffnet die Anmeldeseite (immer frisch, nichts gespeichert). `onFinished` läuft nach dem Speichern,
+    /// bei einem Fehler oder wenn das Fenster ohne Anmeldung geschlossen wird (dann ohne Fehler).
+    func synchronize(onFinished: @escaping (Error?) -> Void) {
+        self.onFinished = onFinished
+        if web == nil {
+            web = TRWebSession(
+                onPage: { [weak self] onLoginPage in self?.pageChanged(onLoginPage: onLoginPage) },
+                onClose: { [weak self] in self?.finish(nil, closeWindow: false) })
+        }
+        TRLog.write("Synchronisierung gestartet")
+        web?.showLogin()
+    }
+
     private func pageChanged(onLoginPage: Bool) {
-        guard let web else { return }
-        if onLoginPage {
-            // Im Hintergrund auf der Anmeldeseite gelandet: Trade Republic hat die Session beendet.
-            if state == .connected, !web.isWindowVisible, !web.isLoading {
-                TRLog.write("Hintergrundseite zeigt Login → abgelaufen")
-                state = .expired
+        guard let web, !onLoginPage, !web.isLoading else { return }
+        Task { await fetchAfterLogin(web) }
+    }
+
+    private func fetchAfterLogin(_ web: TRWebSession) async {
+        guard !fetching else { return }
+        fetching = true
+        defer { fetching = false }
+        // Erst weiter, wenn die Seite angemeldet ist (Depotnummer abrufbar).
+        guard let (status, json) = try? await web.fetchJSON("/api/v2/auth/account") else { return }
+        TRLog.write("Prüfung /api/v2/auth/account → HTTP \(status)")
+        guard status == 200 else { return }
+        let account = (json as? [String: Any])?["securitiesAccountNumber"] as? String
+        web.showStatus(L("Synchronizing…"))
+        do {
+            let (positions, cash) = try await loadPositions(from: web, account: account)
+            // Yahoo-Symbole: bekannte übernehmen, neue über die ISIN suchen.
+            let known = Dictionary(holdings.map { ($0.isin, $0.symbol) }, uniquingKeysWith: { first, _ in first })
+            var result = positions.map {
+                TRHolding(isin: $0.isin, name: $0.name, quantity: $0.quantity, averageBuyIn: $0.averageBuyIn,
+                          symbol: known[$0.isin] ?? nil)
             }
-            return
-        }
-        // Während eine Seite lädt, ist die Prüfung sinnlos (Anfragen scheitern); didFinish meldet sich danach.
-        if (state != .connected || web.isWindowVisible), !web.isLoading { Task { await verify() } }
-    }
-
-    /// Prüft aus der Seite heraus, ob sie angemeldet ist (Depotnummer abrufbar).
-    private func verify() async {
-        guard let web, !verifying else { return }
-        verifying = true
-        defer { verifying = false }
-        do {
-            let (status, json) = try await web.fetchJSON("/api/v2/auth/account")
-            TRLog.write("Prüfung /api/v2/auth/account → HTTP \(status)")
-            guard status == 200, let account = (json as? [String: Any])?["securitiesAccountNumber"] as? String else { return }
-            Prefs.shared.trAccount = account
-            Prefs.shared.trLinked = true
-            instruments = [:]
-            state = .connected
-            web.hideWindow()
-            TRLog.write("verbunden")
-            onConnected?()
-            onConnected = nil
+            let missing = result.indices.filter { result[$0].symbol == nil }
+            await withTaskGroup(of: (Int, String?).self) { group in
+                for index in missing {
+                    let isin = result[index].isin
+                    group.addTask { (index, await YahooFinance.symbol(forISIN: isin)) }
+                }
+                for await (index, symbol) in group { result[index].symbol = symbol }
+            }
+            Prefs.shared.trHoldings = result
+            Prefs.shared.trCash = cash
+            Prefs.shared.trSyncDate = Date()
+            TRLog.write("Synchronisiert: \(result.count) Positionen, \(result.filter { $0.symbol == nil }.count) ohne Yahoo-Kurs")
+            finish(nil, closeWindow: true)
         } catch {
-            TRLog.write("Prüfung fehlgeschlagen: \(error.localizedDescription)")
+            TRLog.write("Synchronisierung fehlgeschlagen: \(error.localizedDescription)")
+            finish(error, closeWindow: true)
         }
     }
 
-    func logOut() {
-        TRLog.write("abgemeldet")
-        web?.clear()
-        web = nil
-        instruments = [:]
-        Prefs.shared.trLinked = false
-        Prefs.shared.trAccount = nil
-        state = .loggedOut
+    private func finish(_ error: Error?, closeWindow: Bool) {
+        guard let web else { return }
+        self.web = nil
+        if closeWindow { web.close() }
+        onFinished?(error)
+        onFinished = nil
     }
 
-    // MARK: - Depot
-
-    func fetchPortfolio() async throws -> TRPortfolio {
-        guard state == .connected else { throw Failure.sessionExpired }
-        let web = session()
-        await web.waitUntilLoaded()
-        guard !web.onLoginPage else {
-            state = .expired
-            throw Failure.sessionExpired
-        }
-        do {
-            return try await load(from: web)
-        } catch Failure.sessionExpired {
-            // Einmal die Session erneuern (wie die Web-App selbst) und erneut versuchen.
-            let refreshed = try? await web.fetchJSON("/api/v1/auth/web/session")
-            TRLog.write("Session erneuern → HTTP \(refreshed?.status ?? 0)")
-            if refreshed?.status == 200, let portfolio = try? await load(from: web) { return portfolio }
-            state = .expired
-            throw Failure.sessionExpired
-        } catch {
-            TRLog.write("Depot: \(error.localizedDescription)")
-            throw error
-        }
+    /// Gespeicherte Positionen löschen.
+    func removeData() {
+        TRLog.write("Daten gelöscht")
+        Prefs.shared.trHoldings = []
+        Prefs.shared.trCash = nil
+        Prefs.shared.trSyncDate = nil
     }
 
-    private func load(from web: TRWebSession) async throws -> TRPortfolio {
-        if Prefs.shared.trAccount == nil,
-           let (status, json) = try? await web.fetchJSON("/api/v2/auth/account"), status == 200 {
-            Prefs.shared.trAccount = (json as? [String: Any])?["securitiesAccountNumber"] as? String
-        }
-        let portfolioRequest: [String: Any] = Prefs.shared.trAccount.map { ["type": "compactPortfolioByType", "secAccNo": $0] }
+    // MARK: - Abruf aus der eingeloggten Seite
+
+    private func loadPositions(from web: TRWebSession, account: String?) async throws
+        -> (positions: [TRPosition], cash: Double?) {
+        let portfolioRequest: [String: Any] = account.map { ["type": "compactPortfolioByType", "secAccNo": $0] }
             ?? ["type": "compactPortfolio"]
         guard case .success(let portfolio) = try await request(web, [portfolioRequest])[0] else {
             throw Failure.invalidResponse
         }
         var positions = TRProtocol.positions(from: portfolio)
-
-        // Stammdaten (Name, Börse) nur einmal je Wertpapier holen.
-        let missing = Array(Set(positions.map(\.isin)).filter { instruments[$0] == nil })
-        let details = try await request(web, missing.map { ["type": "instrument", "id": $0] })
-        for (isin, result) in zip(missing, details) {
-            if case .success(let json) = result, let instrument = TRProtocol.instrument(from: json) {
-                instruments[isin] = instrument
-            }
-        }
-
-        let tickers = positions.map { ["type": "ticker", "id": "\($0.isin).\(instruments[$0.isin]?.exchange ?? "LSX")"] }
-        let answers = try await request(web, tickers + [["type": "cash"]])
+        // Namen aus den Stammdaten, dazu das Guthaben
+        let answers = try await request(web, positions.map { ["type": "instrument", "id": $0.isin] } + [["type": "cash"]])
         for index in positions.indices {
-            let instrument = instruments[positions[index].isin]
-            if let instrument { positions[index].name = instrument.name }
-            guard case .success(let json) = answers[index] else { continue }
-            let ticker = TRProtocol.ticker(from: json)
-            // Anleihen notieren in Prozent vom Nennwert.
-            let factor = instrument?.isBond == true ? 0.01 : 1
-            positions[index].price = ticker.price.map { $0 * factor }
-            positions[index].previousClose = ticker.previous.map { $0 * factor }
+            if case .success(let json) = answers[index], let instrument = TRProtocol.instrument(from: json) {
+                positions[index].name = instrument.name
+            }
         }
         var cash: Double?
         if case .success(let json) = answers[positions.count] { cash = TRProtocol.cash(from: json) }
-        TRLog.write("Depot geladen: \(positions.count) Positionen")
-        return TRPortfolio(positions: positions, cash: cash, updated: Date())
+        return (positions, cash)
     }
 
     /// Erste Antwort je Thema. Ein Authentifizierungsfehler bricht alles ab, andere Fehler betreffen nur ihr Thema.

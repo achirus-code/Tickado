@@ -184,10 +184,6 @@ extension L10n {
             "Harga beli rata-rata: %@",
         "Cash":
             "Kas",
-        "Loading portfolio…":
-            "Memuat portofolio…",
-        "Log in again…":
-            "Masuk lagi…",
         "Open Trade Republic":
             "Buka Trade Republic",
         "Session expired. Please log in again.":
@@ -196,20 +192,6 @@ extension L10n {
             "Trade Republic tidak merespons.",
         "Unexpected response from Trade Republic.":
             "Respons tak terduga dari Trade Republic.",
-        "Log Out":
-            "Keluar",
-        "Status:":
-            "Status:",
-        "Connected":
-            "Terhubung",
-        "Not connected":
-            "Tidak terhubung",
-        "Connect…":
-            "Hubungkan…",
-        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
-            "Masuk dengan nomor telepon dan PIN, lalu konfirmasi di aplikasi Trade Republic. Jendela ini tertutup otomatis setelah terhubung.",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
-            "Menggunakan antarmuka web tidak resmi Trade Republic yang dapat berubah sewaktu-waktu. Tickado tidak berafiliasi dengan Trade Republic. Anda masuk di situs web Trade Republic; Tickado menyimpan sesi seperti browser.",
         "Portfolio value":
             "Nilai portofolio",
         "Gain today":
@@ -222,5 +204,25 @@ extension L10n {
             "TR total",
         "Click to show it in the menu bar.":
             "Klik untuk menampilkan di bar menu.",
+        "Last synchronized: %@":
+            "Terakhir disinkronkan: %@",
+        "Log in in the Trade Republic window.":
+            "Masuk di jendela Trade Republic.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Masuk dengan nomor telepon dan PIN, lalu konfirmasi di aplikasi Trade Republic. Jendela ini tertutup otomatis setelah portofolio Anda disinkronkan.",
+        "Not synchronized yet":
+            "Belum disinkronkan",
+        "Positions: %d":
+            "Posisi: %d",
+        "Remove Data":
+            "Hapus Data",
+        "Synchronization failed: %@":
+            "Sinkronisasi gagal: %@",
+        "Synchronize…":
+            "Sinkronkan…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "Saat sinkronisasi, Anda masuk di situs web Trade Republic dan Tickado menyimpan posisi Anda (ISIN, jumlah, harga beli). Harga kemudian dimuat dari Yahoo Finance. Menggunakan antarmuka web tidak resmi Trade Republic; Tickado tidak berafiliasi dengan Trade Republic.",
+        "Synchronizing…":
+            "Menyinkronkan…",
     ]
 }

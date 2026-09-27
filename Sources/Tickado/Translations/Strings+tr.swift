@@ -184,10 +184,6 @@ extension L10n {
             "Ort. alış: %@",
         "Cash":
             "Nakit",
-        "Loading portfolio…":
-            "Portföy yükleniyor…",
-        "Log in again…":
-            "Yeniden oturum aç…",
         "Open Trade Republic":
             "Trade Republic’i aç",
         "Session expired. Please log in again.":
@@ -196,20 +192,6 @@ extension L10n {
             "Trade Republic yanıt vermiyor.",
         "Unexpected response from Trade Republic.":
             "Trade Republic’ten beklenmeyen yanıt.",
-        "Log Out":
-            "Oturumu Kapat",
-        "Status:":
-            "Durum:",
-        "Connected":
-            "Bağlı",
-        "Not connected":
-            "Bağlı değil",
-        "Connect…":
-            "Bağlan…",
-        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
-            "Telefon numaranız ve PIN’inizle oturum açın, ardından Trade Republic uygulamasında onaylayın. Bağlantı kurulunca bu pencere otomatik olarak kapanır.",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
-            "Trade Republic’in her an değişebilecek resmî olmayan web arayüzünü kullanır. Tickado’nun Trade Republic ile bir bağlantısı yoktur. Oturumu Trade Republic web sitesinde açarsınız; Tickado oturumu bir tarayıcı gibi saklar.",
         "Portfolio value":
             "Portföy değeri",
         "Gain today":
@@ -222,5 +204,25 @@ extension L10n {
             "TR toplam",
         "Click to show it in the menu bar.":
             "Menü çubuğunda göstermek için tıklayın.",
+        "Last synchronized: %@":
+            "Son eşitleme: %@",
+        "Log in in the Trade Republic window.":
+            "Trade Republic penceresinde oturum açın.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Telefon numaranız ve PIN’inizle oturum açın, ardından Trade Republic uygulamasında onaylayın. Portföyünüz eşitlenince bu pencere otomatik olarak kapanır.",
+        "Not synchronized yet":
+            "Henüz eşitlenmedi",
+        "Positions: %d":
+            "Pozisyonlar: %d",
+        "Remove Data":
+            "Verileri Sil",
+        "Synchronization failed: %@":
+            "Eşitleme başarısız: %@",
+        "Synchronize…":
+            "Eşitle…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "Eşitleme sırasında Trade Republic web sitesinde oturum açarsınız ve Tickado pozisyonlarınızı (ISIN, adet, alış fiyatı) saklar. Fiyatlar ardından Yahoo Finance’ten yüklenir. Trade Republic’in resmî olmayan web arayüzünü kullanır; Tickado’nun Trade Republic ile bir bağlantısı yoktur.",
+        "Synchronizing…":
+            "Eşitleniyor…",
     ]
 }

@@ -50,14 +50,11 @@ Das Fenster hat eine feste Größe, merkt sich seine Position und lässt sich mi
 - About…, Quit
 
 ### Trade Republic
-Trade Republic hat keine offizielle API. Tickado nutzt dieselbe inoffizielle Web-Schnittstelle wie app.traderepublic.com (wie das Open-Source-Projekt pytr).
-- **Verbinden:** Settings → Trade Republic → „Verbinden …“. Es öffnet sich ein Fenster mit der echten Website app.traderepublic.com. Dort wie gewohnt mit Handynummer und PIN anmelden und in der Trade-Republic-App bestätigen. Sobald die Anmeldung steht, schließt sich das Fenster von selbst.
-- Ein eigenes Fenster statt Safari/Chrome, weil Tickado an die Anmeldung eines normalen Browsers nicht herankommt.
-- Danach bleibt die Seite unsichtbar im Hintergrund geöffnet wie ein Browser-Tab; die Depotdaten holt Tickado aus dieser eingeloggten Seite. Die Anmeldung übersteht einen Neustart von Tickado, solange Trade Republic die Session gelten lässt.
-- Die PIN tippst du nur auf der Trade-Republic-Seite ein. Läuft die Session ab, zeigt das Menü „Erneut anmelden …“ und öffnet direkt das Anmeldefenster. „Abmelden“ löscht die gespeicherten Website-Daten.
-- Diagnose (ohne Cookies, PIN oder Beträge): `~/Library/Logs/Tickado/TradeRepublic.log`
-- Abgefragt werden Positionen, Kurse (Tagesänderung gegen Vortagesschluss) und Guthaben, im selben Intervall wie die übrigen Kurse. Beträge immer in Euro.
-- Risiken: Trade Republic kann die Schnittstelle jederzeit ändern oder Fremdzugriffe blockieren; dann funktioniert die Anbindung nicht mehr, bis Tickado angepasst ist.
+Trade Republic hat keine offizielle API. Tickado nutzt zum Abholen der Positionen dieselbe inoffizielle Web-Schnittstelle wie app.traderepublic.com.
+- **Synchronisieren:** Settings → Trade Republic → „Synchronisieren …“ (oder im Untermenü). Es öffnet sich ein Fenster mit der echten Website app.traderepublic.com. Dort mit Handynummer und PIN anmelden und in der Trade-Republic-App bestätigen. Tickado holt dann einmal alle Positionen (ISIN, Name, Stückzahl, Ø-Kaufkurs) und das Guthaben, speichert sie und schließt das Fenster. Die Sitzung wird danach verworfen.
+- **Kurse:** kommen laufend von Yahoo Finance über die ISIN (bevorzugt Euro-Börsen, sonst Heimatbörse in Euro umgerechnet). Kleine Abweichungen zu Trade Republic (anderer Börsenplatz, Verzögerung) sind möglich. Papiere ohne Yahoo-Treffer zeigen „—“.
+- **Aktualisieren:** Käufe/Verkäufe erscheinen erst nach erneutem „Synchronisieren“; dafür ist jedes Mal eine neue Anmeldung nötig. Unter dem Button steht das Datum der letzten Synchronisierung.
+- „Daten löschen“ entfernt die gespeicherten Positionen. Diagnose (ohne Cookies, PIN oder Beträge): `~/Library/Logs/Tickado/TradeRepublic.log`
 
 ### Datenquellen
 - **Krypto:** CoinGecko API (ohne Key nutzbar, mit Key zuverlässiger)
@@ -139,9 +136,9 @@ Damit Fehler in Cloud-Änderungen sofort auffallen, kann ein GitHub-Actions-Work
 | `Sources/Tickado/APIKeyPrompt.swift` | Dialog für den CoinGecko-Key |
 | `Sources/Tickado/Keychain.swift` | API-Key im Schlüsselbund |
 | `Sources/Tickado/LaunchAtLogin.swift` | Autostart (SMAppService) |
-| `Sources/Tickado/TradeRepublic.swift` | Trade-Republic-Anbindung: Login, Session, WebSocket-Protokoll, Depot |
-| `Sources/Tickado/TradeRepublicSettingsViewController.swift` | Settings-Tab *Trade Republic* (Verbinden/Abmelden) |
-| `Sources/Tickado/TRWebSession.swift` | TR-Website im eigenen Fenster (WKWebView): Anmeldung, danach unsichtbar; Abfragen per JavaScript aus der Seite |
+| `Sources/Tickado/TradeRepublic.swift` | Trade Republic: Synchronisieren, gespeicherte Positionen, Depot aus Yahoo-Kursen, Protokoll |
+| `Sources/Tickado/TradeRepublicSettingsViewController.swift` | Settings-Tab *Trade Republic* (Synchronisieren, letzte Synchronisierung, Daten löschen) |
+| `Sources/Tickado/TRWebSession.swift` | TR-Website im eigenen Fenster (WKWebView) für eine Synchronisierung; Abfragen per JavaScript aus der Seite |
 | `Scripts/make-icon.swift` | Zeichnet das App-Icon → `Resources/AppIcon.icns` |
 | `build.sh` | Build, App-Bundle, Signatur, Installation |
 | `CLAUDE.md` | Projektwissen für Claude |

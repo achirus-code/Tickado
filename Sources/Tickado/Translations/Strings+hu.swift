@@ -184,10 +184,6 @@ extension L10n {
             "Átl. vételár: %@",
         "Cash":
             "Készpénz",
-        "Loading portfolio…":
-            "Portfólió betöltése…",
-        "Log in again…":
-            "Újra bejelentkezés…",
         "Open Trade Republic":
             "Trade Republic megnyitása",
         "Session expired. Please log in again.":
@@ -196,20 +192,6 @@ extension L10n {
             "A Trade Republic nem válaszol.",
         "Unexpected response from Trade Republic.":
             "Váratlan válasz a Trade Republictól.",
-        "Log Out":
-            "Kijelentkezés",
-        "Status:":
-            "Állapot:",
-        "Connected":
-            "Csatlakozva",
-        "Not connected":
-            "Nincs csatlakozva",
-        "Connect…":
-            "Csatlakozás…",
-        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
-            "Jelentkezzen be telefonszámmal és PIN-kóddal, majd erősítse meg a Trade Republic alkalmazásban. Az ablak a csatlakozás után automatikusan bezárul.",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
-            "A Trade Republic nem hivatalos webes felületét használja, amely bármikor megváltozhat. A Tickado nem áll kapcsolatban a Trade Republickal. A Trade Republic weboldalán jelentkezik be; a Tickado böngészőként őrzi meg a munkamenetet.",
         "Portfolio value":
             "Portfólió értéke",
         "Gain today":
@@ -222,5 +204,25 @@ extension L10n {
             "TR összesen",
         "Click to show it in the menu bar.":
             "Kattintson a menüsorban való megjelenítéshez.",
+        "Last synchronized: %@":
+            "Utolsó szinkronizálás: %@",
+        "Log in in the Trade Republic window.":
+            "Jelentkezzen be a Trade Republic ablakban.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Jelentkezzen be telefonszámmal és PIN-kóddal, majd erősítse meg a Trade Republic alkalmazásban. Az ablak automatikusan bezárul, amint a portfólió szinkronizálva van.",
+        "Not synchronized yet":
+            "Még nincs szinkronizálva",
+        "Positions: %d":
+            "Pozíciók: %d",
+        "Remove Data":
+            "Adatok törlése",
+        "Synchronization failed: %@":
+            "Sikertelen szinkronizálás: %@",
+        "Synchronize…":
+            "Szinkronizálás…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "Szinkronizáláskor a Trade Republic weboldalán jelentkezik be, a Tickado pedig elmenti a pozícióit (ISIN, mennyiség, vételár). Az árfolyamok ezután a Yahoo Finance-ről töltődnek be. A Trade Republic nem hivatalos webes felületét használja; a Tickado nem áll kapcsolatban a Trade Republickal.",
+        "Synchronizing…":
+            "Szinkronizálás folyamatban…",
     ]
 }

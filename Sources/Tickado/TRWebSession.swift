@@ -1,27 +1,30 @@
 import AppKit
 import WebKit
 
-/// Die echte Trade-Republic-Website in einem eigenen Fenster. Zum Anmelden sichtbar, danach unsichtbar weiter
-/// geöffnet wie ein Browser-Tab (die Web-App hält ihre Session selbst frisch). Abfragen laufen per JavaScript in
-/// dieser Seite, damit Cookies, Herkunft und Bot-Schutz genau wie bei der Web-App sind.
+/// Die echte Trade-Republic-Website in einem eigenen Fenster, nur für eine Synchronisierung. Abfragen laufen per
+/// JavaScript in der eingeloggten Seite, damit Cookies, Herkunft und Bot-Schutz genau wie bei der Web-App sind.
+/// Nichts wird gespeichert: Jede Synchronisierung beginnt mit einer frischen Anmeldung.
 /// Ein externer Browser ginge nicht: Apps kommen nicht an dessen Anmeldung heran.
 @MainActor
 final class TRWebSession: NSObject, WKNavigationDelegate, NSWindowDelegate {
-    static let startURL = URL(string: "https://app.traderepublic.com/portfolio")!
+    static let startURL = URL(string: "https://app.traderepublic.com/login")!
 
     private let webView: WKWebView
     private let window: NSWindow
+    private let hint = NSTextField(wrappingLabelWithString: "")
     private let onPage: (_ onLoginPage: Bool) -> Void
+    private let onClose: () -> Void
     private var urlObservation: NSKeyValueObservation?
-    private var loadWaiters: [CheckedContinuation<Void, Never>] = []
     private var pollTimer: Timer?
+    private var closing = false
     private(set) var isLoading = false
 
-    init(onPage: @escaping (_ onLoginPage: Bool) -> Void) {
+    init(onPage: @escaping (_ onLoginPage: Bool) -> Void, onClose: @escaping () -> Void) {
         self.onPage = onPage
+        self.onClose = onClose
         let config = WKWebViewConfiguration()
-        // Standardspeicher von Tickado: Die Anmeldung übersteht so auch einen Neustart der App.
-        config.websiteDataStore = .default()
+        // Nichts dauerhaft speichern; nach dem Schließen ist die Sitzung weg.
+        config.websiteDataStore = .nonPersistent()
         // Wie Safari auftreten; ohne "Safari/…" im User-Agent lehnen manche Websites den Browser ab.
         config.applicationNameForUserAgent = "Version/18.0 Safari/605.1.15"
         webView = WKWebView(frame: .zero, configuration: config)
@@ -33,8 +36,8 @@ final class TRWebSession: NSObject, WKNavigationDelegate, NSWindowDelegate {
         window.contentMinSize = NSSize(width: 380, height: 520)
         super.init()
 
-        let hint = NSTextField(wrappingLabelWithString: L(
-            "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected."))
+        hint.stringValue = L(
+            "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.")
         hint.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
         hint.textColor = .secondaryLabelColor
         let content = NSView()
@@ -62,17 +65,13 @@ final class TRWebSession: NSObject, WKNavigationDelegate, NSWindowDelegate {
         }
     }
 
-    var isWindowVisible: Bool { window.isVisible }
-
     var onLoginPage: Bool { webView.url?.path.lowercased().contains("login") ?? true }
 
-    func load() {
-        isLoading = true
-        webView.load(URLRequest(url: Self.startURL))
-    }
-
     func showLogin() {
-        if webView.url == nil { load() }
+        if webView.url == nil {
+            isLoading = true
+            webView.load(URLRequest(url: Self.startURL))
+        }
         window.bringToFront()
         // Zusätzlich regelmäßig nachsehen, falls die Seite den Wechsel nicht über die Adresse meldet.
         pollTimer?.invalidate()
@@ -83,36 +82,26 @@ final class TRWebSession: NSObject, WKNavigationDelegate, NSWindowDelegate {
         pollTimer = timer
     }
 
-    func hideWindow() {
-        pollTimer?.invalidate()
-        pollTimer = nil
-        window.orderOut(nil)
+    /// Hinweis oben im Fenster ersetzen (z. B. "Synchronisiere …").
+    func showStatus(_ text: String) {
+        hint.stringValue = text
     }
 
-    /// Schließen versteckt nur, damit die Session im Hintergrund erhalten bleibt.
-    func windowShouldClose(_ sender: NSWindow) -> Bool {
-        hideWindow()
-        return false
-    }
-
-    /// Abmelden: Website-Daten von Tickado löschen und Fenster schließen.
-    func clear() {
-        hideWindow()
-        urlObservation = nil
-        webView.stopLoading()
-        let store = webView.configuration.websiteDataStore
-        store.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: .distantPast) {}
-        window.delegate = nil
+    /// Fenster schließen, ohne `onClose` auszulösen (nach erfolgreicher Synchronisierung).
+    func close() {
+        closing = true
         window.close()
     }
 
-    // MARK: - Laden
-
-    func waitUntilLoaded() async {
-        if webView.url == nil { load() }
-        guard isLoading else { return }
-        await withCheckedContinuation { loadWaiters.append($0) }
+    func windowWillClose(_ notification: Notification) {
+        pollTimer?.invalidate()
+        pollTimer = nil
+        urlObservation = nil
+        webView.stopLoading()
+        if !closing { onClose() }
     }
+
+    // MARK: - Laden
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         finishLoading("geladen")
@@ -128,9 +117,6 @@ final class TRWebSession: NSObject, WKNavigationDelegate, NSWindowDelegate {
 
     private func finishLoading(_ what: String) {
         isLoading = false
-        let waiters = loadWaiters
-        loadWaiters = []
-        waiters.forEach { $0.resume() }
         reportPage(what)
     }
 

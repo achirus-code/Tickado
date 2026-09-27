@@ -184,10 +184,6 @@ extension L10n {
             "Preț mediu: %@",
         "Cash":
             "Numerar",
-        "Loading portfolio…":
-            "Se încarcă portofoliul…",
-        "Log in again…":
-            "Autentificare din nou…",
         "Open Trade Republic":
             "Deschide Trade Republic",
         "Session expired. Please log in again.":
@@ -196,20 +192,6 @@ extension L10n {
             "Trade Republic nu răspunde.",
         "Unexpected response from Trade Republic.":
             "Răspuns neașteptat de la Trade Republic.",
-        "Log Out":
-            "Deconectare",
-        "Status:":
-            "Stare:",
-        "Connected":
-            "Conectat",
-        "Not connected":
-            "Neconectat",
-        "Connect…":
-            "Conectare…",
-        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once you are connected.":
-            "Autentificați-vă cu numărul de telefon și PIN-ul, apoi confirmați în aplicația Trade Republic. Fereastra se închide automat după conectare.",
-        "Uses the unofficial Trade Republic web interface, which can change at any time. Tickado is not affiliated with Trade Republic. You log in on the Trade Republic website; Tickado keeps the session like a browser.":
-            "Folosește interfața web neoficială Trade Republic, care se poate schimba oricând. Tickado nu este afiliat cu Trade Republic. Vă autentificați pe site-ul Trade Republic; Tickado păstrează sesiunea ca un browser.",
         "Portfolio value":
             "Valoarea portofoliului",
         "Gain today":
@@ -222,5 +204,25 @@ extension L10n {
             "TR total",
         "Click to show it in the menu bar.":
             "Faceți clic pentru a afișa în bara de meniu.",
+        "Last synchronized: %@":
+            "Ultima sincronizare: %@",
+        "Log in in the Trade Republic window.":
+            "Autentificați-vă în fereastra Trade Republic.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Autentificați-vă cu numărul de telefon și PIN-ul, apoi confirmați în aplicația Trade Republic. Fereastra se închide automat după sincronizarea portofoliului.",
+        "Not synchronized yet":
+            "Încă nesincronizat",
+        "Positions: %d":
+            "Poziții: %d",
+        "Remove Data":
+            "Șterge datele",
+        "Synchronization failed: %@":
+            "Sincronizare eșuată: %@",
+        "Synchronize…":
+            "Sincronizează…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "La sincronizare vă autentificați pe site-ul Trade Republic, iar Tickado salvează pozițiile (ISIN, cantitate, preț de cumpărare). Prețurile se încarcă apoi din Yahoo Finance. Folosește interfața web neoficială Trade Republic; Tickado nu este afiliat cu Trade Republic.",
+        "Synchronizing…":
+            "Se sincronizează…",
     ]
 }

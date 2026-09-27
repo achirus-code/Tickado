@@ -20,8 +20,8 @@ final class StatusController: NSObject, NSMenuDelegate {
     private var coinRows: [String: NSMenuItem] = [:]
     private var settings: SettingsWindowController?
 
-    // Trade-Republic-Depot (eigene Abfrage, läuft neben den Kursen)
-    private var depot: TRPortfolio?
+    // Trade-Republic-Depot: gespeicherte Positionen, Kurse in Euro von Yahoo (eigene Abfrage neben den Kursen)
+    private var depotQuotes: [String: Quote] = [:]
     private var depotError: String?
     private var depotTask: Task<Void, Never>?
     private var depotToken = UUID()
@@ -56,9 +56,9 @@ final class StatusController: NSObject, NSMenuDelegate {
         return sortedSelection.filter { ids.contains($0.id) } + depotTickerCoins
     }
 
-    /// Angehakte Depotkennzahlen, solange Trade Republic nicht abgemeldet ist.
+    /// Angehakte Depotkennzahlen, sobald ein Depot synchronisiert ist.
     private var depotTickerCoins: [Coin] {
-        guard TradeRepublic.shared.state != .loggedOut else { return [] }
+        guard TradeRepublic.shared.hasData else { return [] }
         let ids = Set(prefs.trTickerItems)
         return DepotTicker.allCases.filter { ids.contains($0.rawValue) }.map(\.coin)
     }
@@ -117,11 +117,14 @@ final class StatusController: NSObject, NSMenuDelegate {
         }
     }
 
+    private var depot: TRPortfolio? { TradeRepublic.shared.portfolio(quotes: depotQuotes) }
+
+    /// Kurse der gespeicherten Depotpositionen von Yahoo (in Euro). Bei Fehlern bleiben die alten Kurse.
     private func refreshDepot() {
-        let tr = TradeRepublic.shared
-        guard tr.state == .connected else {
-            if tr.state == .loggedOut { depot = nil }
-            depotError = tr.state == .expired ? TradeRepublic.Failure.sessionExpired.localizedDescription : nil
+        let coins = TradeRepublic.shared.quoteCoins
+        guard !coins.isEmpty else {
+            depotQuotes = [:]
+            depotError = nil
             return
         }
         // Eine laufende Abfrage nicht abbrechen, sonst kommt bei langsamer Verbindung nie ein Ergebnis an.
@@ -129,25 +132,20 @@ final class StatusController: NSObject, NSMenuDelegate {
         let token = UUID()
         depotToken = token
         depotTask = Task { [weak self] in
-            let result: Result<TRPortfolio, Error>
-            do {
-                result = .success(try await tr.fetchPortfolio())
-            } catch {
-                result = .failure(error)
-            }
-            // Ergebnis einer inzwischen ersetzten Abfrage (z. B. nach neuem Login) verwerfen.
+            let result = await YahooFinance.quotes(for: coins, currency: "eur", metalUnit: .troyOunce)
+            // Ergebnis einer inzwischen ersetzten Abfrage (z. B. nach neuer Synchronisierung) verwerfen.
             guard let self, self.depotToken == token else { return }
             self.depotTask = nil
-            switch result {
-            case .success(let portfolio):
-                self.depot = portfolio
-                self.depotError = nil
-            case .failure(let error):
-                if (error as? URLError)?.code != .cancelled, !(error is CancellationError) {
-                    self.depotError = error.localizedDescription
-                }
-            }
+            self.depotQuotes.merge(result.quotes) { $1 }
+            self.depotError = result.error
             self.updateUI()
+        }
+    }
+
+    private func synchronizeDepot() {
+        TradeRepublic.shared.synchronize { [weak self] error in
+            if let error { self?.depotError = L("Synchronization failed: %@", error.localizedDescription) }
+            self?.settingsDidChange(.broker)
         }
     }
 
@@ -320,7 +318,7 @@ final class StatusController: NSObject, NSMenuDelegate {
             menu.addItem(open)
         }
 
-        if TradeRepublic.shared.state != .loggedOut {
+        if TradeRepublic.shared.hasData {
             menu.addItem(.separator())
             let item = NSMenuItem(title: "Trade Republic", action: nil, keyEquivalent: "")
             item.attributedTitle = depotTitle(renderer)
@@ -338,7 +336,7 @@ final class StatusController: NSObject, NSMenuDelegate {
     }
 
     private func depotTitle(_ renderer: TickerRenderer) -> NSAttributedString {
-        renderer.depotRowTitle("Trade Republic", value: depot.map { $0.value + ($0.cash ?? 0) }, change: depot?.change,
+        renderer.depotRowTitle("Trade Republic", value: depot?.total, change: depot?.change,
                                stale: isDepotStale(renderer))
     }
 
@@ -346,7 +344,7 @@ final class StatusController: NSObject, NSMenuDelegate {
         depot.map { $0.updated < renderer.staleBefore } ?? false
     }
 
-    /// Untermenü: Positionen nach Wert, Guthaben, Hinweise und Link zur Web-App.
+    /// Untermenü: Kennzahlen, Positionen nach Wert, Guthaben, Stand der Synchronisierung.
     private func depotMenu(_ renderer: TickerRenderer) -> NSMenu {
         let submenu = NSMenu()
         let stale = isDepotStale(renderer)
@@ -390,13 +388,9 @@ final class StatusController: NSObject, NSMenuDelegate {
             if let cash = depot.cash {
                 submenu.addItem(.separator())
                 let item = NSMenuItem(title: "", action: nil, keyEquivalent: "")
-                item.attributedTitle = renderer.depotRowTitle(L("Cash"), value: cash, change: nil, stale: stale, extraWidth: 12)
+                item.attributedTitle = renderer.depotRowTitle(L("Cash"), value: cash, change: nil, stale: false, extraWidth: 12)
                 submenu.addItem(item)
             }
-        } else if depotError == nil {
-            let loading = NSMenuItem(title: L("Loading portfolio…"), action: nil, keyEquivalent: "")
-            loading.isEnabled = false
-            submenu.addItem(loading)
         }
 
         if let depotError {
@@ -404,17 +398,23 @@ final class StatusController: NSObject, NSMenuDelegate {
             submenu.addItem(Self.warningItem(depotError))
         }
         submenu.addItem(.separator())
-        if TradeRepublic.shared.state == .expired {
-            submenu.addItem(ClosureMenuItem(L("Log in again…")) { [weak self] in
-                DispatchQueue.main.async {
-                    TradeRepublic.shared.connect { self?.settingsDidChange(.broker) }
-                }
-            })
+        if let lastSync = TradeRepublic.shared.lastSync {
+            let info = NSMenuItem(title: Self.lastSyncText(lastSync), action: nil, keyEquivalent: "")
+            info.isEnabled = false
+            submenu.addItem(info)
         }
+        // Fenster erst nach dem Schließen des Menüs öffnen.
+        submenu.addItem(ClosureMenuItem(L("Synchronize…")) { [weak self] in
+            DispatchQueue.main.async { self?.synchronizeDepot() }
+        })
         submenu.addItem(ClosureMenuItem(L("Open Trade Republic")) {
             if let url = URL(string: "https://app.traderepublic.com/portfolio") { NSWorkspace.shared.open(url) }
         })
         return submenu
+    }
+
+    static func lastSyncText(_ date: Date) -> String {
+        L("Last synchronized: %@", date.formatted(Date.FormatStyle(date: .abbreviated, time: .shortened).locale(L10n.locale)))
     }
 
     private static func warningItem(_ text: String) -> NSMenuItem {
@@ -451,7 +451,7 @@ final class StatusController: NSObject, NSMenuDelegate {
     /// Daten für die Vorschau im Settings-Fenster.
     var previewState: TickerPreviewState {
         TickerPreviewState(renderer: renderer, barCoins: visibleTickerCoins, menuCoins: sortedSelection,
-                           choices: sortedSelection + (TradeRepublic.shared.state == .loggedOut ? [] : DepotTicker.allCases.map(\.coin)),
+                           choices: sortedSelection + (TradeRepublic.shared.hasData ? DepotTicker.allCases.map(\.coin) : []),
                            tickerIDs: Set(prefs.tickerIDs + prefs.trTickerItems))
     }
 
@@ -482,11 +482,11 @@ final class StatusController: NSObject, NSMenuDelegate {
             // Asynchron, weil der Aufruf aus einem Steuerelement des alten Fensters kommt.
             DispatchQueue.main.async { [weak self] in self?.rebuildSettings() }
         case .broker:
-            // Nach Login sofort laden, nach Logout Depot ausblenden.
+            // Nach neuer Synchronisierung sofort Kurse laden, nach dem Löschen alles ausblenden.
             depotTask?.cancel()
             depotTask = nil
             depotToken = UUID()
-            if TradeRepublic.shared.state != .connected { depot = nil }
+            if !TradeRepublic.shared.hasData { depotError = nil }
             refreshDepot()
             settings?.brokerDidChange()
         case .selection:
