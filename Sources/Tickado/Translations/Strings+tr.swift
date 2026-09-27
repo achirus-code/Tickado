@@ -220,7 +220,5 @@ extension L10n {
             "Eşitleme sırasında Trade Republic web sitesinde oturum açarsınız ve Tickado pozisyonlarınızı (ISIN, adet, alış fiyatı) saklar. Fiyatlar ardından Yahoo Finance’ten yüklenir. Trade Republic’in resmî olmayan web arayüzünü kullanır; Tickado’nun Trade Republic ile bir bağlantısı yoktur.",
         "Synchronizing…":
             "Eşitleniyor…",
-        "Unchecked positions are hidden in the menu and not counted.":
-            "İşareti kaldırılan pozisyonlar menüde gizlenir ve hesaba katılmaz.",
     ]
 }

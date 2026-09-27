@@ -220,7 +220,5 @@ extension L10n {
             "Bij het synchroniseren log je in op de website van Trade Republic en bewaart Tickado je posities (ISIN, aantal, aankoopkoers). Koersen komen daarna van Yahoo Finance. Gebruikt de onofficiële webinterface van Trade Republic; Tickado is niet verbonden aan Trade Republic.",
         "Synchronizing…":
             "Synchroniseren…",
-        "Unchecked positions are hidden in the menu and not counted.":
-            "Uitgevinkte posities worden verborgen in het menu en tellen niet mee.",
     ]
 }

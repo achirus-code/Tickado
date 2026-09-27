@@ -220,7 +220,5 @@ extension L10n {
             "Під час синхронізації ви входите на сайті Trade Republic, а Tickado зберігає ваші позиції (ISIN, кількість, ціну купівлі). Потім курси завантажуються з Yahoo Finance. Використовує неофіційний вебінтерфейс Trade Republic; Tickado не пов’язаний з Trade Republic.",
         "Synchronizing…":
             "Синхронізація…",
-        "Unchecked positions are hidden in the menu and not counted.":
-            "Позиції без позначки приховано в меню, і вони не враховуються.",
     ]
 }

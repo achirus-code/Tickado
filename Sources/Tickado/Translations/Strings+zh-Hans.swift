@@ -220,7 +220,5 @@ extension L10n {
             "同步时你会登录 Trade Republic 网站，Tickado 会保存你的持仓（ISIN、数量、买入价）。之后价格从 Yahoo Finance 载入。使用 Trade Republic 的非官方网页接口；Tickado 与 Trade Republic 无关联。",
         "Synchronizing…":
             "正在同步…",
-        "Unchecked positions are hidden in the menu and not counted.":
-            "未勾选的持仓不会显示在菜单中，也不计入总额。",
     ]
 }

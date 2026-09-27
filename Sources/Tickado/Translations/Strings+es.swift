@@ -220,7 +220,5 @@ extension L10n {
             "Al sincronizar inicias sesión en la web de Trade Republic y Tickado guarda tus posiciones (ISIN, cantidad, precio de compra). Después, los precios se cargan desde Yahoo Finance. Usa la interfaz web no oficial de Trade Republic; Tickado no está afiliado a Trade Republic.",
         "Synchronizing…":
             "Sincronizando…",
-        "Unchecked positions are hidden in the menu and not counted.":
-            "Las posiciones desmarcadas se ocultan en el menú y no se cuentan.",
     ]
 }

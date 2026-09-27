@@ -220,7 +220,5 @@ extension L10n {
             "Synkronoidessa kirjaudut Trade Republicin verkkosivustolle, ja Tickado tallentaa omistuksesi (ISIN, määrä, ostohinta). Kurssit haetaan sen jälkeen Yahoo Financesta. Käyttää Trade Republicin epävirallista verkkorajapintaa; Tickado ei liity Trade Republiciin.",
         "Synchronizing…":
             "Synkronoidaan…",
-        "Unchecked positions are hidden in the menu and not counted.":
-            "Valitsemattomat omistukset piilotetaan valikosta eikä niitä lasketa mukaan.",
     ]
 }
