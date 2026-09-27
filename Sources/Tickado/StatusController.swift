@@ -180,9 +180,9 @@ final class StatusController: NSObject, NSMenuDelegate {
 
     private func updateUI() {
         updateTitle()
+        let renderer = self.renderer
         // Zeilen gibt es nur bei offenem Menü (siehe menuDidClose).
         guard !coinRows.isEmpty else { return }
-        let renderer = self.renderer
         for coin in prefs.selectedCoins {
             coinRows[coin.id]?.attributedTitle = renderer.rowTitle(for: coin)
         }
@@ -267,20 +267,22 @@ final class StatusController: NSObject, NSMenuDelegate {
             menu.addItem(open)
         }
 
-        if let lastError {
-            let item = NSMenuItem(title: "", action: nil, keyEquivalent: "")
-            item.attributedTitle = NSAttributedString(string: "⚠︎ " + lastError, attributes: [
-                .font: NSFont.menuFont(ofSize: NSFont.smallSystemFontSize),
-                .foregroundColor: NSColor.secondaryLabelColor,
-            ])
-            item.isEnabled = false
-            menu.addItem(item)
-        }
+        if let lastError { menu.addItem(Self.warningItem(lastError)) }
 
         menu.addItem(.separator())
         menu.addItem(ClosureMenuItem(L("About…")) { Self.showAbout() })
         menu.addItem(.separator())
         menu.addItem(ClosureMenuItem(L("Quit")) { NSApp.terminate(nil) })
+    }
+
+    private static func warningItem(_ text: String) -> NSMenuItem {
+        let item = NSMenuItem(title: "", action: nil, keyEquivalent: "")
+        item.attributedTitle = NSAttributedString(string: "⚠︎ " + text, attributes: [
+            .font: NSFont.menuFont(ofSize: NSFont.smallSystemFontSize),
+            .foregroundColor: NSColor.secondaryLabelColor,
+        ])
+        item.isEnabled = false
+        return item
     }
 
     private func toggleTicker(_ id: String) {
