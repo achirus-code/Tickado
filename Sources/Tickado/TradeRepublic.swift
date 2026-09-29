@@ -24,10 +24,8 @@ struct TRPortfolio {
     let cash: Double?
     let updated: Date
 
+    /// Depotwert ohne Guthaben (das Guthaben steht im Menü extra).
     var value: Double { positions.compactMap(\.value).reduce(0, +) }
-
-    /// Depotwert einschließlich Guthaben.
-    var total: Double { value + (cash ?? 0) }
 
     /// Gewinn heute in Euro (gegen die Schlusskurse vom Vortag).
     var todayGain: Double? {
@@ -83,7 +81,7 @@ enum DepotTicker: String, CaseIterable {
     /// (Betrag, Prozent für Farbe und Anzeige, mit Vorzeichen?)
     func figures(in portfolio: TRPortfolio) -> (amount: Double?, percent: Double?, signed: Bool) {
         switch self {
-        case .value: (portfolio.total, portfolio.change, false)
+        case .value: (portfolio.value, portfolio.change, false)
         case .today: (portfolio.todayGain, portfolio.change, true)
         case .total: (portfolio.totalGain?.amount, portfolio.totalGain?.percent, true)
         }
