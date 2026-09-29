@@ -20,8 +20,8 @@ extension L10n {
             "Não foi possível verificar a chave de API",
         "Check the key and whether it is a Demo or Pro key.":
             "Verifique a chave e se ela é Demo ou Pro.",
-        "CoinGecko rate limit reached. Add a free API key in Settings › General.":
-            "Limite do CoinGecko atingido. Adicione uma chave de API gratuita em Ajustes › Geral.",
+        "CoinGecko limit reached":
+            "Limite da CoinGecko atingido",
         "CoinGecko rejected the API key.":
             "O CoinGecko recusou a chave de API.",
         "CoinGecko returned HTTP %d.":
@@ -220,5 +220,9 @@ extension L10n {
             "Ao sincronizar, você entra no site do Trade Republic e o Tickado guarda suas posições (ISIN, quantidade, preço de compra). Depois, os preços vêm do Yahoo Finance. Usa a interface web não oficial do Trade Republic; o Tickado não é afiliado ao Trade Republic.",
         "Synchronizing…":
             "Sincronizando…",
+        "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
+            "Sem chave de API, a CoinGecko pode bloquear atualizações mais frequentes do que a cada 5 minutos.",
+        "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
+            "Uma chave Demo permite 10.000 pedidos por mês. Com atualizações mais frequentes do que a cada 5 minutos, a CoinGecko bloqueia a chave.",
     ]
 }

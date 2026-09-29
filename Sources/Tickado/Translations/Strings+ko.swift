@@ -20,8 +20,8 @@ extension L10n {
             "API 키를 확인할 수 없습니다",
         "Check the key and whether it is a Demo or Pro key.":
             "키와 Demo 키인지 Pro 키인지 확인하십시오.",
-        "CoinGecko rate limit reached. Add a free API key in Settings › General.":
-            "CoinGecko 한도에 도달했습니다. 설정 › 일반에서 무료 API 키를 추가하십시오.",
+        "CoinGecko limit reached":
+            "CoinGecko 한도 도달",
         "CoinGecko rejected the API key.":
             "CoinGecko가 API 키를 거부했습니다.",
         "CoinGecko returned HTTP %d.":
@@ -220,5 +220,9 @@ extension L10n {
             "동기화하면 Trade Republic 웹사이트에 로그인하고 Tickado가 보유 종목(ISIN, 수량, 매수가)을 저장합니다. 이후 가격은 Yahoo Finance에서 불러옵니다. Trade Republic의 비공식 웹 인터페이스를 사용하며, Tickado는 Trade Republic과 제휴 관계가 없습니다.",
         "Synchronizing…":
             "동기화 중…",
+        "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
+            "API 키가 없으면 CoinGecko가 5분보다 잦은 업데이트를 차단할 수 있습니다.",
+        "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
+            "Demo 키는 월 10,000회 요청을 허용합니다. 5분보다 잦게 업데이트하면 CoinGecko가 키를 차단합니다.",
     ]
 }

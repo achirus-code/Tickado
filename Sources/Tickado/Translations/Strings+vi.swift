@@ -20,8 +20,8 @@ extension L10n {
             "Không thể xác minh khóa API",
         "Check the key and whether it is a Demo or Pro key.":
             "Hãy kiểm tra khóa và xem đó là khóa Demo hay Pro.",
-        "CoinGecko rate limit reached. Add a free API key in Settings › General.":
-            "Đã đạt giới hạn của CoinGecko. Hãy thêm khóa API miễn phí trong Cài đặt › Chung.",
+        "CoinGecko limit reached":
+            "Đã đạt giới hạn CoinGecko",
         "CoinGecko rejected the API key.":
             "CoinGecko đã từ chối khóa API.",
         "CoinGecko returned HTTP %d.":
@@ -220,5 +220,9 @@ extension L10n {
             "Khi đồng bộ, bạn đăng nhập trên trang web Trade Republic và Tickado lưu các vị thế của bạn (ISIN, số lượng, giá mua). Sau đó giá được tải từ Yahoo Finance. Sử dụng giao diện web không chính thức của Trade Republic; Tickado không liên kết với Trade Republic.",
         "Synchronizing…":
             "Đang đồng bộ…",
+        "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
+            "Không có khóa API, CoinGecko có thể chặn các cập nhật thường xuyên hơn 5 phút một lần.",
+        "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
+            "Khóa Demo cho phép 10.000 yêu cầu mỗi tháng. Nếu cập nhật thường xuyên hơn 5 phút một lần, CoinGecko sẽ chặn khóa.",
     ]
 }

@@ -9,7 +9,13 @@ final class StatusController: NSObject, NSMenuDelegate {
 
     private var quotes: [String: Quote] = [:]
     private var lastUpdate: Date?
-    private var lastError: String?
+    // Fehler je Quelle: CoinGecko steht im Menü unter den Coins, Yahoo unter den übrigen Werten.
+    private var cryptoError: String?
+    private var yahooError: String?
+    private var lastError: String? {
+        let errors = [cryptoError, yahooError].compactMap { $0 }
+        return errors.isEmpty ? nil : errors.joined(separator: " ")
+    }
 
     private var refreshTimer: Timer?
     private var rotationTimer: Timer?
@@ -86,7 +92,8 @@ final class StatusController: NSObject, NSMenuDelegate {
         let selection = prefs.selectedCoins
         guard !selection.isEmpty else {
             quotes = [:]
-            lastError = nil
+            cryptoError = nil
+            yahooError = nil
             updateUI()
             return
         }
@@ -161,16 +168,17 @@ final class StatusController: NSObject, NSMenuDelegate {
     private func apply(_ result: Result<[CoinGecko.Market], Error>, yahoo: [String: Quote], yahooError: String?) {
         // Bei Fehlern die alten Kurse behalten und nur Erfolgreiches überschreiben.
         var newQuotes = quotes
-        var errors: [String] = []
         var coins = prefs.selectedCoins
         let markets: [CoinGecko.Market]
         switch result {
-        case .success(let value): markets = value
+        case .success(let value):
+            markets = value
+            cryptoError = nil
         case .failure(let error):
             markets = []
-            if (error as? URLError)?.code != .cancelled { errors.append(error.localizedDescription) }
+            cryptoError = (error as? URLError)?.code == .cancelled ? nil : error.localizedDescription
         }
-        if let yahooError { errors.append(yahooError) }
+        self.yahooError = yahooError
         newQuotes.merge(yahoo) { $1 }
 
         for market in markets {
@@ -189,7 +197,6 @@ final class StatusController: NSObject, NSMenuDelegate {
         let selectedIDs = Set(coins.map(\.id))
         quotes = newQuotes.filter { selectedIDs.contains($0.key) }
         if !markets.isEmpty || !yahoo.isEmpty { lastUpdate = Date() }
-        lastError = errors.isEmpty ? nil : errors.joined(separator: " ")
         updateUI()
     }
 
@@ -301,7 +308,10 @@ final class StatusController: NSObject, NSMenuDelegate {
         let tickerIDs = Set(prefs.tickerIDs)
         let renderer = self.renderer
         for (index, coin) in coins.enumerated() {
-            if index > 0, coins[index - 1].kind != coin.kind { menu.addItem(.separator()) }
+            if index > 0, coins[index - 1].kind != coin.kind {
+                if coins[index - 1].kind == .crypto, let cryptoError { menu.addItem(Self.warningItem(cryptoError)) }
+                menu.addItem(.separator())
+            }
             let item = ClosureMenuItem("", state: tickerIDs.contains(coin.id)) { [weak self] in
                 self?.toggleTicker(coin.id)
             }
@@ -318,6 +328,9 @@ final class StatusController: NSObject, NSMenuDelegate {
             menu.addItem(open)
         }
 
+        if coins.last?.kind == .crypto, let cryptoError { menu.addItem(Self.warningItem(cryptoError)) }
+        if let yahooError { menu.addItem(Self.warningItem(yahooError)) }
+
         if TradeRepublic.shared.hasData {
             menu.addItem(.separator())
             let item = NSMenuItem(title: "Trade Republic", action: nil, keyEquivalent: "")
@@ -327,8 +340,6 @@ final class StatusController: NSObject, NSMenuDelegate {
             depotRow = item
         }
 
-        if let lastError { menu.addItem(Self.warningItem(lastError)) }
-
         menu.addItem(.separator())
         menu.addItem(ClosureMenuItem(L("About…")) { Self.showAbout() })
         menu.addItem(.separator())
@@ -336,7 +347,7 @@ final class StatusController: NSObject, NSMenuDelegate {
     }
 
     private func depotTitle(_ renderer: TickerRenderer) -> NSAttributedString {
-        renderer.depotRowTitle("Trade Republic", value: depot?.total, change: depot?.change,
+        renderer.depotRowTitle("Trade Republic", value: depot?.value, change: depot?.change,
                                stale: isDepotStale(renderer))
     }
 

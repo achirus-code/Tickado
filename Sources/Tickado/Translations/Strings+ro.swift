@@ -20,8 +20,8 @@ extension L10n {
             "Cheia API nu a putut fi verificată",
         "Check the key and whether it is a Demo or Pro key.":
             "Verificați cheia și dacă este o cheie Demo sau Pro.",
-        "CoinGecko rate limit reached. Add a free API key in Settings › General.":
-            "Limita CoinGecko a fost atinsă. Adăugați o cheie API gratuită în Configurări › General.",
+        "CoinGecko limit reached":
+            "Limită CoinGecko atinsă",
         "CoinGecko rejected the API key.":
             "CoinGecko a respins cheia API.",
         "CoinGecko returned HTTP %d.":
@@ -220,5 +220,9 @@ extension L10n {
             "La sincronizare vă autentificați pe site-ul Trade Republic, iar Tickado salvează pozițiile (ISIN, cantitate, preț de cumpărare). Prețurile se încarcă apoi din Yahoo Finance. Folosește interfața web neoficială Trade Republic; Tickado nu este afiliat cu Trade Republic.",
         "Synchronizing…":
             "Se sincronizează…",
+        "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
+            "Fără o cheie API, CoinGecko poate bloca actualizările mai frecvente de 5 minute.",
+        "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
+            "O cheie Demo permite 10.000 de cereri pe lună. La actualizări mai frecvente de 5 minute, CoinGecko blochează cheia.",
     ]
 }
