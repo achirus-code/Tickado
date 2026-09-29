@@ -20,8 +20,8 @@ extension L10n {
             "Az API-kulcsot nem sikerült ellenőrizni",
         "Check the key and whether it is a Demo or Pro key.":
             "Ellenőrizze a kulcsot, és hogy Demo vagy Pro kulcsról van-e szó.",
-        "CoinGecko rate limit reached. Add a free API key in Settings › General.":
-            "Elérte a CoinGecko korlátját. Adjon meg ingyenes API-kulcsot itt: Beállítások › Általános.",
+        "CoinGecko limit reached":
+            "CoinGecko-limit elérve",
         "CoinGecko rejected the API key.":
             "A CoinGecko elutasította az API-kulcsot.",
         "CoinGecko returned HTTP %d.":
@@ -176,5 +176,9 @@ extension L10n {
             "Palládium",
         "Legal notice & privacy":
             "Impresszum és adatvédelem",
+        "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
+            "API-kulcs nélkül a CoinGecko letilthatja az 5 percnél gyakoribb frissítéseket.",
+        "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
+            "A Demo kulcs havi 10 000 kérést enged. Az 5 percnél gyakoribb frissítéseknél a CoinGecko letiltja a kulcsot.",
     ]
 }

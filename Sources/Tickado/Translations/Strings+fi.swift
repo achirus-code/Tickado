@@ -20,8 +20,8 @@ extension L10n {
             "API-avainta ei voitu tarkistaa",
         "Check the key and whether it is a Demo or Pro key.":
             "Tarkista avain ja onko se Demo- vai Pro-avain.",
-        "CoinGecko rate limit reached. Add a free API key in Settings › General.":
-            "CoinGeckon raja täyttyi. Lisää ilmainen API-avain kohdassa Asetukset › Yleiset.",
+        "CoinGecko limit reached":
+            "CoinGecko-raja saavutettu",
         "CoinGecko rejected the API key.":
             "CoinGecko hylkäsi API-avaimen.",
         "CoinGecko returned HTTP %d.":
@@ -176,5 +176,9 @@ extension L10n {
             "Palladium",
         "Legal notice & privacy":
             "Julkaisutiedot ja tietosuoja",
+        "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
+            "Ilman API-avainta CoinGecko voi estää päivitykset, jotka tehdään useammin kuin 5 minuutin välein.",
+        "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
+            "Demo-avain sallii 10 000 pyyntöä kuukaudessa. Jos päivityksiä tehdään useammin kuin 5 minuutin välein, CoinGecko estää avaimen.",
     ]
 }

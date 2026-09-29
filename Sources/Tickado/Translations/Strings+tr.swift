@@ -20,8 +20,8 @@ extension L10n {
             "API anahtarı doğrulanamadı",
         "Check the key and whether it is a Demo or Pro key.":
             "Anahtarı ve Demo mu Pro mu olduğunu kontrol edin.",
-        "CoinGecko rate limit reached. Add a free API key in Settings › General.":
-            "CoinGecko sınırına ulaşıldı. Ayarlar › Genel bölümünden ücretsiz bir API anahtarı ekleyin.",
+        "CoinGecko limit reached":
+            "CoinGecko sınırına ulaşıldı",
         "CoinGecko rejected the API key.":
             "CoinGecko API anahtarını reddetti.",
         "CoinGecko returned HTTP %d.":
@@ -176,5 +176,9 @@ extension L10n {
             "Paladyum",
         "Legal notice & privacy":
             "Künye ve gizlilik",
+        "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
+            "API anahtarı olmadan CoinGecko, 5 dakikadan sık güncellemeleri engelleyebilir.",
+        "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
+            "Demo anahtarı ayda 10.000 istek sağlar. 5 dakikadan sık güncellemelerde CoinGecko anahtarı engeller.",
     ]
 }

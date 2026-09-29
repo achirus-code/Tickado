@@ -20,8 +20,8 @@ extension L10n {
             "无法验证 API 密钥",
         "Check the key and whether it is a Demo or Pro key.":
             "请检查密钥，以及它是 Demo 还是 Pro 密钥。",
-        "CoinGecko rate limit reached. Add a free API key in Settings › General.":
-            "已达到 CoinGecko 请求上限。请在“设置 › 通用”中添加免费的 API 密钥。",
+        "CoinGecko limit reached":
+            "已达 CoinGecko 限制",
         "CoinGecko rejected the API key.":
             "CoinGecko 拒绝了该 API 密钥。",
         "CoinGecko returned HTTP %d.":
@@ -176,5 +176,9 @@ extension L10n {
             "钯金",
         "Legal notice & privacy":
             "法律声明与隐私",
+        "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
+            "没有 API 密钥时，CoinGecko 可能会阻止比每 5 分钟更频繁的更新。",
+        "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
+            "Demo 密钥每月允许 10,000 次请求。更新比每 5 分钟更频繁时，CoinGecko 会封锁该密钥。",
     ]
 }

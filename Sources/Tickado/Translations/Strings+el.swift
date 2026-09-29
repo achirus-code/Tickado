@@ -20,8 +20,8 @@ extension L10n {
             "Δεν ήταν δυνατή η επαλήθευση του κλειδιού API",
         "Check the key and whether it is a Demo or Pro key.":
             "Ελέγξτε το κλειδί και αν είναι κλειδί Demo ή Pro.",
-        "CoinGecko rate limit reached. Add a free API key in Settings › General.":
-            "Συμπληρώθηκε το όριο του CoinGecko. Προσθέστε δωρεάν κλειδί API στις Ρυθμίσεις › Γενικά.",
+        "CoinGecko limit reached":
+            "Όριο CoinGecko εξαντλήθηκε",
         "CoinGecko rejected the API key.":
             "Το CoinGecko απέρριψε το κλειδί API.",
         "CoinGecko returned HTTP %d.":
@@ -176,5 +176,9 @@ extension L10n {
             "Παλλάδιο",
         "Legal notice & privacy":
             "Νομικές πληροφορίες & απόρρητο",
+        "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
+            "Χωρίς κλειδί API, το CoinGecko μπορεί να μπλοκάρει ενημερώσεις συχνότερες από κάθε 5 λεπτά.",
+        "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
+            "Ένα κλειδί Demo επιτρέπει 10.000 αιτήματα τον μήνα. Με ενημερώσεις συχνότερες από κάθε 5 λεπτά, το CoinGecko μπλοκάρει το κλειδί.",
     ]
 }

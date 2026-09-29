@@ -20,8 +20,8 @@ extension L10n {
             "Не удалось проверить API-ключ",
         "Check the key and whether it is a Demo or Pro key.":
             "Проверьте ключ, а также тип ключа: Demo или Pro.",
-        "CoinGecko rate limit reached. Add a free API key in Settings › General.":
-            "Достигнут лимит CoinGecko. Добавьте бесплатный API-ключ в разделе Настройки › Основные.",
+        "CoinGecko limit reached":
+            "Лимит CoinGecko исчерпан",
         "CoinGecko rejected the API key.":
             "CoinGecko отклонил API-ключ.",
         "CoinGecko returned HTTP %d.":
@@ -176,5 +176,9 @@ extension L10n {
             "Палладий",
         "Legal notice & privacy":
             "Правовая информация и конфиденциальность",
+        "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
+            "Без API-ключа CoinGecko может блокировать обновления чаще, чем раз в 5 минут.",
+        "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
+            "Demo-ключ даёт 10 000 запросов в месяц. При обновлениях чаще, чем раз в 5 минут, CoinGecko блокирует ключ.",
     ]
 }
