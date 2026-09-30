@@ -15,17 +15,29 @@ struct TickerRenderer {
     private func depotLine(_ item: DepotTicker) -> (value: String, change: Double?, stale: Bool) {
         guard let depot else { return ("…", nil, true) }
         let figures = item.figures(in: depot)
+        let stale = depot.updated < staleBefore
         let value: String
         if prefs.changeOnly {
-            value = figures.percent.map(PriceFormat.change) ?? "—"
+            value = figures.percent.map { barChange($0, stale: stale) } ?? "—"
         } else if let amount = figures.amount {
             value = figures.signed
-                ? PriceFormat.signedEuro(amount, decimals: 0, abbreviate: prefs.abbreviate)
+                ? unsigned(PriceFormat.signedEuro(amount, decimals: 0, abbreviate: prefs.abbreviate), change: figures.percent, stale: stale)
                 : PriceFormat.price(amount, currency: "eur", digits: 0, abbreviate: prefs.abbreviate, fixedDecimals: 0)
         } else {
             value = "—"
         }
-        return (value, figures.percent, depot.updated < staleBefore)
+        return (value, figures.percent, stale)
+    }
+
+    /// Prozentänderung für die Menüleiste: ohne Vorzeichen, wenn schon die Farbe die Richtung zeigt (Wunsch des Nutzers).
+    private func barChange(_ change: Double, stale: Bool) -> String {
+        unsigned(PriceFormat.change(change), change: change, stale: stale)
+    }
+
+    /// Entfernt das führende "+"/"−", sobald der Wert eingefärbt ist (nicht grau, kein Monochrom).
+    private func unsigned(_ text: String, change: Double?, stale: Bool) -> String {
+        guard !stale, change != nil, prefs.colorTheme != .monochrome, text.hasPrefix("+") || text.hasPrefix("−") else { return text }
+        return String(text.dropFirst())
     }
 
     private func isStale(_ quote: Quote) -> Bool { quote.updated < staleBefore }
@@ -58,7 +70,7 @@ struct TickerRenderer {
                 let valueFont = !line.stale && prefs.colorTheme.isGreen(for: line.change) ? green : font
                 title.append(NSAttributedString(string: line.value, attributes: [.font: valueFont, .foregroundColor: color]))
                 if prefs.changeInBar, !prefs.changeOnly, let change = line.change {
-                    title.append(NSAttributedString(string: " " + PriceFormat.change(change),
+                    title.append(NSAttributedString(string: " " + barChange(change, stale: line.stale),
                                                     attributes: [.font: small, .foregroundColor: color]))
                 }
                 continue
@@ -73,12 +85,12 @@ struct TickerRenderer {
             let priceFont = !stale && prefs.colorTheme.isGreen(for: quote.change24h) ? green : font
             // Nur Änderung: steht in voller Größe an der Stelle des Kurses
             let price = prefs.changeOnly
-                ? quote.change24h.map(PriceFormat.change) ?? "—"
+                ? quote.change24h.map { barChange($0, stale: stale) } ?? "—"
                 : formattedPrice(quote, of: coin, currencySign: prefs.currencySign, abbreviate: prefs.abbreviate)
             title.append(NSAttributedString(string: price, attributes: [.font: priceFont, .foregroundColor: color]))
 
             if prefs.changeInBar, !prefs.changeOnly, let change = quote.change24h {
-                title.append(NSAttributedString(string: " " + PriceFormat.change(change),
+                title.append(NSAttributedString(string: " " + barChange(change, stale: stale),
                                                 attributes: [.font: small, .foregroundColor: color]))
             }
         }
@@ -107,21 +119,21 @@ struct TickerRenderer {
             if let item = DepotTicker(rawValue: coin.id) {
                 let line = depotLine(item)
                 var value = line.value
-                if prefs.changeInBar, !prefs.changeOnly, let change = line.change { value += " " + PriceFormat.change(change) }
+                if prefs.changeInBar, !prefs.changeOnly, let change = line.change { value += " " + barChange(change, stale: line.stale) }
                 let color = line.stale ? NSColor.secondaryLabelColor : prefs.colorTheme.color(for: line.change)
                 return Line(label: label, value: value, change: line.stale ? nil : line.change, color: color)
             }
             guard let quote = quotes[coin.id] else {
                 return Line(label: label, value: "…", change: nil, color: .secondaryLabelColor)
             }
+            let stale = isStale(quote)
             var value: String
             if prefs.changeOnly {
-                value = quote.change24h.map(PriceFormat.change) ?? "—"
+                value = quote.change24h.map { barChange($0, stale: stale) } ?? "—"
             } else {
                 value = formattedPrice(quote, of: coin, currencySign: prefs.currencySign, abbreviate: prefs.abbreviate)
-                if prefs.changeInBar, let change = quote.change24h { value += " " + PriceFormat.change(change) }
+                if prefs.changeInBar, let change = quote.change24h { value += " " + barChange(change, stale: stale) }
             }
-            let stale = isStale(quote)
             let color = stale ? NSColor.secondaryLabelColor : prefs.colorTheme.color(for: quote.change24h)
             return Line(label: label, value: value, change: stale ? nil : quote.change24h, color: color)
         }
