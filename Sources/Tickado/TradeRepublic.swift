@@ -17,6 +17,18 @@ struct TRPosition {
         guard let price, let previousClose, previousClose > 0 else { return nil }
         return (price / previousClose - 1) * 100
     }
+
+    /// Gewinn heute in Euro.
+    var todayGain: Double? {
+        guard let price, let previousClose else { return nil }
+        return (price - previousClose) * quantity
+    }
+
+    /// Gewinn seit Kauf in Euro und Prozent (aus dem Ø-Kaufkurs).
+    var totalGain: (amount: Double, percent: Double)? {
+        guard let price, let averageBuyIn, averageBuyIn > 0 else { return nil }
+        return ((price - averageBuyIn) * quantity, (price / averageBuyIn - 1) * 100)
+    }
 }
 
 struct TRPortfolio {

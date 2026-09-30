@@ -393,6 +393,13 @@ final class StatusController: NSObject, NSMenuDelegate {
                 if let buyIn = position.averageBuyIn {
                     tip.append(L("Avg. buy-in: %@", PriceFormat.price(buyIn, currency: "eur", digits: 0, fixedDecimals: 2)))
                 }
+                // Gewinn heute und gesamt wie in den Kennzahlen oben, nur für diese Position.
+                if let gain = position.todayGain, let change = position.change {
+                    tip.append("\(L("Gain today")): \(PriceFormat.signedEuro(gain, decimals: 2)) (\(PriceFormat.change(change)))")
+                }
+                if let gain = position.totalGain {
+                    tip.append("\(L("Total gain")): \(PriceFormat.signedEuro(gain.amount, decimals: 2)) (\(PriceFormat.change(gain.percent)))")
+                }
                 item.toolTip = tip.joined(separator: "\n")
                 submenu.addItem(item)
             }
