@@ -39,6 +39,17 @@ price and change at a glance.
 - A price list with symbol, name, price and 24h change, grouped by crypto, metals, stocks and ETFs.
 - Click a value to show or hide it in the menu bar. ⌥-click opens it on CoinGecko or Yahoo Finance.
 
+### Trade Republic portfolio (optional)
+Tickado works fully without it. If you want, you can bring your Trade Republic portfolio into the menu:
+- **Only once, and only when you ask.** Settings → Trade Republic → **Synchronize…** opens the Trade Republic website in
+  its own window. You log in there and confirm in the Trade Republic app. Tickado then reads your positions (ISIN,
+  name, quantity, average buy-in) and cash once, stores them on your Mac and discards the session. There is no
+  permanent connection and nothing runs in the background; buys and sells only show up after the next sync.
+- Current prices come from Yahoo Finance by ISIN. The menu shows portfolio value, gain today, total gain and every
+  position; tick them to show **TR**, **TRΔ** (today) or **TRΣ** (total) in the menu bar.
+- Trade Republic has no official API. Syncing uses the same unofficial web interface as app.traderepublic.com.
+  Tickado is not affiliated with Trade Republic. **Remove Data** deletes the stored positions.
+
 ### Settings
 The Settings window shows a **live preview** of your menu bar, drawn with the same code as the real one. Every
 change applies instantly – there is no Save button.
@@ -47,6 +58,7 @@ change applies instantly – there is no Save button.
 |---|---|
 | **Display** | Values in the menu bar, ticker mode, display options, colors, precision |
 | **Assets** | Pick values: top 500 coins plus search, popular US and DAX stocks, ETFs by name, ticker or ISIN, precious metals |
+| **Trade Republic** | Optional: synchronize your portfolio once, remove the stored data |
 | **General** | Language (25 languages, follows the system by default), base currency (USD, EUR, CHF, GBP, … even BTC, ETH, sats), metal unit (troy ounce, gram, kilogram), update interval (30 s – 30 min), launch at login, optional CoinGecko API key |
 
 ## Installation
@@ -64,8 +76,9 @@ Requires **macOS 14 Sonoma or later**. Runs natively on Apple Silicon and Intel.
 |---|---|---|
 | Cryptocurrencies | [CoinGecko API](https://www.coingecko.com/en/api) | Optional – a free Demo key or a Pro key gives higher rate limits. It is stored in the macOS keychain. |
 | Stocks, ETFs, indices, exchange rates, precious metals | Yahoo Finance | Not needed. Metals use COMEX futures prices. |
+| Trade Republic positions (optional) | app.traderepublic.com, only when you click Synchronize | Your own Trade Republic login, entered on their website |
 
-Tickado only talks to these two services. It has no account, no analytics and no tracking. Settings are stored
+Apart from an optional Trade Republic sync, Tickado only talks to these two services. It has no account, no analytics and no tracking. Settings are stored
 locally in the app's preferences. The coin catalog is cached for a day in `~/Library/Application Support/Tickado/`.
 
 Prices are for information only and may be delayed. Yahoo Finance is an unofficial interface and may change
@@ -108,6 +121,11 @@ Tickado is open source under the [MIT License](LICENSE).
 Tickado zeigt Kurse von **Kryptowährungen, Aktien, ETFs und Edelmetallen** direkt in der Menüleiste deines Macs,
 grün bei steigenden und rot bei fallenden Kursen. Ein Klick auf den Ticker öffnet die Kursliste mit Preis und
 24h-Änderung. Ein Konto brauchst du nicht.
+
+**Trade-Republic-Depot (optional):** Wer will, holt sein Depot unter Settings → Trade Republic → **Synchronisieren …**
+einmalig in Tickado – nur auf eigenen Klick, ohne dauerhafte Verbindung und ohne Abruf im Hintergrund. Die Anmeldung
+läuft auf der Website von Trade Republic, Tickado speichert die Positionen nur auf deinem Mac, die Kurse kommen danach
+von Yahoo Finance. Ohne Trade Republic funktioniert Tickado genauso.
 
 **Installation:** [`Tickado.zip` herunterladen](https://github.com/achirus-code/Tickado/releases/latest), entpacken,
 **Tickado.app** in den Ordner **Programme** ziehen. Beim ersten Start Rechtsklick auf die App → **Öffnen**, weil sie
