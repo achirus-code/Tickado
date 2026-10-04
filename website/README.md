@@ -15,7 +15,7 @@ python3 -m http.server 8000   # http://localhost:8000
 ## Merkmale / Highlights
 - **Zweisprachig DE/EN** – Umschalter oben rechts, merkt die Wahl und folgt sonst der Browsersprache.
 - **Hell/Dunkel** folgt dem System, per Schalter umstellbar.
-- **Echte Mockups** von Menü und Settings-Fenster, nachgebaut nach den App-Screenshots.
+- **Echte Mockups** von Menü, Trade-Republic-Untermenü und Settings-Fenster, nachgebaut nach den App-Screenshots.
 - Das App-Icon ist als Inline-SVG nachgebaut (dunkle Kachel, grün-rote Kerzen, Goldmünze), passend zu `Scripts/make-icon.swift`.
 - **Nur Download**: Der Button verweist auf die fertige App unter GitHub Releases – keine Bau-Anleitung.
 

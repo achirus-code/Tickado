@@ -85,11 +85,22 @@
       direkt von deinem Mac aus mit diesen Diensten:</p>
     <ul style="margin:8px 0 0 20px">
       <li>CoinGecko (api.coingecko.com) für Kryptowährungen, <a href="https://www.coingecko.com/en/privacy">Datenschutz von CoinGecko</a></li>
-      <li>Yahoo Finance (query1.finance.yahoo.com) für Aktien, ETFs, Edelmetalle und Wechselkurse, <a href="https://legal.yahoo.com/de/de/yahoo/privacy/index.html">Datenschutz von Yahoo</a></li>
+      <li>Yahoo Finance (query1.finance.yahoo.com) für Aktien, ETFs, Edelmetalle und Wechselkurse sowie die Kurse deiner Depotpositionen (Suche über die ISIN), <a href="https://legal.yahoo.com/de/de/yahoo/privacy/index.html">Datenschutz von Yahoo</a></li>
     </ul>
     <p style="margin-top:10px">Diese Dienste erhalten dabei deine IP-Adresse und die abgefragten Werte. Einstellungen,
       deine Auswahl und ein zwischengespeicherter Coin-Katalog liegen nur lokal auf deinem Mac. Einen optionalen
       CoinGecko-API-Key speichert die App im Schlüsselbund von macOS; er wird nur an CoinGecko übertragen.</p>
+
+    <h2>Trade-Republic-Depot (optional)</h2>
+    <p>Diese Funktion ist optional. Nur wenn du selbst „Synchronisieren“ klickst, öffnet die App die Website von Trade Republic (app.traderepublic.com) in einem eigenen
+      Fenster. Die Anmeldung mit Handynummer und PIN und die Bestätigung in der Trade-Republic-App finden direkt zwischen
+      dir und der Trade Republic Bank GmbH statt; es gilt deren <a href="https://traderepublic.com">Datenschutzerklärung</a>.
+      Die App liest nach der Anmeldung einmalig deine Depotpositionen (ISIN, Name, Stückzahl, Ø-Kaufkurs) und dein
+      Guthaben aus und speichert sie nur lokal auf deinem Mac. Deine PIN verarbeitet die App nicht, und die Sitzung wird
+      danach verworfen. Die laufenden Kurse fragt die App anschließend bei Yahoo Finance ab, dabei werden nur die
+      Wertpapierkennungen übertragen, keine Stückzahlen oder Beträge. „Daten löschen“ entfernt die gespeicherten
+      Positionen. Ein lokales Diagnoseprotokoll (ohne PIN, Cookies oder Beträge) liegt unter
+      ~/Library/Logs/Tickado/.</p>
 
     <h2>Kontakt per E-Mail</h2>
     <p>Schreibst du mir eine E-Mail, verarbeite ich deine Angaben nur, um deine Anfrage zu beantworten
@@ -138,11 +149,20 @@
       your Mac to these services:</p>
     <ul style="margin:8px 0 0 20px">
       <li>CoinGecko (api.coingecko.com) for cryptocurrencies, <a href="https://www.coingecko.com/en/privacy">CoinGecko privacy policy</a></li>
-      <li>Yahoo Finance (query1.finance.yahoo.com) for stocks, ETFs, precious metals and exchange rates, <a href="https://legal.yahoo.com/us/en/yahoo/privacy/index.html">Yahoo privacy policy</a></li>
+      <li>Yahoo Finance (query1.finance.yahoo.com) for stocks, ETFs, precious metals and exchange rates, and the prices of your portfolio positions (looked up by ISIN), <a href="https://legal.yahoo.com/us/en/yahoo/privacy/index.html">Yahoo privacy policy</a></li>
     </ul>
     <p style="margin-top:10px">These services receive your IP address and the values requested. Settings, your selection
       and a cached coin catalog stay on your Mac. An optional CoinGecko API key is stored in the macOS keychain and only
       sent to CoinGecko.</p>
+
+    <h2>Trade Republic portfolio (optional)</h2>
+    <p>This feature is optional. Only when you click “Synchronize” yourself does the app open the Trade Republic website (app.traderepublic.com) in its own window.
+      Logging in with your phone number and PIN and confirming in the Trade Republic app happen directly between you and
+      Trade Republic Bank GmbH; their <a href="https://traderepublic.com">privacy policy</a> applies. After you log in, the
+      app reads your portfolio positions (ISIN, name, quantity, average buy-in) and cash balance once and stores them only
+      on your Mac. The app does not process your PIN, and the session is discarded afterwards. The app then loads current
+      prices from Yahoo Finance, sending only the security identifiers, never quantities or amounts. “Remove Data” deletes
+      the stored positions. A local diagnostic log (without PIN, cookies or amounts) is kept in ~/Library/Logs/Tickado/.</p>
 
     <h2>Contact by email</h2>
     <p>If you email me, I only use your details to answer your request (Art. 6 (1) (f) GDPR) and delete them once they

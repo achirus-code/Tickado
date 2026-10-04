@@ -137,6 +137,22 @@
   .osmenu .coin.up .nm,.osmenu .coin.up .pr,.osmenu .coin.up .ch{color:var(--mup)}
   .osmenu .coin.down .nm,.osmenu .coin.down .pr,.osmenu .coin.down .ch{color:var(--mdn)}
 
+  /* Trade-Republic-Zeile im Hero-Menü und Untermenü-Attrappe */
+  .osmenu .coin .sub{color:var(--menu-fg);opacity:.55;margin-left:6px}
+  .osmenu .dp{display:grid;grid-template-columns:1.5ch 1fr auto 6ch;gap:8px;align-items:baseline;padding:5px 18px}
+  .osmenu .dp > span{color:var(--menu-fg)}   /* Namen in Label-Farbe, nur Betrag/Änderung farbig (wie in der App) */
+  .osmenu .dp .pr,.osmenu .dp .ch{text-align:right}
+  .osmenu .dp.up .pr,.osmenu .dp.up .ch{color:var(--mup)}
+  .osmenu .dp.down .pr,.osmenu .dp.down .ch{color:var(--mdn)}
+  .osmenu .mi.dim{opacity:.5}
+  /* Einzeiliger Ticker (TR, TRΔ, TRΣ) wie TickerRenderer.tickerTitle */
+  .menubar .tr-line{display:flex;gap:12px;font-variant-numeric:tabular-nums;font-size:12.3px;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif}
+  .menubar .tr-line b{font-weight:400;color:#fff;margin-right:4px}
+  .menubar .tr-line .up{color:#74C73D;color:color(display-p3 .455 .780 .239)}
+  .menubar .tr-line .down{color:#C04828;color:color(display-p3 .753 .282 .157)}
+  .depot-note{margin-top:16px;font-size:.85rem;color:var(--tx-dim);opacity:.8}
+
   /* --- Animierte Demo: Cursor, Menü öffnen/schließen, Auswahl --- */
   .stage{position:relative}
   .demo-cursor{position:absolute;left:0;top:0;z-index:20;pointer-events:none;opacity:0;
@@ -303,6 +319,7 @@
     <a class="brand" href="#top"><svg><use href="#appicon"/></svg> Tickado</a>
     <div class="navlinks">
       <a href="#features" data-i18n="nav.features"></a>
+      <a href="#depot">Trade Republic</a>
       <a href="#settings" data-i18n="nav.settings"></a>
       <a href="#sources" data-i18n="nav.sources"></a>
       <a href="#download" data-i18n="nav.download"></a>
@@ -358,6 +375,8 @@
         <div class="coin up" id="demoEtfRow"><span class="ck" id="demoEtfCk"></span><b>EUNL</b><span class="nm">MSCI World ETF</span><span class="pr">98,74 €</span><span class="ch">+0.4%</span></div>
         <div class="coin up" id="demoGoldRow"><span class="ck" id="demoGoldCk"></span><b>XAU</b><span class="nm">Gold/oz</span><span class="pr">4.314 $</span><span class="ch">+0.4%</span></div>
         <div class="msep"></div>
+        <div class="coin up"><span class="ck"></span><b>TR</b><span class="nm">Trade Republic<span class="sub">›</span></span><span class="pr">25.645 €</span><span class="ch">+0.6%</span></div>
+        <div class="msep"></div>
         <div class="mi">About…</div>
         <div class="msep"></div>
         <div class="mi">Quit</div>
@@ -384,7 +403,48 @@
   </div>
 </section>
 
-<section id="settings" style="background:var(--bg2)">
+<section id="depot" style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="split">
+      <div class="txt">
+        <span class="kicker" data-i18n="dp.kicker"></span>
+        <h3 data-i18n="dp.title"></h3>
+        <p data-i18n="dp.sub"></p>
+        <ul class="checklist">
+          <li><svg viewBox="0 0 24 24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="dp.l1"></span></li>
+          <li><svg viewBox="0 0 24 24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="dp.l2"></span></li>
+          <li><svg viewBox="0 0 24 24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="dp.l3"></span></li>
+        </ul>
+        <p class="depot-note" data-i18n="dp.note"></p>
+      </div>
+
+      <div class="stage">
+        <div class="menubar">
+          <span class="mb-pill"><span class="tr-line"><span><b>TR</b><span class="up">25.645 €</span></span><span><b>TRΔ</b><span class="up">+152 €</span></span><span><b>TRΣ</b><span class="up">+3.412 €</span></span></span></span>
+          <svg class="sysic" viewBox="0 0 24 24"><path d="M2 8.5a15 15 0 0120 0M5 12a10 10 0 0114 0M8 15.5a5 5 0 018 0"/><circle cx="12" cy="19" r="1.2" fill="#dfe4ec" stroke="none"/></svg>
+        </div>
+        <div class="osmenu">
+          <div class="dp up"><span>✓</span><span data-i18n="dp.m.value"></span><span class="pr">25.645,30 €</span><span class="ch">+0.6%</span></div>
+          <div class="dp up"><span>✓</span><span data-i18n="dp.m.today"></span><span class="pr">+152,40 €</span><span class="ch">+0.6%</span></div>
+          <div class="dp up"><span>✓</span><span data-i18n="dp.m.total"></span><span class="pr">+3.412,00 €</span><span class="ch">+15.4%</span></div>
+          <div class="msep"></div>
+          <div class="dp up"><span></span><span>iShs Core MSCI World</span><span class="pr">18.415,20 €</span><span class="ch">+0.5%</span></div>
+          <div class="dp up"><span></span><span>Vanguard FTSE All-World</span><span class="pr">4.120,55 €</span><span class="ch">+0.1%</span></div>
+          <div class="dp down"><span></span><span>Apple</span><span class="pr">2.880,00 €</span><span class="ch">−2.4%</span></div>
+          <div class="dp up"><span></span><span>Rheinmetall</span><span class="pr">1.229,55 €</span><span class="ch">+3.1%</span></div>
+          <div class="msep"></div>
+          <div class="dp"><span></span><span data-i18n="dp.m.cash"></span><span class="pr">250,00 €</span><span class="ch"></span></div>
+          <div class="msep"></div>
+          <div class="mi dim" data-i18n="dp.m.last"></div>
+          <div class="mi" data-i18n="dp.m.sync"></div>
+          <div class="mi" data-i18n="dp.m.open"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="settings">
   <div class="wrap">
     <div class="split">
       <div class="txt">
@@ -414,7 +474,7 @@
           </div>
           <div class="prevnote" data-i18n="set.more"></div>
 
-          <div class="seg"><button class="active">Display</button><button>Assets</button><button>General</button></div>
+          <div class="seg"><button class="active">Display</button><button>Assets</button><button>General</button><button>Trade Republic</button></div>
 
           <div class="frow">
             <div class="lab" data-i18n="set.menubar"></div>
@@ -444,7 +504,7 @@
   </div>
 </section>
 
-<section id="ticker">
+<section id="ticker" style="background:var(--bg2)">
   <div class="wrap">
     <div class="split">
       <div class="modes">
@@ -478,7 +538,7 @@
   </div>
 </section>
 
-<section id="sources" style="background:var(--bg2)">
+<section id="sources">
   <div class="wrap">
     <div class="sec-head">
       <span class="kicker" data-i18n="src.kicker"></span>
@@ -496,7 +556,7 @@
         <span class="tag" data-i18n="src.b.tag"></span>
         <h4>Yahoo Finance</h4>
         <p data-i18n="src.b.d"></p>
-        <div class="pill-row"><span class="pill" data-i18n="src.b.p1"></span><span class="pill" data-i18n="src.b.p2"></span><span class="pill" data-i18n="src.b.p3"></span></div>
+        <div class="pill-row"><span class="pill" data-i18n="src.b.p1"></span><span class="pill" data-i18n="src.b.p2"></span><span class="pill" data-i18n="src.b.p3"></span><span class="pill" data-i18n="src.b.p4"></span></div>
       </div>
     </div>
   </div>
@@ -545,11 +605,11 @@ const I18N = {
     "nav.features":"Funktionen","nav.settings":"Einstellungen","nav.sources":"Datenquellen","nav.download":"Download","nav.cta":"Download",
     "hero.eyebrow":"● Für macOS 14+",
     "hero.title":'Deine Kurse leben in der <span class="accent">Menüleiste</span>.',
-    "hero.lead":"Tickado zeigt Krypto, Aktien, ETFs und Edelmetalle live – dezent, farbcodiert und immer im Blick. Keine App im Dock, kein Tab im Browser.",
+    "hero.lead":"Tickado zeigt Krypto, Aktien, ETFs, Edelmetalle und auf Wunsch dein Trade-Republic-Depot live – dezent, farbcodiert und immer im Blick. Keine App im Dock, kein Tab im Browser.",
     "hero.cta.download":"Herunterladen","hero.cta.more":"Funktionen ansehen",
     "hero.req":"Native macOS-App · Kein Konto nötig · Kostenlos.",
     "features.kicker":"Was drin steckt","features.title":"Ein Ticker für alles, was steigt und fällt","features.sub":"Eine Auswahl, vier Anlageklassen, live in der Menüleiste – genau so viel Information, wie du willst.",
-    "f1.t":"Vier Anlageklassen","f1.d":"Kryptowährungen, Aktien, ETFs und Edelmetalle – frei kombinierbar in einer Ansicht.",
+    "f1.t":"Vier Anlageklassen","f1.d":"Kryptowährungen, Aktien, ETFs und Edelmetalle – frei kombinierbar in einer Ansicht, optional dazu dein Trade-Republic-Depot.",
     "f2.t":"Live & farbcodiert","f2.d":"Grün steigt, Rot fällt. Automatischer Refresh im wählbaren Intervall von 30 s bis 30 min.",
     "f3.t":"Drei Ticker-Modi","f3.d":"Alle Werte nebeneinander, rotierend im 5-Sekunden-Takt oder kompakt zweizeilig mit ▲▼-Pfeilen.",
     "f4.t":"Deine Basiswährung","f4.d":"USD, EUR, CHF, GBP und viele mehr – sogar BTC, ETH und Satoshis als Bezugsgröße.",
@@ -559,7 +619,15 @@ const I18N = {
     "set.l1":"<b>Menu bar:</b> per Häkchen festlegen, welche Werte in der Leiste erscheinen.",
     "set.l2":"<b>Coin-Zeichen</b> (₿, Ξ, Au), Währungszeichen, 24h-Änderung – auf Wunsch auch nur die Änderung ohne Kurs – und Kürzen großer Preise.",
     "set.l3":"<b>Farben</b> (u. a. Blau/Orange für Farbenblinde) und <b>Precision</b> (2–6 signifikante Stellen).",
-    "set.l4":"Tabs <b>Display · Assets · General</b> gliedern Anzeige, Auswahl und allgemeine Optionen (u. a. Sprache).",
+    "set.l4":"Tabs <b>Display · Assets · General · Trade Republic</b> gliedern Anzeige, Auswahl, allgemeine Optionen (u. a. Sprache) und dein Depot.",
+    "dp.kicker":"Trade Republic · optional","dp.title":"Dein Depot direkt im Menü",
+    "dp.sub":"Ganz optional: Wenn du willst, holst du dein Trade-Republic-Depot einmalig in Tickado. Du meldest dich auf der Website von Trade Republic an und bestätigst in der App. Tickado liest dann einmal deine Positionen und speichert sie auf deinem Mac, die Kurse kommen danach laufend von Yahoo Finance.",
+    "dp.l1":"<b>Depotwert, Gewinn heute und Gewinn gesamt</b> oben im Untermenü, darunter alle Positionen mit Wert und Tagesänderung.",
+    "dp.l2":"Per Häkchen in die Menüleiste: <b>TR</b> (Depotwert), <b>TRΔ</b> (Gewinn heute) und <b>TRΣ</b> (Gewinn gesamt).",
+    "dp.l3":"<b>Nur einmalig und nur auf deinen Wunsch.</b> Bei Trade Republic fragt Tickado nur an, wenn du „Synchronisieren“ klickst – keine dauerhafte Verbindung, kein Abruf im Hintergrund. Die PIN gibst du nur bei Trade Republic ein, die Sitzung wird danach verworfen.",
+    "dp.note":"Optional – Tickado funktioniert vollständig ohne Trade Republic. Für die Synchronisierung nutzt es die inoffizielle Web-Schnittstelle von Trade Republic; Tickado gehört nicht zu Trade Republic.",
+    "dp.m.value":"Depotwert","dp.m.today":"Gewinn heute","dp.m.total":"Gewinn gesamt","dp.m.cash":"Guthaben",
+    "dp.m.last":"Zuletzt synchronisiert: 27. Sept. 2026, 16:05","dp.m.sync":"Synchronisieren …","dp.m.open":"Trade Republic öffnen",
     "set.more":"3 weitere Werte im Menü.","set.menubar":"Menu bar:",
     "tk.kicker":"Ticker-Modi","tk.title":"So wenig oder so viel Platz, wie du magst","tk.sub":"Tickado passt sich deiner Menüleiste an. Wähle einen der drei Modi und ergänze Optionen wie Symbole, Währungszeichen oder die 24h-Änderung.",
     "tk.l1":"<b>Signifikante Stellen</b> statt starrer Kommastellen: 84.150 · 1,53 · 0,0398.",
@@ -570,7 +638,7 @@ const I18N = {
     "src.a.tag":"Krypto","src.a.d":"Nutzbar ohne Key. Wer will, hinterlegt einen Demo- oder Pro-Key sicher im Schlüsselbund – für höhere Rate-Limits. Der Top-500-Katalog wird lokal für einen Tag gecacht.",
     "src.a.p1":"Top 500 nach Market Cap","src.a.p2":"Volltextsuche","src.a.p3":"Key optional",
     "src.b.tag":"Aktien · ETFs · Metalle","src.b.d":"Aktien, Indizes, ETFs, Wechselkurse und COMEX-Future-Kurse für Edelmetalle – kein Key nötig. Pence-Notierungen und Feinunzen werden automatisch umgerechnet.",
-    "src.b.p1":"DAX & US-Aktien","src.b.p2":"ETF-Suche per ISIN","src.b.p3":"Gold · Silber · Platin · Palladium",
+    "src.b.p1":"DAX & US-Aktien","src.b.p2":"ETF-Suche per ISIN","src.b.p3":"Gold · Silber · Platin · Palladium","src.b.p4":"Kurse deines Depots",
     "dl.title":"Tickado herunterladen","dl.sub":"Lade die fertige App herunter, zieh sie in den Programme-Ordner und wähle deine Werte. Fertig.",
     "dl.btn":"Für macOS herunterladen","dl.m1":"macOS 14+","dl.m2":"Apple Silicon & Intel","dl.m3":"Kostenlos",
     "dl.note":"Hinweis: Beim ersten Start Rechtsklick auf die App → „Öffnen“, da sie nicht über den App Store signiert ist.",
@@ -582,11 +650,11 @@ const I18N = {
     "nav.features":"Features","nav.settings":"Settings","nav.sources":"Data sources","nav.download":"Download","nav.cta":"Download",
     "hero.eyebrow":"● For macOS 14+",
     "hero.title":'Your prices live in the <span class="accent">menu bar</span>.',
-    "hero.lead":"Tickado shows crypto, stocks, ETFs and precious metals live – subtle, color-coded and always in view. No dock app, no browser tab.",
+    "hero.lead":"Tickado shows crypto, stocks, ETFs, precious metals and, if you like, your Trade Republic portfolio live – subtle, color-coded and always in view. No dock app, no browser tab.",
     "hero.cta.download":"Download","hero.cta.more":"See features",
     "hero.req":"Native macOS app · No account needed · Free.",
     "features.kicker":"What's inside","features.title":"One ticker for everything that moves","features.sub":"One selection, four asset classes, live in the menu bar – exactly as much information as you want.",
-    "f1.t":"Four asset classes","f1.d":"Cryptocurrencies, stocks, ETFs and precious metals – freely combined in one view.",
+    "f1.t":"Four asset classes","f1.d":"Cryptocurrencies, stocks, ETFs and precious metals – freely combined in one view, optionally plus your Trade Republic portfolio.",
     "f2.t":"Live & color-coded","f2.d":"Green up, red down. Automatic refresh on an interval you choose, from 30 s to 30 min.",
     "f3.t":"Three ticker modes","f3.d":"All values side by side, rotating every 5 seconds, or compact two rows with ▲▼ arrows.",
     "f4.t":"Your base currency","f4.d":"USD, EUR, CHF, GBP and many more – even BTC, ETH and satoshis as the reference.",
@@ -596,7 +664,15 @@ const I18N = {
     "set.l1":"<b>Menu bar:</b> tick which values appear in the bar.",
     "set.l2":"<b>Coin signs</b> (₿, Ξ, Au), currency sign, 24h change – or only the change without the price – and abbreviating large prices.",
     "set.l3":"<b>Colors</b> (incl. blue/orange for color blindness) and <b>Precision</b> (2–6 significant digits).",
-    "set.l4":"Tabs <b>Display · Assets · General</b> organize display, selection and general options (incl. language).",
+    "set.l4":"Tabs <b>Display · Assets · General · Trade Republic</b> organize display, selection, general options (incl. language) and your portfolio.",
+    "dp.kicker":"Trade Republic · optional","dp.title":"Your portfolio right in the menu",
+    "dp.sub":"Entirely optional: if you want, bring your Trade Republic portfolio into Tickado once. You log in on the Trade Republic website and confirm in the app. Tickado then reads your positions once and stores them on your Mac; prices then come from Yahoo Finance.",
+    "dp.l1":"<b>Portfolio value, gain today and total gain</b> at the top of the submenu, followed by every position with value and daily change.",
+    "dp.l2":"Tick them for the menu bar: <b>TR</b> (portfolio value), <b>TRΔ</b> (gain today) and <b>TRΣ</b> (total gain).",
+    "dp.l3":"<b>Only once, and only when you ask.</b> Tickado only contacts Trade Republic when you click “Synchronize” – no permanent connection, nothing in the background. You only enter your PIN at Trade Republic, and the session is discarded afterwards.",
+    "dp.note":"Optional – Tickado works fully without Trade Republic. Syncing uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.",
+    "dp.m.value":"Portfolio value","dp.m.today":"Gain today","dp.m.total":"Total gain","dp.m.cash":"Cash",
+    "dp.m.last":"Last synchronized: Sep 27, 2026, 4:05 PM","dp.m.sync":"Synchronize…","dp.m.open":"Open Trade Republic",
     "set.more":"3 more values in the menu.","set.menubar":"Menu bar:",
     "tk.kicker":"Ticker modes","tk.title":"As little or as much room as you like","tk.sub":"Tickado adapts to your menu bar. Pick one of three modes and add options like symbols, the currency sign or the 24h change.",
     "tk.l1":"<b>Significant digits</b> instead of fixed decimals: 84,150 · 1.53 · 0.0398.",
@@ -607,7 +683,7 @@ const I18N = {
     "src.a.tag":"Crypto","src.a.d":"Usable without a key. If you like, store a demo or pro key securely in the keychain for higher rate limits. The top-500 catalog is cached locally for a day.",
     "src.a.p1":"Top 500 by market cap","src.a.p2":"Full-text search","src.a.p3":"Key optional",
     "src.b.tag":"Stocks · ETFs · Metals","src.b.d":"Stocks, indices, ETFs, exchange rates and COMEX futures for precious metals – no key needed. Pence quotes and troy ounces are converted automatically.",
-    "src.b.p1":"DAX & US stocks","src.b.p2":"ETF search by ISIN","src.b.p3":"Gold · Silver · Platinum · Palladium",
+    "src.b.p1":"DAX & US stocks","src.b.p2":"ETF search by ISIN","src.b.p3":"Gold · Silver · Platinum · Palladium","src.b.p4":"Your portfolio's prices",
     "dl.title":"Download Tickado","dl.sub":"Download the ready-made app, drag it into your Applications folder and pick your values. Done.",
     "dl.btn":"Download for macOS","dl.m1":"macOS 14+","dl.m2":"Apple Silicon & Intel","dl.m3":"Free",
     "dl.note":"Note: on first launch, right-click the app → “Open”, since it isn't signed through the App Store.",
