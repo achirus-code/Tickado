@@ -57,6 +57,19 @@ enum YahooFinance {
         }
     }
 
+    /// Yahoo-Symbol zu einer ISIN. Mehrere Treffer: Euro-Börsenplätze zuerst (XETRA, Frankfurt …), damit die Kurse
+    /// zu Trade Republic passen; sonst die Heimatbörse (wird in Euro umgerechnet).
+    static func symbol(forISIN isin: String) async -> String? {
+        let query = isin.addingPercentEncoding(withAllowedCharacters: queryAllowed) ?? isin
+        guard let response: SearchResponse = try? await get("/v1/finance/search?q=\(query)&quotesCount=15&newsCount=0")
+        else { return nil }
+        let symbols = (response.quotes ?? []).map(\.symbol)
+        for suffix in [".DE", ".F", ".SG", ".MU", ".DU", ".BE", ".HM", ".HA", ".VI", ".AS", ".PA", ".MI", ".MC", ".BR"] {
+            if let symbol = symbols.first(where: { $0.hasSuffix(suffix) }) { return symbol }
+        }
+        return symbols.first
+    }
+
     /// Kurse für Aktien/Edelmetalle holen und in die Basiswährung umrechnen.
     static func quotes(for assets: [Coin], currency: String, metalUnit: MetalUnit) async -> (quotes: [String: Quote], error: String?) {
         guard !assets.isEmpty else { return ([:], nil) }

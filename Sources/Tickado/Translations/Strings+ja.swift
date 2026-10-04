@@ -178,6 +178,50 @@ extension L10n {
             "運営者情報とプライバシー",
         "Buy me a coffee":
             "コーヒーをおごる",
+        "No positions":
+            "保有銘柄なし",
+        "Quantity: %@":
+            "数量: %@",
+        "Avg. buy-in: %@":
+            "平均取得単価: %@",
+        "Cash":
+            "現金",
+        "Open Trade Republic":
+            "Trade Republicを開く",
+        "Session expired. Please log in again.":
+            "セッションの有効期限が切れました。再度ログインしてください。",
+        "Trade Republic did not respond.":
+            "Trade Republicから応答がありません。",
+        "Unexpected response from Trade Republic.":
+            "Trade Republicから予期しない応答がありました。",
+        "Portfolio value":
+            "評価額",
+        "Gain today":
+            "本日の損益",
+        "Total gain":
+            "累計損益",
+        "Click to show it in the menu bar.":
+            "クリックするとメニューバーに表示します。",
+        "Last synchronized: %@":
+            "最終同期: %@",
+        "Log in in the Trade Republic window.":
+            "Trade Republicのウインドウでログインしてください。",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "電話番号とPINでログインし、Trade Republicアプリで承認してください。ポートフォリオの同期が完了すると、このウインドウは自動的に閉じます。",
+        "Not synchronized yet":
+            "まだ同期されていません",
+        "Positions: %d":
+            "銘柄数: %d",
+        "Remove Data":
+            "データを削除",
+        "Synchronization failed: %@":
+            "同期に失敗しました: %@",
+        "Synchronize…":
+            "同期…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "同期するとTrade RepublicのWebサイトにログインし、Tickadoが保有銘柄（ISIN、数量、取得単価）を保存します。価格はその後Yahoo Financeから読み込まれます。Trade Republicの非公式Webインターフェイスを使用しています。TickadoはTrade Republicとは提携していません。",
+        "Synchronizing…":
+            "同期中…",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "APIキーがない場合、5分より短い間隔の更新はCoinGeckoにブロックされることがあります。",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

@@ -9,7 +9,9 @@ enum Keychain {
     // Einmal pro Start lesen, sonst fragt macOS bei ad-hoc-signierten Builds ggf. bei jedem Refresh.
     private static var cached: String??
 
-    private static var query: [String: Any] {
+    private static var query: [String: Any] { query(for: account) }
+
+    private static func query(for account: String) -> [String: Any] {
         [kSecClass as String: kSecClassGenericPassword,
          kSecAttrService as String: service,
          kSecAttrAccount as String: account]

@@ -178,6 +178,50 @@ extension L10n {
             "Thông tin pháp lý & quyền riêng tư",
         "Buy me a coffee":
             "Mời tôi một ly cà phê",
+        "No positions":
+            "Không có vị thế",
+        "Quantity: %@":
+            "Số lượng: %@",
+        "Avg. buy-in: %@":
+            "Giá mua TB: %@",
+        "Cash":
+            "Tiền mặt",
+        "Open Trade Republic":
+            "Mở Trade Republic",
+        "Session expired. Please log in again.":
+            "Phiên đã hết hạn. Vui lòng đăng nhập lại.",
+        "Trade Republic did not respond.":
+            "Trade Republic không phản hồi.",
+        "Unexpected response from Trade Republic.":
+            "Phản hồi không mong đợi từ Trade Republic.",
+        "Portfolio value":
+            "Giá trị danh mục",
+        "Gain today":
+            "Lãi hôm nay",
+        "Total gain":
+            "Tổng lãi",
+        "Click to show it in the menu bar.":
+            "Bấm để hiện trên thanh menu.",
+        "Last synchronized: %@":
+            "Đồng bộ lần cuối: %@",
+        "Log in in the Trade Republic window.":
+            "Hãy đăng nhập trong cửa sổ Trade Republic.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Đăng nhập bằng số điện thoại và mã PIN, rồi xác nhận trong ứng dụng Trade Republic. Cửa sổ này tự đóng khi danh mục đã được đồng bộ.",
+        "Not synchronized yet":
+            "Chưa đồng bộ",
+        "Positions: %d":
+            "Vị thế: %d",
+        "Remove Data":
+            "Xóa dữ liệu",
+        "Synchronization failed: %@":
+            "Đồng bộ thất bại: %@",
+        "Synchronize…":
+            "Đồng bộ…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "Khi đồng bộ, bạn đăng nhập trên trang web Trade Republic và Tickado lưu các vị thế của bạn (ISIN, số lượng, giá mua). Sau đó giá được tải từ Yahoo Finance. Sử dụng giao diện web không chính thức của Trade Republic; Tickado không liên kết với Trade Republic.",
+        "Synchronizing…":
+            "Đang đồng bộ…",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "Không có khóa API, CoinGecko có thể chặn các cập nhật thường xuyên hơn 5 phút một lần.",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

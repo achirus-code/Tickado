@@ -178,6 +178,50 @@ extension L10n {
             "Impresszum és adatvédelem",
         "Buy me a coffee":
             "Hívj meg egy kávéra",
+        "No positions":
+            "Nincsenek pozíciók",
+        "Quantity: %@":
+            "Mennyiség: %@",
+        "Avg. buy-in: %@":
+            "Átl. vételár: %@",
+        "Cash":
+            "Készpénz",
+        "Open Trade Republic":
+            "Trade Republic megnyitása",
+        "Session expired. Please log in again.":
+            "A munkamenet lejárt. Jelentkezzen be újra.",
+        "Trade Republic did not respond.":
+            "A Trade Republic nem válaszol.",
+        "Unexpected response from Trade Republic.":
+            "Váratlan válasz a Trade Republictól.",
+        "Portfolio value":
+            "Portfólió értéke",
+        "Gain today":
+            "Mai nyereség",
+        "Total gain":
+            "Teljes nyereség",
+        "Click to show it in the menu bar.":
+            "Kattintson a menüsorban való megjelenítéshez.",
+        "Last synchronized: %@":
+            "Utolsó szinkronizálás: %@",
+        "Log in in the Trade Republic window.":
+            "Jelentkezzen be a Trade Republic ablakban.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Jelentkezzen be telefonszámmal és PIN-kóddal, majd erősítse meg a Trade Republic alkalmazásban. Az ablak automatikusan bezárul, amint a portfólió szinkronizálva van.",
+        "Not synchronized yet":
+            "Még nincs szinkronizálva",
+        "Positions: %d":
+            "Pozíciók: %d",
+        "Remove Data":
+            "Adatok törlése",
+        "Synchronization failed: %@":
+            "Sikertelen szinkronizálás: %@",
+        "Synchronize…":
+            "Szinkronizálás…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "Szinkronizáláskor a Trade Republic weboldalán jelentkezik be, a Tickado pedig elmenti a pozícióit (ISIN, mennyiség, vételár). Az árfolyamok ezután a Yahoo Finance-ről töltődnek be. A Trade Republic nem hivatalos webes felületét használja; a Tickado nem áll kapcsolatban a Trade Republickal.",
+        "Synchronizing…":
+            "Szinkronizálás folyamatban…",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "API-kulcs nélkül a CoinGecko letilthatja az 5 percnél gyakoribb frissítéseket.",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

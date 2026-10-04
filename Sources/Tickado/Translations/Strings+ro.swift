@@ -178,6 +178,50 @@ extension L10n {
             "Informații legale și confidențialitate",
         "Buy me a coffee":
             "Cumpără-mi o cafea",
+        "No positions":
+            "Nicio poziție",
+        "Quantity: %@":
+            "Cantitate: %@",
+        "Avg. buy-in: %@":
+            "Preț mediu: %@",
+        "Cash":
+            "Numerar",
+        "Open Trade Republic":
+            "Deschide Trade Republic",
+        "Session expired. Please log in again.":
+            "Sesiunea a expirat. Autentificați-vă din nou.",
+        "Trade Republic did not respond.":
+            "Trade Republic nu răspunde.",
+        "Unexpected response from Trade Republic.":
+            "Răspuns neașteptat de la Trade Republic.",
+        "Portfolio value":
+            "Valoarea portofoliului",
+        "Gain today":
+            "Câștig azi",
+        "Total gain":
+            "Câștig total",
+        "Click to show it in the menu bar.":
+            "Faceți clic pentru a afișa în bara de meniu.",
+        "Last synchronized: %@":
+            "Ultima sincronizare: %@",
+        "Log in in the Trade Republic window.":
+            "Autentificați-vă în fereastra Trade Republic.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Autentificați-vă cu numărul de telefon și PIN-ul, apoi confirmați în aplicația Trade Republic. Fereastra se închide automat după sincronizarea portofoliului.",
+        "Not synchronized yet":
+            "Încă nesincronizat",
+        "Positions: %d":
+            "Poziții: %d",
+        "Remove Data":
+            "Șterge datele",
+        "Synchronization failed: %@":
+            "Sincronizare eșuată: %@",
+        "Synchronize…":
+            "Sincronizează…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "La sincronizare vă autentificați pe site-ul Trade Republic, iar Tickado salvează pozițiile (ISIN, cantitate, preț de cumpărare). Prețurile se încarcă apoi din Yahoo Finance. Folosește interfața web neoficială Trade Republic; Tickado nu este afiliat cu Trade Republic.",
+        "Synchronizing…":
+            "Se sincronizează…",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "Fără o cheie API, CoinGecko poate bloca actualizările mai frecvente de 5 minute.",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

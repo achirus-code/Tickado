@@ -6,8 +6,28 @@ struct TickerRenderer {
     let quotes: [String: Quote]
     /// Kurse von vor diesem Zeitpunkt gelten als veraltet (grau). Pro Kurs, weil eine Quelle allein ausfallen kann.
     let staleBefore: Date
+    /// Trade-Republic-Depot für die Kennzahlen `DepotTicker` in der Menüleiste.
+    var depot: TRPortfolio? = nil
 
     private var prefs: Prefs { .shared }
+
+    /// Menüleistenwert einer Depotkennzahl: Betrag in ganzen Euro, bei "nur Änderung" die Prozentzahl.
+    private func depotLine(_ item: DepotTicker) -> (value: String, change: Double?, stale: Bool) {
+        guard let depot else { return ("…", nil, true) }
+        let figures = item.figures(in: depot)
+        let stale = depot.updated < staleBefore
+        let value: String
+        if prefs.changeOnly {
+            value = figures.percent.map { barChange($0, stale: stale) } ?? "—"
+        } else if let amount = figures.amount {
+            value = figures.signed
+                ? unsigned(PriceFormat.signedEuro(amount, decimals: 0, abbreviate: prefs.abbreviate), change: figures.percent, stale: stale)
+                : PriceFormat.price(amount, currency: "eur", digits: 0, abbreviate: prefs.abbreviate, fixedDecimals: 0)
+        } else {
+            value = "—"
+        }
+        return (value, figures.percent, stale)
+    }
 
     /// Prozentänderung für die Menüleiste: ohne Vorzeichen, wenn schon die Farbe die Richtung zeigt (Wunsch des Nutzers).
     private func barChange(_ change: Double, stale: Bool) -> String {
@@ -43,6 +63,18 @@ struct TickerRenderer {
             let symbol = coin.displaySymbol
             let label = prefs.coinSigns ? (CoinSigns.sign(for: coin.id) ?? symbol) : symbol
             title.append(NSAttributedString(string: label + " ", attributes: [.font: font, .foregroundColor: NSColor.labelColor]))
+
+            if let item = DepotTicker(rawValue: coin.id) {
+                let line = depotLine(item)
+                let color = line.stale ? NSColor.secondaryLabelColor : prefs.colorTheme.color(for: line.change)
+                let valueFont = !line.stale && prefs.colorTheme.isGreen(for: line.change) ? green : font
+                title.append(NSAttributedString(string: line.value, attributes: [.font: valueFont, .foregroundColor: color]))
+                if prefs.changeInBar, !prefs.changeOnly, let change = line.change {
+                    title.append(NSAttributedString(string: " " + barChange(change, stale: line.stale),
+                                                    attributes: [.font: small, .foregroundColor: color]))
+                }
+                continue
+            }
 
             guard let quote = quotes[coin.id] else {
                 title.append(NSAttributedString(string: "…", attributes: [.font: font, .foregroundColor: NSColor.secondaryLabelColor]))
@@ -84,6 +116,13 @@ struct TickerRenderer {
         let lines = coins.map { coin -> Line in
             let symbol = coin.displaySymbol
             let label = prefs.coinSigns ? (CoinSigns.sign(for: coin.id) ?? symbol) : symbol
+            if let item = DepotTicker(rawValue: coin.id) {
+                let line = depotLine(item)
+                var value = line.value
+                if prefs.changeInBar, !prefs.changeOnly, let change = line.change { value += " " + barChange(change, stale: line.stale) }
+                let color = line.stale ? NSColor.secondaryLabelColor : prefs.colorTheme.color(for: line.change)
+                return Line(label: label, value: value, change: line.stale ? nil : line.change, color: color)
+            }
             guard let quote = quotes[coin.id] else {
                 return Line(label: label, value: "…", change: nil, color: .secondaryLabelColor)
             }
@@ -188,6 +227,42 @@ struct TickerRenderer {
         }
         title.append(NSAttributedString(string: price, attributes: colored))
         if prefs.showChange, let change = quote.change24h {
+            title.append(NSAttributedString(string: "\t" + PriceFormat.change(change), attributes: colored))
+        }
+        return title
+    }
+
+    /// Depotzeile im selben Raster wie `rowTitle`: Name ab Spalte 0, Wert in Euro rechtsbündig bis 28, Änderung bis 36.
+    /// `extraWidth` verbreitert die Namensspalte (im Untermenü, das nicht an die Kurszeilen gebunden ist).
+    func depotRowTitle(_ name: String, value: Double?, change: Double?, stale: Bool, extraWidth: Int = 0,
+                       signed: Bool = false) -> NSAttributedString {
+        let font = NSFont(name: "Menlo-Regular", size: 12) ?? .monospacedSystemFont(ofSize: 12, weight: .regular)
+        let w = ("0" as NSString).size(withAttributes: [.font: font]).width
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.tabStops = [
+            NSTextTab(textAlignment: .right, location: CGFloat(28 + extraWidth) * w),
+            NSTextTab(textAlignment: .right, location: CGFloat(36 + extraWidth) * w),
+        ]
+        let base: [NSAttributedString.Key: Any] = [.font: font, .paragraphStyle: paragraph, .foregroundColor: NSColor.labelColor]
+
+        let amount = value.map {
+            signed ? PriceFormat.signedEuro($0, decimals: 2) : PriceFormat.price($0, currency: "eur", digits: 0, fixedDecimals: 2)
+        }
+        let nameLength = max(27 + extraWidth - (amount?.count ?? 1), 6)
+        let title = NSMutableAttributedString(string: truncate(name, nameLength) + "\t", attributes: base)
+        guard let amount else {
+            var dim = base
+            dim[.foregroundColor] = NSColor.secondaryLabelColor
+            title.append(NSAttributedString(string: "—", attributes: dim))
+            return title
+        }
+        var colored = base
+        colored[.foregroundColor] = stale ? NSColor.secondaryLabelColor : prefs.colorTheme.color(for: change)
+        if !stale, prefs.colorTheme.isGreen(for: change) {
+            colored[.font] = NSFont(name: "Menlo-Regular", size: 11.5) ?? font
+        }
+        title.append(NSAttributedString(string: amount, attributes: colored))
+        if prefs.showChange, let change {
             title.append(NSAttributedString(string: "\t" + PriceFormat.change(change), attributes: colored))
         }
         return title

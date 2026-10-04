@@ -5,14 +5,15 @@ struct TickerPreviewState {
     let renderer: TickerRenderer
     let barCoins: [Coin]      // wie in der Menüleiste (beim Rotieren nur der aktuelle Wert)
     let menuCoins: [Coin]     // sortiert wie im Menü
+    let choices: [Coin]       // zum Anhaken für die Menüleiste: Auswahl plus Depotkennzahlen
     let tickerIDs: Set<String>
 }
 
-/// Settings-Fenster: oben die Vorschau, darunter Tabs "Display", "Assets" und "General".
+/// Settings-Fenster: oben die Vorschau, darunter Tabs "Display", "Assets", "General" und "Trade Republic".
 @MainActor
 final class SettingsWindowController: NSWindowController {
     enum Tab: Int {
-        case display, assets, general
+        case display, assets, general, broker
     }
 
     private unowned let status: StatusController
@@ -20,12 +21,14 @@ final class SettingsWindowController: NSWindowController {
     private let tabs = NSTabViewController()
     private let displayPane: DisplaySettingsViewController
     private let generalPane: GeneralSettingsViewController
+    private let brokerPane: TradeRepublicSettingsViewController
 
     init(status: StatusController) {
         self.status = status
         let onChange: (StatusController.SettingsChange) -> Void = { [weak status] in status?.settingsDidChange($0) }
         displayPane = DisplaySettingsViewController(onChange: onChange)
         generalPane = GeneralSettingsViewController(onChange: onChange)
+        brokerPane = TradeRepublicSettingsViewController(onChange: onChange)
         let picker = CoinPickerViewController { onChange(.selection) }
 
         let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 560, height: 720),
@@ -37,7 +40,7 @@ final class SettingsWindowController: NSWindowController {
 
         tabs.tabStyle = .segmentedControlOnTop
         let panes: [(NSViewController, String)] = [
-            (displayPane, L("Display")), (picker, L("Assets")), (generalPane, L("General")),
+            (displayPane, L("Display")), (picker, L("Assets")), (generalPane, L("General")), (brokerPane, "Trade Republic"),
         ]
         for (pane, label) in panes {
             let item = NSTabViewItem(viewController: pane)
@@ -65,9 +68,15 @@ final class SettingsWindowController: NSWindowController {
     func show(_ tab: Tab) {
         displayPane.reload()
         generalPane.reload()
+        brokerPane.reload()
         tabs.selectedTabViewItemIndex = tab.rawValue
         update(status.previewState)
         window?.bringToFront()
+    }
+
+    /// Login oder Logout bei Trade Republic, auch wenn sie vom Menü aus kamen.
+    func brokerDidChange() {
+        brokerPane.reload()
     }
 
     /// Wird bei jeder Änderung der Menüleiste aufgerufen (neue Kurse, Rotation, geänderte Einstellungen).
@@ -78,7 +87,7 @@ final class SettingsWindowController: NSWindowController {
 
     private func update(_ state: TickerPreviewState) {
         preview.update(state)
-        displayPane.showTickerChoices(state.menuCoins, checked: state.tickerIDs)
+        displayPane.showTickerChoices(state.choices, checked: state.tickerIDs)
     }
 }
 
@@ -241,7 +250,7 @@ private final class TickerPreviewView: NSView {
         if barCoins.isEmpty, !state.menuCoins.isEmpty {
             barCoins = Array(state.menuCoins.prefix(prefs.tickerMode == .rotate ? 1 : 2))
             notes.append(L("Sample: check values under Display › Menu bar to show them."))
-        } else if prefs.tickerMode == .rotate, state.menuCoins.filter({ state.tickerIDs.contains($0.id) }).count > 1 {
+        } else if prefs.tickerMode == .rotate, state.choices.filter({ state.tickerIDs.contains($0.id) }).count > 1 {
             notes.append(L("Rotates through the checked values every 5 seconds."))
         }
 
@@ -471,10 +480,12 @@ private final class DisplaySettingsViewController: SettingsPane {
     }
 
     private func setTicker(_ id: String, _ on: Bool) {
-        var ids = prefs.tickerIDs
+        // Depotkennzahlen haben eine eigene Liste, weil tickerIDs auf die Auswahl beschränkt wird.
+        let isDepot = DepotTicker(rawValue: id) != nil
+        var ids = isDepot ? prefs.trTickerItems : prefs.tickerIDs
         ids.removeAll { $0 == id }
         if on { ids.append(id) }
-        prefs.tickerIDs = ids
+        if isDepot { prefs.trTickerItems = ids } else { prefs.tickerIDs = ids }
         onChange(.ticker)
     }
 
