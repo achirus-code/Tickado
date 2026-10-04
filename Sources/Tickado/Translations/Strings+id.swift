@@ -176,6 +176,8 @@ extension L10n {
             "Paladium",
         "Legal notice & privacy":
             "Informasi hukum & privasi",
+        "Buy me a coffee":
+            "Traktir saya kopi",
         "No positions":
             "Tidak ada posisi",
         "Quantity: %@":

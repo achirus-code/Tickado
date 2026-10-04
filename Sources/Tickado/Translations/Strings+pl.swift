@@ -176,6 +176,8 @@ extension L10n {
             "Pallad",
         "Legal notice & privacy":
             "Nota prawna i prywatność",
+        "Buy me a coffee":
+            "Postaw mi kawę",
         "No positions":
             "Brak pozycji",
         "Quantity: %@":

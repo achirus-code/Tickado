@@ -176,6 +176,8 @@ extension L10n {
             "Paládio",
         "Legal notice & privacy":
             "Aviso legal e privacidade",
+        "Buy me a coffee":
+            "Pague-me um café",
         "No positions":
             "Nenhuma posição",
         "Quantity: %@":

@@ -176,6 +176,8 @@ extension L10n {
             "Палладий",
         "Legal notice & privacy":
             "Правовая информация и конфиденциальность",
+        "Buy me a coffee":
+            "Угостить меня кофе",
         "No positions":
             "Нет позиций",
         "Quantity: %@":

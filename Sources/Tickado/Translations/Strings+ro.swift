@@ -176,6 +176,8 @@ extension L10n {
             "Paladiu",
         "Legal notice & privacy":
             "Informații legale și confidențialitate",
+        "Buy me a coffee":
+            "Cumpără-mi o cafea",
         "No positions":
             "Nicio poziție",
         "Quantity: %@":

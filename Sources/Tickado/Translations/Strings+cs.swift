@@ -176,6 +176,8 @@ extension L10n {
             "Palladium",
         "Legal notice & privacy":
             "Tiráž a ochrana osobních údajů",
+        "Buy me a coffee":
+            "Kup mi kávu",
         "No positions":
             "Žádné pozice",
         "Quantity: %@":

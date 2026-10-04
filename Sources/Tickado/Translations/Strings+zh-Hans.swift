@@ -176,6 +176,8 @@ extension L10n {
             "钯金",
         "Legal notice & privacy":
             "法律声明与隐私",
+        "Buy me a coffee":
+            "请我喝杯咖啡",
         "No positions":
             "无持仓",
         "Quantity: %@":

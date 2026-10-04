@@ -176,6 +176,8 @@ extension L10n {
             "팔라듐",
         "Legal notice & privacy":
             "법적 고지 및 개인정보 보호",
+        "Buy me a coffee":
+            "커피 한 잔 사주기",
         "No positions":
             "보유 종목 없음",
         "Quantity: %@":

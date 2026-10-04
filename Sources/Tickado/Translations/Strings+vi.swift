@@ -176,6 +176,8 @@ extension L10n {
             "Palađi",
         "Legal notice & privacy":
             "Thông tin pháp lý & quyền riêng tư",
+        "Buy me a coffee":
+            "Mời tôi một ly cà phê",
         "No positions":
             "Không có vị thế",
         "Quantity: %@":

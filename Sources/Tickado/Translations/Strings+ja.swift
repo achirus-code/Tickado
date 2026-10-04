@@ -176,6 +176,8 @@ extension L10n {
             "パラジウム",
         "Legal notice & privacy":
             "運営者情報とプライバシー",
+        "Buy me a coffee":
+            "コーヒーをおごる",
         "No positions":
             "保有銘柄なし",
         "Quantity: %@":

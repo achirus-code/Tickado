@@ -176,6 +176,8 @@ extension L10n {
             "Παλλάδιο",
         "Legal notice & privacy":
             "Νομικές πληροφορίες & απόρρητο",
+        "Buy me a coffee":
+            "Κέρασέ με έναν καφέ",
         "No positions":
             "Καμία θέση",
         "Quantity: %@":

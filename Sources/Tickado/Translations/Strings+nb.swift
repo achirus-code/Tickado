@@ -176,6 +176,8 @@ extension L10n {
             "Palladium",
         "Legal notice & privacy":
             "Juridisk informasjon og personvern",
+        "Buy me a coffee":
+            "Spander en kaffe",
         "No positions":
             "Ingen beholdninger",
         "Quantity: %@":

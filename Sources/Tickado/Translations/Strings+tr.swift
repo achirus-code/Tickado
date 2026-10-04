@@ -176,6 +176,8 @@ extension L10n {
             "Paladyum",
         "Legal notice & privacy":
             "Künye ve gizlilik",
+        "Buy me a coffee":
+            "Bana bir kahve ısmarla",
         "No positions":
             "Pozisyon yok",
         "Quantity: %@":

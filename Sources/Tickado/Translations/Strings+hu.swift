@@ -176,6 +176,8 @@ extension L10n {
             "Palládium",
         "Legal notice & privacy":
             "Impresszum és adatvédelem",
+        "Buy me a coffee":
+            "Hívj meg egy kávéra",
         "No positions":
             "Nincsenek pozíciók",
         "Quantity: %@":

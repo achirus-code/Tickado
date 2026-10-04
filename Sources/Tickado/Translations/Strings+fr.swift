@@ -176,6 +176,8 @@ extension L10n {
             "Palladium",
         "Legal notice & privacy":
             "Mentions légales et confidentialité",
+        "Buy me a coffee":
+            "Offrez-moi un café",
         "No positions":
             "Aucune position",
         "Quantity: %@":
