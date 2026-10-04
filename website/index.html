@@ -10,7 +10,7 @@
 <style>
   :root{
     --green:#74C73D; --red:#C04828; --gold:#E39B20;
-    --bg:#0C0F15; --bg2:#161B26; --tile:#2B3345;
+    --bg:#0C0F15; --bg2:#161B26; --tile:#2B3345; --dl-top:#2B3345; --gold-tx:#E39B20;
     --card:#141924; --card-brd:#232b3a;
     --tx:#E7ECF3; --tx-dim:#9AA6B8;
     --blue:#2f7bf6;
@@ -21,7 +21,7 @@
   }
   @media (prefers-color-scheme: light){
     :root:not([data-theme="dark"]){
-      --bg:#F4F6FA; --bg2:#EAEEF5; --tile:#1B2130;
+      --bg:#F4F6FA; --bg2:#EAEEF5; --tile:#1B2130; --dl-top:#FFFFFF; --gold-tx:#A86A00;
       --card:#FFFFFF; --card-brd:#E2E7EF;
       --tx:#151A24; --tx-dim:#5A6578;
       --green:#5CA82B; --red:#A63B1E;
@@ -30,7 +30,7 @@
     }
   }
   :root[data-theme="light"]{
-    --bg:#F4F6FA; --bg2:#EAEEF5; --tile:#1B2130;
+    --bg:#F4F6FA; --bg2:#EAEEF5; --tile:#1B2130; --dl-top:#FFFFFF; --gold-tx:#A86A00;
     --card:#FFFFFF; --card-brd:#E2E7EF;
     --tx:#151A24; --tx-dim:#5A6578;
     --green:#5CA82B; --red:#A63B1E;
@@ -252,13 +252,16 @@
   .pill{font-size:.8rem;padding:5px 11px;border-radius:999px;background:#ffffff0d;border:1px solid var(--card-brd);color:var(--tx-dim)}
 
   /* Download */
-  .dl{background:linear-gradient(150deg,var(--tile),var(--bg2));border:1px solid var(--card-brd);border-radius:24px;
+  .dl{background:linear-gradient(150deg,var(--dl-top),var(--bg2));border:1px solid var(--card-brd);border-radius:24px;
     padding:52px 40px;text-align:center;position:relative;overflow:hidden}
   .dl h2{font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.02em;margin-bottom:12px}
   .dl p{color:var(--tx-dim);max-width:46ch;margin:0 auto 26px}
   .dlmeta{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:22px;font-size:.86rem;color:var(--tx-dim)}
   .dlmeta span{display:inline-flex;align-items:center;gap:7px}
   .dlmeta svg{width:16px;height:16px;stroke:var(--green);fill:none}
+  .dl .coffee{margin:22px auto 0;font-size:.95rem}
+  .coffee a{color:var(--gold-tx);text-decoration:none;font-weight:600}
+  .coffee a:hover{text-decoration:underline}
   .note{font-size:.85rem;color:var(--tx-dim);margin-top:20px;max-width:52ch;margin-inline:auto;
     background:#ffffff0a;border:1px solid var(--card-brd);border-radius:12px;padding:12px 16px}
 
@@ -516,6 +519,7 @@
         <span><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="dl.m3"></span></span>
       </div>
       <p class="note" data-i18n="dl.note"></p>
+      <p class="coffee"><a href="https://buymeacoffee.com/achirus" target="_blank" rel="noopener">☕ <span data-i18n="dl.coffee"></span></a></p>
     </div>
   </div>
 </section>
@@ -527,6 +531,7 @@
       <a href="#features" data-i18n="nav.features"></a>
       <a href="#download" data-i18n="nav.download"></a>
       <a href="https://github.com/achirus-code/Tickado">GitHub</a>
+      <a href="https://buymeacoffee.com/achirus" target="_blank" rel="noopener">Buy me a coffee</a>
       <a href="impressum.html" data-i18n="footer.imprint"></a>
       <a href="datenschutz.html" data-i18n="footer.privacy"></a>
     </div>
@@ -570,6 +575,7 @@ const I18N = {
     "dl.btn":"Für macOS herunterladen","dl.m1":"macOS 14+","dl.m2":"Apple Silicon & Intel","dl.m3":"Kostenlos",
     "dl.note":"Hinweis: Beim ersten Start Rechtsklick auf die App → „Öffnen“, da sie nicht über den App Store signiert ist.",
     "footer.tag":"Eine macOS-Menüleisten-App · Kurse von CoinGecko & Yahoo Finance.",
+    "dl.coffee":"Gefällt dir Tickado? Spendier mir einen Kaffee",
     "footer.imprint":"Impressum","footer.privacy":"Datenschutz"
   },
   en:{
@@ -606,6 +612,7 @@ const I18N = {
     "dl.btn":"Download for macOS","dl.m1":"macOS 14+","dl.m2":"Apple Silicon & Intel","dl.m3":"Free",
     "dl.note":"Note: on first launch, right-click the app → “Open”, since it isn't signed through the App Store.",
     "footer.tag":"A macOS menu bar app · Prices from CoinGecko & Yahoo Finance.",
+    "dl.coffee":"Enjoying Tickado? Buy me a coffee",
     "footer.imprint":"Legal notice","footer.privacy":"Privacy"
   }
 };
