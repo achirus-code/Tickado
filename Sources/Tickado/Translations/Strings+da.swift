@@ -178,6 +178,50 @@ extension L10n {
             "Kolofon og privatliv",
         "Buy me a coffee":
             "Giv mig en kop kaffe",
+        "No positions":
+            "Ingen beholdninger",
+        "Quantity: %@":
+            "Antal: %@",
+        "Avg. buy-in: %@":
+            "Gns. købskurs: %@",
+        "Cash":
+            "Kontant",
+        "Open Trade Republic":
+            "Åbn Trade Republic",
+        "Session expired. Please log in again.":
+            "Sessionen er udløbet. Log ind igen.",
+        "Trade Republic did not respond.":
+            "Trade Republic svarer ikke.",
+        "Unexpected response from Trade Republic.":
+            "Uventet svar fra Trade Republic.",
+        "Portfolio value":
+            "Porteføljeværdi",
+        "Gain today":
+            "Gevinst i dag",
+        "Total gain":
+            "Samlet gevinst",
+        "Click to show it in the menu bar.":
+            "Klik for at vise i menulinjen.",
+        "Last synchronized: %@":
+            "Senest synkroniseret: %@",
+        "Log in in the Trade Republic window.":
+            "Log ind i Trade Republic-vinduet.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Log ind med telefonnummer og pinkode, og bekræft i Trade Republic-appen. Vinduet lukker automatisk, når din portefølje er synkroniseret.",
+        "Not synchronized yet":
+            "Ikke synkroniseret endnu",
+        "Positions: %d":
+            "Beholdninger: %d",
+        "Remove Data":
+            "Slet data",
+        "Synchronization failed: %@":
+            "Synkronisering mislykkedes: %@",
+        "Synchronize…":
+            "Synkroniser…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "Ved synkronisering logger du ind på Trade Republics websted, og Tickado gemmer dine beholdninger (ISIN, antal, købskurs). Kurserne hentes derefter fra Yahoo Finance. Bruger Trade Republics uofficielle webgrænseflade; Tickado er ikke tilknyttet Trade Republic.",
+        "Synchronizing…":
+            "Synkroniserer…",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "Uden en API-nøgle kan CoinGecko blokere opdateringer hyppigere end hvert 5. minut.",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

@@ -27,7 +27,7 @@ macOS-Menüleisten-App (AppKit, Swift, SwiftPM, macOS 14+), die Kurse für Krypt
   - `settingsDidChange(_:)` erledigt die Folgeschritte einer Einstellung (Timer neu, Kurse verwerfen, Refresh). `updateTitle()` aktualisiert auch die Vorschau.
 - `TickerRenderer.swift`: Zeichnet Ticker (Text oder kompaktes Bild) und Menüzeilen. Menüleiste und Vorschau nutzen denselben Code, deshalb Designänderungen nur hier.
 - `SettingsWindowController.swift`:
-  - Fenster mit fester Größe (nicht resizable) und fester Vorschau oben (nachgebaute Menüleiste + aufgeklapptes Menü mit bis zu 5 Zeilen) und `NSTabViewController` (Display | Assets | General) darunter.
+  - Fenster mit fester Größe (nicht resizable) und fester Vorschau oben (nachgebaute Menüleiste + aufgeklapptes Menü mit bis zu 5 Zeilen) und `NSTabViewController` (Display | Assets | General | Trade Republic) darunter.
   - Formulare als `NSGridView` mit Auswahlboxen und Checkboxen. Änderungen wirken sofort, kein Speichern-Knopf.
   - Die Vorschau zeigt die echten Kurse (`StatusController.previewState`). Ist nichts angehakt, zeigt sie ein Beispiel aus der Auswahl.
   - Tab *Display* → *Menu bar*: `TickerChoiceList` mit allen ausgewählten Werten und Checkbox für `tickerIDs` (gleich wie ein Klick im Menü, beides über `SettingsChange.ticker`).
@@ -37,6 +37,15 @@ macOS-Menüleisten-App (AppKit, Swift, SwiftPM, macOS 14+), die Kurse für Krypt
   - `Prefs.language` (nil = System) ruft `L10n.apply`. `L10n.systemLanguage` nimmt die erste passende Sprache aus `Locale.preferredLanguages` (zh → Hans/Hant, no/nn → nb).
   - Nur die Texte folgen der Sprache. Zahlen und Preise bleiben bei der Region des Systems. Währungsnamen kommen von `Locale.localizedString(forCurrencyCode:)`, Intervalle vom `DateComponentsFormatter`, Metallnamen über `Coin.displayName`.
   - Ein Sprachwechsel baut das Settings-Fenster neu auf (`StatusController.rebuildSettings`), das Menü wird ohnehin bei jedem Öffnen neu gebaut.
+- `TradeRepublic.swift` (Depot; inoffizielle Web-API wie pytr, keine offizielle API):
+  - **Modell „einmal synchronisieren“ (Wunsch des Nutzers):** „Synchronize…“ öffnet `TRWebSession` (WKWebView mit **nicht persistentem** Speicher → jedes Mal frische Anmeldung auf app.traderepublic.com/login). Nach dem Login werden Positionen (ISIN, Name, Stück, Ø-Kaufkurs) und Guthaben einmal geholt und in `Prefs.trHoldings`/`trCash`/`trSyncDate` gespeichert, dann Fenster zu, Sitzung weg. Kein Hintergrundbetrieb.
+  - Settings-Tab nur mit „Synchronize…“, „Remove Data“ und dem Stand darunter. Eine Positionsliste (Abwählen, Umbenennen) gab es kurz; auf Wunsch des Nutzers wieder entfernt.
+  - Laufende Kurse von **Yahoo** in Euro: `YahooFinance.symbol(forISIN:)` (bei der Synchronisierung, Euro-Börsen bevorzugt, sonst Heimatbörse) → `TRHolding.symbol`; `StatusController.refreshDepot()` holt `YahooFinance.quotes(currency: "eur")`, `TradeRepublic.portfolio(quotes:)` baut daraus `TRPortfolio` (Vortagesschluss aus `change24h` zurückgerechnet).
+  - Abfragen laufen per `callAsyncJavaScript` **aus der eingeloggten Seite** (`fetchJSON`, `subscribe` öffnet dort einen WebSocket). Nachgebaute Anfragen von außen hatte Trade Republic abgelehnt.
+  - Login-Erkennung: KVO auf `webView.url` (Web-App wechselt per `pushState` ohne Neuladen) plus Timer alle 2 s; Pfad ohne „login“ → `GET /api/v2/auth/account` aus der Seite; 200 → Abruf. Schließt der Nutzer das Fenster, endet die Synchronisierung ohne Änderung.
+  - WebSocket-Protokoll: `connect 31 {…}` → `connected`; `sub N {json}` → `N A <json>` / `N E <fehler>`. Themen: `compactPortfolioByType` (secAccNo aus account, Fallback `compactPortfolio`), `instrument` (Name), `cash`. `TRProtocol` ist reine Logik und im Harness testbar.
+  - Depotkennzahlen `DepotTicker` (`tr:value`, `tr:today`, `tr:total`; in der Menüleiste „TR“, „TRΔ“, „TRΣ“ – kurz auf Wunsch des Nutzers) sind Pseudo-`Coin`s: Häkchen in `Prefs.trTickerItems` (eigene Liste, weil `tickerIDs` auf die Auswahl gefiltert wird), `TickerRenderer.depotLine` zeichnet sie. Gewinn heute = Σ (Kurs − Vortag) × Stück, gesamt = Σ (Kurs − Ø-Kaufkurs) × Stück.
+  - Diagnose ohne Cookies/PIN/Beträge: `TRLog` → `~/Library/Logs/Tickado/TradeRepublic.log`. Getestet gegen einen lokalen Nachbau (Auto-Modus blockt Zugriffe auf die echten TR-Server), Yahoo echt.
 - `Models.swift`:
   - `Coin` steht für **jeden** Kurswert, nicht nur Coins. Die Art unterscheidet `AssetKind` (`.crypto`, `.stock`, `.etf`, `.metal`).
   - IDs: CoinGecko-ID (`bitcoin`), `stock:SAP.DE`, `etf:EUNL.DE`, `metal:gold`.

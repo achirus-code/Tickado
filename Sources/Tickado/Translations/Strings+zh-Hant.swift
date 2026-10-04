@@ -178,6 +178,50 @@ extension L10n {
             "法律聲明與隱私",
         "Buy me a coffee":
             "請我喝杯咖啡",
+        "No positions":
+            "無持倉",
+        "Quantity: %@":
+            "數量：%@",
+        "Avg. buy-in: %@":
+            "平均買入價：%@",
+        "Cash":
+            "現金",
+        "Open Trade Republic":
+            "打開 Trade Republic",
+        "Session expired. Please log in again.":
+            "工作階段已過期，請重新登入。",
+        "Trade Republic did not respond.":
+            "Trade Republic 沒有回應。",
+        "Unexpected response from Trade Republic.":
+            "Trade Republic 回傳了非預期的回應。",
+        "Portfolio value":
+            "投資組合價值",
+        "Gain today":
+            "今日收益",
+        "Total gain":
+            "總收益",
+        "Click to show it in the menu bar.":
+            "按一下即可在選單列顯示。",
+        "Last synchronized: %@":
+            "上次同步：%@",
+        "Log in in the Trade Republic window.":
+            "請在 Trade Republic 視窗中登入。",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "請使用手機號碼和 PIN 登入，並在 Trade Republic App 中確認。投資組合同步完成後，此視窗會自動關閉。",
+        "Not synchronized yet":
+            "尚未同步",
+        "Positions: %d":
+            "持倉數：%d",
+        "Remove Data":
+            "刪除資料",
+        "Synchronization failed: %@":
+            "同步失敗：%@",
+        "Synchronize…":
+            "同步⋯",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "同步時你會登入 Trade Republic 網站，Tickado 會儲存你的持倉（ISIN、數量、買入價）。之後價格從 Yahoo Finance 載入。使用 Trade Republic 的非官方網頁介面；Tickado 與 Trade Republic 並無關聯。",
+        "Synchronizing…":
+            "正在同步⋯",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "沒有 API 金鑰時，CoinGecko 可能會封鎖比每 5 分鐘更頻繁的更新。",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

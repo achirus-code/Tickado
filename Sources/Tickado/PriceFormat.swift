@@ -26,6 +26,12 @@ enum PriceFormat {
         return affix.prefix + text + affix.suffix
     }
 
+    /// Eurobetrag mit Vorzeichen und echtem Minus: "+1.234,56 €" / "−45,10 €".
+    static func signedEuro(_ value: Double, decimals: Int, abbreviate: Bool = false) -> String {
+        let amount = price(abs(value), currency: "eur", digits: 0, abbreviate: abbreviate, fixedDecimals: decimals)
+        return (value < 0 ? "−" : "+") + amount
+    }
+
     /// "+0.2%" / "−0.8%"
     static func change(_ percent: Double) -> String {
         String(format: "%+.1f%%", percent).replacingOccurrences(of: "-", with: "−")

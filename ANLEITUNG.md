@@ -37,6 +37,7 @@ Tickado ist eine macOS-Menüleisten-App (ab macOS 14), die Kurse von Kryptowähr
   - Update every (30 s – 30 min)
   - Launch at login
   - CoinGecko API key: Status und „Configure…“ (optional; Demo- oder Pro-Key, gespeichert im Schlüsselbund)
+- **Trade Republic** – Depot anbinden (siehe unten)
 
 Das Fenster hat eine feste Größe, merkt sich seine Position und lässt sich mit ⌘W schließen.
 
@@ -45,7 +46,15 @@ Das Fenster hat eine feste Größe, merkt sich seine Position und lässt sich mi
 - **Kursliste** – Symbol, Name, Preis, 24h-Änderung in Spalten; gruppiert nach Krypto / Metalle / Aktien / ETFs
   - Klick = in der Menüleiste an-/abwählen (Häkchen)
   - ⌥ + Klick = Wert auf CoinGecko bzw. Yahoo Finance öffnen
+- **Trade Republic** (nur wenn angemeldet) – Gesamtwert des Depots inkl. Guthaben und Tagesänderung; Untermenü oben mit **Depotwert**, **Gewinn heute** und **Gewinn gesamt** (seit Kauf, aus dem Ø-Kaufkurs) – per Klick anhaken, dann erscheinen sie in der Menüleiste als „TR“, „TRΔ“ (heute), „TRΣ“ (gesamt) (auch unter Settings → Display → *Menu bar*); darunter alle Positionen (Wert, Tagesänderung, Tooltip mit Stückzahl und Ø-Kaufkurs), Guthaben und „Trade Republic öffnen“. Klick auf eine Position öffnet sie in der TR-Web-App.
 - About…, Quit
+
+### Trade Republic
+Trade Republic hat keine offizielle API. Tickado nutzt zum Abholen der Positionen dieselbe inoffizielle Web-Schnittstelle wie app.traderepublic.com.
+- **Synchronisieren:** Settings → Trade Republic → „Synchronisieren …“ (oder im Untermenü). Es öffnet sich ein Fenster mit der echten Website app.traderepublic.com. Dort mit Handynummer und PIN anmelden und in der Trade-Republic-App bestätigen. Tickado holt dann einmal alle Positionen (ISIN, Name, Stückzahl, Ø-Kaufkurs) und das Guthaben, speichert sie und schließt das Fenster. Die Sitzung wird danach verworfen.
+- **Kurse:** kommen laufend von Yahoo Finance über die ISIN (bevorzugt Euro-Börsen, sonst Heimatbörse in Euro umgerechnet). Kleine Abweichungen zu Trade Republic (anderer Börsenplatz, Verzögerung) sind möglich. Papiere ohne Yahoo-Treffer zeigen „—“.
+- **Aktualisieren:** Käufe/Verkäufe erscheinen erst nach erneutem „Synchronisieren“; dafür ist jedes Mal eine neue Anmeldung nötig. Unter dem Button steht das Datum der letzten Synchronisierung.
+- „Daten löschen“ entfernt die gespeicherten Positionen. Diagnose (ohne Cookies, PIN oder Beträge): `~/Library/Logs/Tickado/TradeRepublic.log`
 
 ### Datenquellen
 - **Krypto:** CoinGecko API (ohne Key nutzbar, mit Key zuverlässiger)
@@ -127,6 +136,9 @@ Damit Fehler in Cloud-Änderungen sofort auffallen, kann ein GitHub-Actions-Work
 | `Sources/Tickado/APIKeyPrompt.swift` | Dialog für den CoinGecko-Key |
 | `Sources/Tickado/Keychain.swift` | API-Key im Schlüsselbund |
 | `Sources/Tickado/LaunchAtLogin.swift` | Autostart (SMAppService) |
+| `Sources/Tickado/TradeRepublic.swift` | Trade Republic: Synchronisieren, gespeicherte Positionen, Depot aus Yahoo-Kursen, Protokoll |
+| `Sources/Tickado/TradeRepublicSettingsViewController.swift` | Settings-Tab *Trade Republic* (Synchronisieren, letzte Synchronisierung, Daten löschen) |
+| `Sources/Tickado/TRWebSession.swift` | TR-Website im eigenen Fenster (WKWebView) für eine Synchronisierung; Abfragen per JavaScript aus der Seite |
 | `Scripts/make-icon.swift` | Zeichnet das App-Icon → `Resources/AppIcon.icns` |
 | `build.sh` | Build, App-Bundle, Signatur, Installation |
 | `CLAUDE.md` | Projektwissen für Claude |

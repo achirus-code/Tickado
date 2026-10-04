@@ -178,6 +178,50 @@ extension L10n {
             "Informasi hukum & privasi",
         "Buy me a coffee":
             "Traktir saya kopi",
+        "No positions":
+            "Tidak ada posisi",
+        "Quantity: %@":
+            "Jumlah: %@",
+        "Avg. buy-in: %@":
+            "Harga beli rata-rata: %@",
+        "Cash":
+            "Kas",
+        "Open Trade Republic":
+            "Buka Trade Republic",
+        "Session expired. Please log in again.":
+            "Sesi berakhir. Silakan masuk lagi.",
+        "Trade Republic did not respond.":
+            "Trade Republic tidak merespons.",
+        "Unexpected response from Trade Republic.":
+            "Respons tak terduga dari Trade Republic.",
+        "Portfolio value":
+            "Nilai portofolio",
+        "Gain today":
+            "Keuntungan hari ini",
+        "Total gain":
+            "Total keuntungan",
+        "Click to show it in the menu bar.":
+            "Klik untuk menampilkan di bar menu.",
+        "Last synchronized: %@":
+            "Terakhir disinkronkan: %@",
+        "Log in in the Trade Republic window.":
+            "Masuk di jendela Trade Republic.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Masuk dengan nomor telepon dan PIN, lalu konfirmasi di aplikasi Trade Republic. Jendela ini tertutup otomatis setelah portofolio Anda disinkronkan.",
+        "Not synchronized yet":
+            "Belum disinkronkan",
+        "Positions: %d":
+            "Posisi: %d",
+        "Remove Data":
+            "Hapus Data",
+        "Synchronization failed: %@":
+            "Sinkronisasi gagal: %@",
+        "Synchronize…":
+            "Sinkronkan…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "Saat sinkronisasi, Anda masuk di situs web Trade Republic dan Tickado menyimpan posisi Anda (ISIN, jumlah, harga beli). Harga kemudian dimuat dari Yahoo Finance. Menggunakan antarmuka web tidak resmi Trade Republic; Tickado tidak berafiliasi dengan Trade Republic.",
+        "Synchronizing…":
+            "Menyinkronkan…",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "Tanpa kunci API, CoinGecko dapat memblokir pembaruan yang lebih sering dari setiap 5 menit.",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

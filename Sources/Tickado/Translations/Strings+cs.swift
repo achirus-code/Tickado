@@ -178,6 +178,50 @@ extension L10n {
             "Tiráž a ochrana osobních údajů",
         "Buy me a coffee":
             "Kup mi kávu",
+        "No positions":
+            "Žádné pozice",
+        "Quantity: %@":
+            "Počet: %@",
+        "Avg. buy-in: %@":
+            "Prům. nákupní cena: %@",
+        "Cash":
+            "Hotovost",
+        "Open Trade Republic":
+            "Otevřít Trade Republic",
+        "Session expired. Please log in again.":
+            "Relace vypršela. Přihlaste se znovu.",
+        "Trade Republic did not respond.":
+            "Trade Republic neodpovídá.",
+        "Unexpected response from Trade Republic.":
+            "Neočekávaná odpověď od Trade Republic.",
+        "Portfolio value":
+            "Hodnota portfolia",
+        "Gain today":
+            "Zisk dnes",
+        "Total gain":
+            "Celkový zisk",
+        "Click to show it in the menu bar.":
+            "Klikněte pro zobrazení v řádku nabídek.",
+        "Last synchronized: %@":
+            "Naposledy synchronizováno: %@",
+        "Log in in the Trade Republic window.":
+            "Přihlaste se v okně Trade Republic.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Přihlaste se telefonním číslem a PINem a potvrďte to v aplikaci Trade Republic. Okno se samo zavře, jakmile bude portfolio synchronizováno.",
+        "Not synchronized yet":
+            "Zatím nesynchronizováno",
+        "Positions: %d":
+            "Pozice: %d",
+        "Remove Data":
+            "Smazat data",
+        "Synchronization failed: %@":
+            "Synchronizace se nezdařila: %@",
+        "Synchronize…":
+            "Synchronizovat…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "Při synchronizaci se přihlásíte na webu Trade Republic a Tickado uloží vaše pozice (ISIN, počet, nákupní cena). Kurzy se pak načítají z Yahoo Finance. Používá neoficiální webové rozhraní Trade Republic; Tickado není spojeno s Trade Republic.",
+        "Synchronizing…":
+            "Synchronizace…",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "Bez API klíče může CoinGecko blokovat aktualizace častější než každých 5 minut.",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

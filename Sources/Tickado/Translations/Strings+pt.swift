@@ -178,6 +178,50 @@ extension L10n {
             "Aviso legal e privacidade",
         "Buy me a coffee":
             "Pague-me um café",
+        "No positions":
+            "Nenhuma posição",
+        "Quantity: %@":
+            "Quantidade: %@",
+        "Avg. buy-in: %@":
+            "Preço médio: %@",
+        "Cash":
+            "Saldo",
+        "Open Trade Republic":
+            "Abrir Trade Republic",
+        "Session expired. Please log in again.":
+            "A sessão expirou. Entre novamente.",
+        "Trade Republic did not respond.":
+            "O Trade Republic não responde.",
+        "Unexpected response from Trade Republic.":
+            "Resposta inesperada do Trade Republic.",
+        "Portfolio value":
+            "Valor da carteira",
+        "Gain today":
+            "Ganho de hoje",
+        "Total gain":
+            "Ganho total",
+        "Click to show it in the menu bar.":
+            "Clique para mostrar na barra de menus.",
+        "Last synchronized: %@":
+            "Última sincronização: %@",
+        "Log in in the Trade Republic window.":
+            "Entre na janela do Trade Republic.",
+        "Log in with your phone number and PIN and confirm in the Trade Republic app. This window closes automatically once your portfolio is synchronized.":
+            "Entre com seu telefone e PIN e confirme no app do Trade Republic. Esta janela fecha automaticamente quando sua carteira estiver sincronizada.",
+        "Not synchronized yet":
+            "Ainda não sincronizado",
+        "Positions: %d":
+            "Posições: %d",
+        "Remove Data":
+            "Apagar dados",
+        "Synchronization failed: %@":
+            "Falha na sincronização: %@",
+        "Synchronize…":
+            "Sincronizar…",
+        "Synchronizing logs you in on the Trade Republic website and saves your positions (ISIN, quantity, buy-in) in Tickado. Prices are then loaded from Yahoo Finance. Uses the unofficial Trade Republic web interface; Tickado is not affiliated with Trade Republic.":
+            "Ao sincronizar, você entra no site do Trade Republic e o Tickado guarda suas posições (ISIN, quantidade, preço de compra). Depois, os preços vêm do Yahoo Finance. Usa a interface web não oficial do Trade Republic; o Tickado não é afiliado ao Trade Republic.",
+        "Synchronizing…":
+            "Sincronizando…",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "Sem chave de API, a CoinGecko pode bloquear atualizações mais frequentes do que a cada 5 minutos.",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
