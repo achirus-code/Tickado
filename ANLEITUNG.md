@@ -50,6 +50,8 @@ Das Fenster hat eine feste Größe, merkt sich seine Position und lässt sich mi
 - About…, Quit
 
 ### Trade Republic
+Optional – Tickado funktioniert vollständig ohne. Daten von Trade Republic holt Tickado nur einmalig, wenn du selbst „Synchronisieren“ klickst, ohne dauerhafte Verbindung und ohne Abruf im Hintergrund.
+
 Trade Republic hat keine offizielle API. Tickado nutzt zum Abholen der Positionen dieselbe inoffizielle Web-Schnittstelle wie app.traderepublic.com.
 - **Synchronisieren:** Settings → Trade Republic → „Synchronisieren …“ (oder im Untermenü). Es öffnet sich ein Fenster mit der echten Website app.traderepublic.com. Dort mit Handynummer und PIN anmelden und in der Trade-Republic-App bestätigen. Tickado holt dann einmal alle Positionen (ISIN, Name, Stückzahl, Ø-Kaufkurs) und das Guthaben, speichert sie und schließt das Fenster. Die Sitzung wird danach verworfen.
 - **Kurse:** kommen laufend von Yahoo Finance über die ISIN (bevorzugt Euro-Börsen, sonst Heimatbörse in Euro umgerechnet). Kleine Abweichungen zu Trade Republic (anderer Börsenplatz, Verzögerung) sind möglich. Papiere ohne Yahoo-Treffer zeigen „—“.
