@@ -176,6 +176,8 @@ extension L10n {
             "팔라듐",
         "Legal notice & privacy":
             "법적 고지 및 개인정보 보호",
+        "Buy me a coffee":
+            "커피 한 잔 사주기",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "API 키가 없으면 CoinGecko가 5분보다 잦은 업데이트를 차단할 수 있습니다.",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

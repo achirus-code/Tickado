@@ -176,6 +176,8 @@ extension L10n {
             "Palađi",
         "Legal notice & privacy":
             "Thông tin pháp lý & quyền riêng tư",
+        "Buy me a coffee":
+            "Mời tôi một ly cà phê",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "Không có khóa API, CoinGecko có thể chặn các cập nhật thường xuyên hơn 5 phút một lần.",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

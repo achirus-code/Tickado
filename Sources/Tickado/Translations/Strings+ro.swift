@@ -176,6 +176,8 @@ extension L10n {
             "Paladiu",
         "Legal notice & privacy":
             "Informații legale și confidențialitate",
+        "Buy me a coffee":
+            "Cumpără-mi o cafea",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "Fără o cheie API, CoinGecko poate bloca actualizările mai frecvente de 5 minute.",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

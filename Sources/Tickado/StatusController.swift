@@ -385,6 +385,10 @@ final class StatusController: NSObject, NSMenuDelegate {
         credits.append(NSAttributedString(string: L("Legal notice & privacy"), attributes: [
             .font: font, .link: URL(string: "https://achirus-code.github.io/Tickado/impressum.html")!,
         ]))
+        credits.append(NSAttributedString(string: "\n\n", attributes: [.font: font]))
+        credits.append(NSAttributedString(string: "☕ " + L("Buy me a coffee"), attributes: [
+            .font: font, .link: URL(string: "https://buymeacoffee.com/achirus")!,
+        ]))
         let paragraph = NSMutableParagraphStyle()
         paragraph.alignment = .center
         credits.addAttribute(.paragraphStyle, value: paragraph, range: NSRange(location: 0, length: credits.length))

@@ -176,6 +176,8 @@ extension L10n {
             "Paládio",
         "Legal notice & privacy":
             "Aviso legal e privacidade",
+        "Buy me a coffee":
+            "Pague-me um café",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "Sem chave de API, a CoinGecko pode bloquear atualizações mais frequentes do que a cada 5 minutos.",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

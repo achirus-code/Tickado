@@ -176,6 +176,8 @@ extension L10n {
             "鈀金",
         "Legal notice & privacy":
             "法律聲明與隱私",
+        "Buy me a coffee":
+            "請我喝杯咖啡",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "沒有 API 金鑰時，CoinGecko 可能會封鎖比每 5 分鐘更頻繁的更新。",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

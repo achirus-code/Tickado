@@ -176,6 +176,8 @@ extension L10n {
             "Palladium",
         "Legal notice & privacy":
             "Juridisk information och integritet",
+        "Buy me a coffee":
+            "Bjud mig på en kaffe",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "Utan API-nyckel kan CoinGecko blockera uppdateringar oftare än var 5:e minut.",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

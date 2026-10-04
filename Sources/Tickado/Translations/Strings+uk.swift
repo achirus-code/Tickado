@@ -176,6 +176,8 @@ extension L10n {
             "Паладій",
         "Legal notice & privacy":
             "Правова інформація та конфіденційність",
+        "Buy me a coffee":
+            "Пригостити мене кавою",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "Без API-ключа CoinGecko може блокувати оновлення частіше, ніж раз на 5 хвилин.",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

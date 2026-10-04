@@ -176,6 +176,8 @@ extension L10n {
             "Pallad",
         "Legal notice & privacy":
             "Nota prawna i prywatność",
+        "Buy me a coffee":
+            "Postaw mi kawę",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "Bez klucza API CoinGecko może blokować aktualizacje częstsze niż co 5 minut.",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

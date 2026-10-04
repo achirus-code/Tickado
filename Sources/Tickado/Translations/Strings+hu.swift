@@ -176,6 +176,8 @@ extension L10n {
             "Palládium",
         "Legal notice & privacy":
             "Impresszum és adatvédelem",
+        "Buy me a coffee":
+            "Hívj meg egy kávéra",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "API-kulcs nélkül a CoinGecko letilthatja az 5 percnél gyakoribb frissítéseket.",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":

@@ -176,6 +176,8 @@ extension L10n {
             "パラジウム",
         "Legal notice & privacy":
             "運営者情報とプライバシー",
+        "Buy me a coffee":
+            "コーヒーをおごる",
         "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
             "APIキーがない場合、5分より短い間隔の更新はCoinGeckoにブロックされることがあります。",
         "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
