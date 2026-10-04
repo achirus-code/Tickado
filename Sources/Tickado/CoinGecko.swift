@@ -9,7 +9,7 @@ enum CoinGeckoError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .rateLimited: L("CoinGecko rate limit reached. Add a free API key in Settings › General.")
+        case .rateLimited: L("CoinGecko limit reached")
         case .unauthorized: L("CoinGecko rejected the API key.")
         case .http(let code): L("CoinGecko returned HTTP %d.", code)
         case .invalidResponse: L("Unexpected response from CoinGecko.")
@@ -77,6 +77,23 @@ struct CoinGecko {
         return response.coins.map { Coin(id: $0.id, symbol: $0.symbol, name: $0.name, rank: $0.marketCapRank) }
     }
 
+    /// Ab diesem Intervall reicht das Kontingent eines Demo-Keys (10.000 Anfragen/Monat), und auch
+    /// die öffentliche API sperrt die IP dann erfahrungsgemäß nicht.
+    static let safeInterval = 300
+
+    /// Warnung für die Settings, wenn das Intervall das Kontingent übersteigt (nil = alles gut).
+    @MainActor static func intervalWarning() -> String? {
+        let prefs = Prefs.shared
+        let hasCrypto = prefs.selectedCoins.contains { $0.kind == .crypto }
+        if !hasCrypto || prefs.refreshInterval >= safeInterval || (Keychain.apiKey != nil && prefs.apiKeyKind == .pro) {
+            return nil
+        }
+        if Keychain.apiKey == nil {
+            return L("Without an API key, CoinGecko may block updates more frequent than every 5 minutes.")
+        }
+        return L("A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.")
+    }
+
     /// Prüft Erreichbarkeit und API-Key.
     func ping() async throws {
         struct Pong: Decodable {}
@@ -97,7 +114,8 @@ struct CoinGecko {
         switch http.statusCode {
         case 200..<300: break
         case 429: throw CoinGeckoError.rateLimited
-        case 401, 403: throw CoinGeckoError.unauthorized
+        // Ohne Key sperrt CoinGecko zu häufige Anfragen einer IP auch mit 403; das ist dann kein Key-Problem.
+        case 401, 403: throw apiKey == nil ? CoinGeckoError.rateLimited : CoinGeckoError.unauthorized
         default: throw CoinGeckoError.http(http.statusCode)
         }
 

@@ -20,8 +20,8 @@ extension L10n {
             "Nie udało się zweryfikować klucza API",
         "Check the key and whether it is a Demo or Pro key.":
             "Sprawdź klucz oraz czy jest to klucz Demo czy Pro.",
-        "CoinGecko rate limit reached. Add a free API key in Settings › General.":
-            "Osiągnięto limit CoinGecko. Dodaj darmowy klucz API w Ustawienia › Ogólne.",
+        "CoinGecko limit reached":
+            "Osiągnięto limit CoinGecko",
         "CoinGecko rejected the API key.":
             "CoinGecko odrzuciło klucz API.",
         "CoinGecko returned HTTP %d.":
@@ -176,5 +176,11 @@ extension L10n {
             "Pallad",
         "Legal notice & privacy":
             "Nota prawna i prywatność",
+        "Buy me a coffee":
+            "Postaw mi kawę",
+        "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
+            "Bez klucza API CoinGecko może blokować aktualizacje częstsze niż co 5 minut.",
+        "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
+            "Klucz Demo pozwala na 10 000 zapytań miesięcznie. Przy aktualizacjach częstszych niż co 5 minut CoinGecko blokuje klucz.",
     ]
 }

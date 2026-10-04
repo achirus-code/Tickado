@@ -20,8 +20,8 @@ extension L10n {
             "Impossible de vérifier la clé API",
         "Check the key and whether it is a Demo or Pro key.":
             "Vérifiez la clé et s’il s’agit d’une clé Demo ou Pro.",
-        "CoinGecko rate limit reached. Add a free API key in Settings › General.":
-            "Limite de requêtes CoinGecko atteinte. Ajoutez une clé API gratuite dans Réglages › Général.",
+        "CoinGecko limit reached":
+            "Limite CoinGecko atteinte",
         "CoinGecko rejected the API key.":
             "CoinGecko a refusé la clé API.",
         "CoinGecko returned HTTP %d.":
@@ -176,5 +176,11 @@ extension L10n {
             "Palladium",
         "Legal notice & privacy":
             "Mentions légales et confidentialité",
+        "Buy me a coffee":
+            "Offrez-moi un café",
+        "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
+            "Sans clé API, CoinGecko peut bloquer les mises à jour plus fréquentes que toutes les 5 minutes.",
+        "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
+            "Une clé Demo autorise 10 000 requêtes par mois. Avec des mises à jour plus fréquentes que toutes les 5 minutes, CoinGecko bloque la clé.",
     ]
 }

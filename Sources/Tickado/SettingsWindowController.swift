@@ -658,22 +658,57 @@ private final class GeneralSettingsViewController: SettingsPane {
     })
     private lazy var launchAtLogin = checkbox(L("Launch at login"))
     private let apiKeyStatus = NSTextField(labelWithString: "")
+    /// Warnung unter dem Intervall, wenn CoinGecko damit ins Limit läuft. Liegt außerhalb des Rasters,
+    /// damit ihre Breite das Raster nicht verbreitert (das ist zentriert und würde sonst nach links rutschen).
+    /// Im Raster reserviert nur ein Platzhalter ohne Breite ihre Höhe.
+    private let intervalHint = NSTextField(wrappingLabelWithString: "")
+    private let intervalHintSpacer = NSView()
 
     override func loadView() {
+        intervalHint.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
+        intervalHint.textColor = .secondaryLabelColor
+        intervalHint.preferredMaxLayoutWidth = 300
         let configure = NSButton(title: L("Configure…"), target: self, action: #selector(configureAPIKey))
-        view = makeForm([
+        let root = makeForm([
             (L("Language:"), languagePopUp),
             (L("Base currency:"), currencyPopUp),
             (L("Metal unit:"), metalUnitPopUp),
             (L("Update every:"), intervalPopUp),
+            (nil, intervalHintSpacer),
             (L("Startup:"), launchAtLogin),
             (L("CoinGecko API key:"), apiKeyStatus),
             (nil, configure),
-        ], groups: [1, 4, 5])
+        ], groups: [1, 5, 6], tall: [4])
+        intervalHint.translatesAutoresizingMaskIntoConstraints = false
+        root.addSubview(intervalHint)
+        NSLayoutConstraint.activate([
+            intervalHintSpacer.widthAnchor.constraint(equalToConstant: 0),
+            intervalHintSpacer.heightAnchor.constraint(equalTo: intervalHint.heightAnchor),
+            intervalHint.leadingAnchor.constraint(equalTo: intervalHintSpacer.leadingAnchor),
+            intervalHint.topAnchor.constraint(equalTo: intervalHintSpacer.topAnchor),
+            intervalHint.widthAnchor.constraint(lessThanOrEqualToConstant: 300),
+            intervalHint.trailingAnchor.constraint(lessThanOrEqualTo: root.trailingAnchor, constant: -20),
+        ])
+        view = root
         reload()
     }
 
+    // Die Auswahl im Tab "Assets" kann sich geändert haben.
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        reload()
+    }
+
+    private func updateIntervalHint() {
+        let hint = CoinGecko.intervalWarning()
+        intervalHint.stringValue = hint ?? ""
+        intervalHint.isHidden = hint == nil
+        // Ohne Text die ganze Zeile ausblenden, sonst bleibt ihre Höhe stehen.
+        (intervalHintSpacer.superview as? NSGridView)?.cell(for: intervalHintSpacer)?.row?.isHidden = hint == nil
+    }
+
     override func reload() {
+        updateIntervalHint()
         languagePopUp.selectItem(withTag: prefs.language.flatMap { L10n.languages.firstIndex(of: $0) }.map { $0 + 1 } ?? 0)
         currencyPopUp.selectItem(withTag: BaseCurrency.all.firstIndex { $0.code == prefs.baseCurrency } ?? 0)
         metalUnitPopUp.selectItem(withTag: MetalUnit.allCases.firstIndex(of: prefs.metalUnit) ?? 0)
@@ -722,6 +757,7 @@ private final class GeneralSettingsViewController: SettingsPane {
         } else if sender === intervalPopUp {
             prefs.refreshInterval = tag
             onChange(.interval)
+            updateIntervalHint()
         }
     }
 

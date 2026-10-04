@@ -20,8 +20,8 @@ extension L10n {
             "Không thể xác minh khóa API",
         "Check the key and whether it is a Demo or Pro key.":
             "Hãy kiểm tra khóa và xem đó là khóa Demo hay Pro.",
-        "CoinGecko rate limit reached. Add a free API key in Settings › General.":
-            "Đã đạt giới hạn của CoinGecko. Hãy thêm khóa API miễn phí trong Cài đặt › Chung.",
+        "CoinGecko limit reached":
+            "Đã đạt giới hạn CoinGecko",
         "CoinGecko rejected the API key.":
             "CoinGecko đã từ chối khóa API.",
         "CoinGecko returned HTTP %d.":
@@ -176,5 +176,11 @@ extension L10n {
             "Palađi",
         "Legal notice & privacy":
             "Thông tin pháp lý & quyền riêng tư",
+        "Buy me a coffee":
+            "Mời tôi một ly cà phê",
+        "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
+            "Không có khóa API, CoinGecko có thể chặn các cập nhật thường xuyên hơn 5 phút một lần.",
+        "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
+            "Khóa Demo cho phép 10.000 yêu cầu mỗi tháng. Nếu cập nhật thường xuyên hơn 5 phút một lần, CoinGecko sẽ chặn khóa.",
     ]
 }

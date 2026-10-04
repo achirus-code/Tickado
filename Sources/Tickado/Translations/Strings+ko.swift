@@ -20,8 +20,8 @@ extension L10n {
             "API 키를 확인할 수 없습니다",
         "Check the key and whether it is a Demo or Pro key.":
             "키와 Demo 키인지 Pro 키인지 확인하십시오.",
-        "CoinGecko rate limit reached. Add a free API key in Settings › General.":
-            "CoinGecko 한도에 도달했습니다. 설정 › 일반에서 무료 API 키를 추가하십시오.",
+        "CoinGecko limit reached":
+            "CoinGecko 한도 도달",
         "CoinGecko rejected the API key.":
             "CoinGecko가 API 키를 거부했습니다.",
         "CoinGecko returned HTTP %d.":
@@ -176,5 +176,11 @@ extension L10n {
             "팔라듐",
         "Legal notice & privacy":
             "법적 고지 및 개인정보 보호",
+        "Buy me a coffee":
+            "커피 한 잔 사주기",
+        "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
+            "API 키가 없으면 CoinGecko가 5분보다 잦은 업데이트를 차단할 수 있습니다.",
+        "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
+            "Demo 키는 월 10,000회 요청을 허용합니다. 5분보다 잦게 업데이트하면 CoinGecko가 키를 차단합니다.",
     ]
 }

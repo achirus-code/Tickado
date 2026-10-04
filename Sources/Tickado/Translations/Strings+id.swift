@@ -20,8 +20,8 @@ extension L10n {
             "Kunci API tidak dapat diverifikasi",
         "Check the key and whether it is a Demo or Pro key.":
             "Periksa kunci dan apakah itu kunci Demo atau Pro.",
-        "CoinGecko rate limit reached. Add a free API key in Settings › General.":
-            "Batas CoinGecko tercapai. Tambahkan kunci API gratis di Pengaturan › Umum.",
+        "CoinGecko limit reached":
+            "Batas CoinGecko tercapai",
         "CoinGecko rejected the API key.":
             "CoinGecko menolak kunci API.",
         "CoinGecko returned HTTP %d.":
@@ -176,5 +176,11 @@ extension L10n {
             "Paladium",
         "Legal notice & privacy":
             "Informasi hukum & privasi",
+        "Buy me a coffee":
+            "Traktir saya kopi",
+        "Without an API key, CoinGecko may block updates more frequent than every 5 minutes.":
+            "Tanpa kunci API, CoinGecko dapat memblokir pembaruan yang lebih sering dari setiap 5 menit.",
+        "A Demo key allows 10,000 requests per month. With updates more frequent than every 5 minutes, CoinGecko blocks the key.":
+            "Kunci Demo mengizinkan 10.000 permintaan per bulan. Dengan pembaruan lebih sering dari setiap 5 menit, CoinGecko memblokir kunci tersebut.",
     ]
 }
